@@ -88,12 +88,15 @@
             inset: 0;
             background: rgba(15, 23, 42, 0.45);
             backdrop-filter: blur(14px);
-            display: grid;
-            place-items: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.35s ease;
             z-index: 20;
+            overflow: auto;
         }
 
         .panels.visible {
@@ -102,8 +105,8 @@
         }
 
         .panel {
-            width: min(1480px, 100vw - 64px);
-            height: min(960px, 100vh - 64px);
+            width: min(1500px, 100vw - 64px);
+            max-height: calc(100vh - 96px);
             background: #f8fafc;
             border-radius: 28px;
             border: 1px solid rgba(148, 163, 184, 0.35);
@@ -123,8 +126,8 @@
         }
 
         .panel.focus-mode {
-            width: min(1720px, 100vw - 48px);
-            height: min(1040px, 100vh - 48px);
+            width: min(1740px, 100vw - 40px);
+            max-height: calc(100vh - 48px);
         }
 
         .panel-header {
@@ -177,14 +180,21 @@
 
         .panel-body {
             flex: 1;
+            min-height: 0;
             display: grid;
             grid-template-columns: minmax(0, 1fr) 320px;
             gap: 1.5rem;
             padding: 1.5rem 1.75rem 1.75rem;
+            align-items: stretch;
+        }
+
+        .panel-body > * {
+            min-height: 0;
         }
 
         .panel.focus-mode .panel-body {
             grid-template-columns: 1fr;
+            padding-right: 1.5rem;
         }
 
         .panel.focus-mode .side-panel {
@@ -220,11 +230,32 @@
         .usecase-layout,
         .der-wrapper {
             position: relative;
-            border: 1px solid rgba(148, 163, 184, 0.4);
+            border: 1px solid rgba(148, 163, 184, 0.35);
             border-radius: 22px;
-            background: #fff;
+            background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
             padding: 1.25rem;
             overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .diagram-wrapper svg,
+        .usecase-layout svg,
+        .der-wrapper svg {
+            width: 100%;
+            height: auto;
+            flex: 1;
+        }
+
+        .usecase-layout {
+            gap: 1.25rem;
+        }
+
+        .usecase-selector {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
 
@@ -233,7 +264,7 @@
         }
 
         .legend {
-            margin-top: 1rem;
+            margin-top: auto;
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
@@ -262,12 +293,12 @@
 
         .entity-header {
             font-weight: 600;
-            fill: #1f2937;
+            fill: #0f172a;
         }
 
         .entity-attr {
-            fill: #475569;
-            font-size: 14px;
+            fill: #1f2937;
+            font-size: 15px;
         }
 
         .deployment-node rect,
@@ -294,6 +325,12 @@
             fill: #1e3a8a;
         }
 
+        .link-label {
+            fill: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
         .deployment-link.planned path {
             stroke: #9ca3af;
             stroke-dasharray: 10 8;
@@ -310,7 +347,7 @@
         }
 
         .planned.active-planned {
-            opacity: 1;
+            opacity: 0.65;
         }
 
         .deployment-node.active {
@@ -319,7 +356,7 @@
 
         .deployment-node.dimmed,
         .deployment-link.dimmed {
-            opacity: 0.25;
+            opacity: 0.4;
         }
 
         .side-panel {
@@ -367,11 +404,11 @@
         .usecase-label.dimmed,
         .actor-connector.dimmed,
         .relation-line.dimmed {
-            opacity: 0.18;
+            opacity: 0.35;
         }
 
         .actor-connector {
-            stroke: #1e40af;
+            stroke: #1d4ed8;
             stroke-width: 2.4;
             fill: none;
             stroke-linejoin: round;
@@ -386,8 +423,8 @@
         }
 
         .usecase {
-            fill: #e0f2fe;
-            stroke: #60a5fa;
+            fill: #f8fafc;
+            stroke: #2563eb;
             stroke-width: 2.2;
         }
 
@@ -397,8 +434,8 @@
         }
 
         .system-rect {
-            fill: rgba(191, 219, 254, 0.45);
-            stroke: #60a5fa;
+            fill: rgba(191, 219, 254, 0.32);
+            stroke: #2563eb;
             stroke-width: 2;
         }
 
@@ -419,9 +456,14 @@
             font-size: 13px;
         }
 
+        .usecase-faded {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .der-wrapper svg rect {
-            fill: #f1f5f9;
-            stroke: #94a3b8;
+            fill: #f8fafc;
+            stroke: #cbd5f5;
             stroke-width: 2;
             rx: 18;
         }
@@ -433,7 +475,7 @@
         }
 
         .relationship-line {
-            stroke: #2563eb;
+            stroke: #1d4ed8;
             stroke-width: 2.6;
             fill: none;
             marker-end: url(#der-arrow);
@@ -442,7 +484,7 @@
 
         .relationship-line.dimmed,
         .entity.dimmed {
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
         .cardinality {
@@ -452,8 +494,8 @@
         }
 
         .relationship-label {
-            fill: #475569;
-            font-size: 12px;
+            fill: #334155;
+            font-size: 13px;
         }
 
         .der-note {
@@ -506,7 +548,7 @@
             </div>
             <div class="panel-body">
                 <div class="diagram-wrapper">
-                    <svg id="deployment-svg" viewBox="0 0 1600 900" role="img" aria-labelledby="deploymentTitle deploymentDesc" preserveAspectRatio="xMidYMid meet">
+                    <svg id="deployment-svg" viewBox="0 0 1680 920" role="img" aria-labelledby="deploymentTitle deploymentDesc" preserveAspectRatio="xMidYMid meet">
                         <title id="deploymentTitle">Despliegue Coyahue Helpdesk en AWS</title>
                         <desc id="deploymentDesc">Topología con cliente, internet, VPC en AWS, EC2 con Nginx, Gunicorn y Django, almacenamiento local y PostgreSQL en subred privada.</desc>
                         <defs>
@@ -531,137 +573,140 @@
                         </g>
 
                         <g data-node="IGW" class="deployment-node planned hidden" data-toggle-group="igw">
-                            <polygon points="560,220 620,220 650,260 620,300 560,300 530,260" fill="#e5e7eb" stroke="#94a3b8" stroke-width="2"></polygon>
+                            <polygon points="600,220 660,220 690,260 660,300 600,300 570,260" fill="#e5e7eb" stroke="#94a3b8" stroke-width="2"></polygon>
                             <text x="605" y="252" text-anchor="middle" class="entity-attr">Internet Gateway</text>
                             <text x="605" y="276" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Se agregará a la tabla de rutas de la subred pública.</title>
                         </g>
 
                         <g data-node="Entrada VPC" class="deployment-node">
-                            <rect x="620" y="340" width="120" height="220" rx="18" fill="#d1fae5" stroke="#34d399" stroke-width="2"></rect>
-                            <text x="680" y="390" text-anchor="middle" class="entity-header">Entrada VPC</text>
-                            <text x="680" y="420" text-anchor="middle" class="entity-attr">Security Group</text>
+                            <rect x="720" y="340" width="140" height="220" rx="18" fill="#d1fae5" stroke="#34d399" stroke-width="2"></rect>
+                            <text x="790" y="390" text-anchor="middle" class="entity-header">Entrada VPC</text>
+                            <text x="790" y="420" text-anchor="middle" class="entity-attr">Security Group</text>
                         </g>
 
                         <g data-node="AWS VPC" class="deployment-node">
-                            <rect x="720" y="150" width="840" height="560" rx="28" fill="rgba(191, 219, 254, 0.25)" stroke="#38bdf8" stroke-width="2.6"></rect>
-                            <text x="1530" y="190" text-anchor="end" class="entity-header">AWS VPC</text>
+                            <rect x="780" y="150" width="840" height="560" rx="28" fill="rgba(191, 219, 254, 0.25)" stroke="#38bdf8" stroke-width="2.6"></rect>
+                            <text x="1580" y="190" text-anchor="end" class="entity-header">AWS VPC</text>
                         </g>
 
                         <g data-node="Subred pública" class="deployment-node">
-                            <rect x="760" y="220" width="360" height="440" rx="24" fill="rgba(187, 247, 208, 0.6)" stroke="#4ade80" stroke-width="2"></rect>
-                            <text x="940" y="270" text-anchor="middle" class="entity-header">Subred pública</text>
+                            <rect x="820" y="220" width="420" height="440" rx="24" fill="rgba(187, 247, 208, 0.6)" stroke="#4ade80" stroke-width="2"></rect>
+                            <text x="1030" y="270" text-anchor="middle" class="entity-header">Subred pública</text>
                         </g>
 
                         <g data-node="Subred privada" class="deployment-node">
-                            <rect x="1160" y="220" width="340" height="440" rx="24" fill="rgba(191, 219, 254, 0.55)" stroke="#60a5fa" stroke-width="2"></rect>
-                            <text x="1330" y="270" text-anchor="middle" class="entity-header">Subred privada</text>
+                            <rect x="1280" y="220" width="360" height="440" rx="24" fill="rgba(191, 219, 254, 0.55)" stroke="#60a5fa" stroke-width="2"></rect>
+                            <text x="1460" y="270" text-anchor="middle" class="entity-header">Subred privada</text>
                         </g>
 
                         <g data-node="NAT Gateway" class="deployment-node planned hidden" data-toggle-group="nat">
-                            <rect x="900" y="210" width="160" height="60" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"></rect>
-                            <text x="980" y="242" text-anchor="middle" class="entity-attr">NAT Gateway</text>
-                            <text x="980" y="268" text-anchor="middle" class="badge">Por implementar</text>
+                            <rect x="1080" y="210" width="150" height="60" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"></rect>
+                            <text x="1155" y="242" text-anchor="middle" class="entity-attr">NAT Gateway</text>
+                            <text x="1155" y="268" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Para actualizaciones desde la subred privada sin exponer la base de datos.</title>
                         </g>
 
                         <g data-node="EC2 App" class="deployment-node">
-                            <rect x="820" y="330" width="240" height="280" rx="20" fill="#dbeafe" stroke="#60a5fa" stroke-width="2.2"></rect>
-                            <line x1="820" y1="390" x2="1060" y2="390" stroke="#94a3b8" stroke-width="1.5"></line>
-                            <line x1="820" y1="450" x2="1060" y2="450" stroke="#94a3b8" stroke-width="1.5"></line>
-                            <text x="940" y="360" text-anchor="middle" class="entity-header">EC2 App</text>
-                            <text x="940" y="382" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
-                            <text x="940" y="442" text-anchor="middle" class="entity-attr">Gunicorn</text>
-                            <text x="940" y="502" text-anchor="middle" class="entity-attr">Django + DRF</text>
+                            <rect x="940" y="330" width="280" height="280" rx="20" fill="#dbeafe" stroke="#60a5fa" stroke-width="2.2"></rect>
+                            <line x1="940" y1="390" x2="1220" y2="390" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <line x1="940" y1="450" x2="1220" y2="450" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <text x="1080" y="360" text-anchor="middle" class="entity-header">EC2 App</text>
+                            <text x="1080" y="382" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
+                            <text x="1080" y="442" text-anchor="middle" class="entity-attr">Gunicorn</text>
+                            <text x="1080" y="502" text-anchor="middle" class="entity-attr">Django + DRF</text>
                         </g>
 
                         <g data-node="WAF/ALB" class="deployment-node planned hidden" data-toggle-group="waf">
-                            <rect x="720" y="380" width="100" height="160" rx="18" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"></rect>
-                            <text x="770" y="452" text-anchor="middle" class="entity-attr">WAF / ALB</text>
-                            <text x="770" y="478" text-anchor="middle" class="badge">Por implementar</text>
+                            <rect x="860" y="380" width="70" height="160" rx="18" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"></rect>
+                            <text x="895" y="452" text-anchor="middle" class="entity-attr">WAF / ALB</text>
+                            <text x="895" y="478" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Seguridad perimetral y balanceo de carga.</title>
                         </g>
 
                         <g data-node="/media" class="deployment-node">
-                            <rect x="860" y="540" width="90" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
-                            <text x="905" y="585" text-anchor="middle" class="entity-attr">/media</text>
-                            <text x="905" y="610" text-anchor="middle" class="entity-attr">Adjuntos</text>
+                            <rect x="1000" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1050" y="585" text-anchor="middle" class="entity-attr">/media</text>
+                            <text x="1050" y="610" text-anchor="middle" class="entity-attr">Adjuntos</text>
                         </g>
 
                         <g data-node="Logs" class="deployment-node">
-                            <rect x="1000" y="540" width="90" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
-                            <text x="1045" y="585" text-anchor="middle" class="entity-attr">Logs</text>
-                            <text x="1045" y="610" text-anchor="middle" class="entity-attr">Aplicación</text>
+                            <rect x="1140" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1190" y="585" text-anchor="middle" class="entity-attr">Logs</text>
+                            <text x="1190" y="610" text-anchor="middle" class="entity-attr">Aplicación</text>
                         </g>
 
                         <g data-node="S3" class="deployment-node planned hidden" data-toggle-group="s3">
-                            <rect x="1120" y="560" width="160" height="110" rx="18" fill="#f9fafb" stroke="#cbd5f5" stroke-width="2"></rect>
-                            <text x="1200" y="605" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
-                            <text x="1200" y="632" text-anchor="middle" class="badge">Por implementar</text>
+                            <rect x="1320" y="560" width="170" height="110" rx="18" fill="#f9fafb" stroke="#cbd5f5" stroke-width="2"></rect>
+                            <text x="1405" y="605" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
+                            <text x="1405" y="632" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Migración prevista de /media a S3 mediante django-storages.</title>
                         </g>
 
                         <g data-node="PostgreSQL" class="deployment-node">
-                            <ellipse cx="1330" cy="370" rx="125" ry="65" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.4"></ellipse>
-                            <text x="1330" y="360" text-anchor="middle" class="entity-header">PostgreSQL</text>
-                            <text x="1330" y="388" text-anchor="middle" class="entity-attr">Puerto 5432</text>
+                            <ellipse cx="1460" cy="370" rx="125" ry="65" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.4"></ellipse>
+                            <text x="1460" y="360" text-anchor="middle" class="entity-header">PostgreSQL</text>
+                            <text x="1460" y="388" text-anchor="middle" class="entity-attr">Puerto 5432</text>
                         </g>
                         <g data-edge="Cliente-Internet" class="deployment-link" data-source="Cliente" data-target="Internet">
                             <path d="M270 445 H320"></path>
                         </g>
 
                         <g data-edge="Internet-Entrada" class="deployment-link" data-source="Internet" data-target="Entrada VPC">
-                            <path d="M540 445 H620"></path>
+                            <path d="M540 445 H720"></path>
                         </g>
 
                         <g data-edge="Entrada-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Entrada VPC" data-target="WAF/ALB">
-                            <path d="M740 430 H720"></path>
+                            <path d="M860 430 H865"></path>
+                        </g>
+                        <g data-edge="WAF-EC2" class="deployment-link planned hidden" data-toggle-group="waf" data-source="WAF/ALB" data-target="EC2 App">
+                            <path d="M930 430 H940"></path>
                         </g>
 
                         <g data-edge="Entrada-EC2" class="deployment-link" data-source="Entrada VPC" data-target="EC2 App">
-                            <path d="M740 430 H820"></path>
+                            <path d="M860 430 H940"></path>
                         </g>
 
                         <g data-edge="EC2-Postgres" class="deployment-link" data-source="EC2 App" data-target="PostgreSQL">
-                            <path d="M1060 500 H1160 V370 H1205"></path>
-                            <text x="1120" y="350">Tráfico interno VPC</text>
+                            <path d="M1220 500 H1320 V370 H1335"></path>
+                            <text x="1338" y="332" class="link-label">Tráfico interno VPC</text>
                         </g>
 
                         <g data-edge="EC2-media" class="deployment-link" data-source="EC2 App" data-target="/media">
-                            <path d="M940 510 V540"></path>
+                            <path d="M1050 510 V540"></path>
                         </g>
 
                         <g data-edge="EC2-logs" class="deployment-link" data-source="EC2 App" data-target="Logs">
-                            <path d="M1000 510 V540"></path>
+                            <path d="M1190 510 V540"></path>
                         </g>
 
                         <g data-edge="Postgres-EC2" class="deployment-link" data-source="PostgreSQL" data-target="EC2 App">
-                            <path d="M1455 370 H1500 V540 H1060"></path>
+                            <path d="M1585 370 H1620 V560 H1220"></path>
                         </g>
 
                         <g data-edge="NAT-Privada" class="deployment-link planned hidden" data-toggle-group="nat" data-source="NAT Gateway" data-target="Subred privada">
-                            <path d="M980 210 V190 H1330 V220"></path>
-                            <text x="1230" y="200" class="entity-attr">Salida controlada</text>
+                            <path d="M1155 210 V190 H1280 V220"></path>
+                            <text x="1250" y="198" class="link-label">Salida controlada</text>
                         </g>
 
                         <g data-edge="Privada-NAT" class="deployment-link planned hidden" data-toggle-group="nat" data-source="Subred privada" data-target="NAT Gateway">
-                            <path d="M1330 220 V190 H980 V210"></path>
+                            <path d="M1280 220 V190 H1155 V210"></path>
                         </g>
 
                         <g data-edge="Django-S3" class="deployment-link planned hidden" data-toggle-group="s3" data-source="EC2 App" data-target="S3">
-                            <path d="M1060 560 H1120"></path>
+                            <path d="M1220 560 H1320"></path>
                         </g>
 
                         <g data-edge="Internet-IGW" class="deployment-link planned hidden" data-toggle-group="igw" data-source="Internet" data-target="IGW">
-                            <path d="M520 320 L560 260"></path>
+                            <path d="M520 320 L600 260"></path>
                         </g>
 
                         <g data-edge="IGW-Entrada" class="deployment-link planned hidden" data-toggle-group="igw" data-source="IGW" data-target="Entrada VPC">
-                            <path d="M650 260 L680 340"></path>
+                            <path d="M690 260 L720 340"></path>
                         </g>
 
                         <g data-edge="Internet-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Internet" data-target="WAF/ALB">
-                            <path d="M600 445 H720"></path>
+                            <path d="M600 445 H860"></path>
                         </g>
                     </svg>
                     <div class="legend">
@@ -1012,25 +1057,25 @@
                         <text x="1200" y="812" class="cardinality">1..N</text>
                         <text x="1206" y="836" class="relationship-label">auditoría (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-comment" data-source="auth_user" data-target="TicketComment" d="M240 340 V820"></path>
+                        <path class="relationship-line" data-edge="user-comment" data-source="auth_user" data-target="TicketComment" d="M240 340 V780 H360 V820"></path>
                         <text x="220" y="600" class="cardinality">1..N</text>
                         <text x="226" y="624" class="relationship-label">author (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-attachment" data-source="auth_user" data-target="TicketAttachment" d="M260 360 V900 H720"></path>
-                        <text x="300" y="880" class="cardinality">1..N</text>
-                        <text x="306" y="904" class="relationship-label">uploaded_by (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-attachment" data-source="auth_user" data-target="TicketAttachment" d="M260 360 V780 H720 V820"></path>
+                        <text x="300" y="760" class="cardinality">1..N</text>
+                        <text x="306" y="784" class="relationship-label">uploaded_by (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-assignment-from" data-source="auth_user" data-target="TicketAssignment" d="M400 360 H420 V900 H1080"></path>
-                        <text x="470" y="880" class="cardinality">1..N</text>
-                        <text x="476" y="904" class="relationship-label">from_user (SET_NULL)</text>
+                        <path class="relationship-line" data-edge="user-assignment-from" data-source="auth_user" data-target="TicketAssignment" d="M400 360 H420 V780 H1080 V820"></path>
+                        <text x="470" y="760" class="cardinality">1..N</text>
+                        <text x="476" y="784" class="relationship-label">from_user (SET_NULL)</text>
 
-                        <path class="relationship-line" data-edge="user-assignment-to" data-source="auth_user" data-target="TicketAssignment" d="M400 400 H440 V940 H1080"></path>
-                        <text x="520" y="920" class="cardinality">1..N</text>
-                        <text x="526" y="944" class="relationship-label">to_user (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-assignment-to" data-source="auth_user" data-target="TicketAssignment" d="M400 400 H440 V780 H1220 V820"></path>
+                        <text x="520" y="760" class="cardinality">1..N</text>
+                        <text x="526" y="784" class="relationship-label">to_user (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-audit" data-source="auth_user" data-target="AuditLog" d="M400 440 H440 V960 H1440"></path>
-                        <text x="620" y="940" class="cardinality">1..N</text>
-                        <text x="626" y="964" class="relationship-label">actor (SET_NULL)</text>
+                        <path class="relationship-line" data-edge="user-audit" data-source="auth_user" data-target="AuditLog" d="M400 440 H440 V780 H1440 V820"></path>
+                        <text x="620" y="760" class="cardinality">1..N</text>
+                        <text x="626" y="784" class="relationship-label">actor (SET_NULL)</text>
 
                         <text x="1120" y="1080" class="der-note">Ticket.code es único; created_at está indexado para reportes y ticket.cluster_id permanece por compatibilidad (deprecated).</text>
                     </svg>
@@ -1326,10 +1371,10 @@
 
                 if (filter === 'todos') {
                     actors.forEach(a => a.classList.remove('dimmed'));
-                    usecases.forEach(u => u.classList.remove('dimmed'));
-                    labels.forEach(l => l.classList.remove('dimmed'));
-                    connectors.forEach(c => c.classList.remove('dimmed', 'active'));
-                    relationLines.forEach(r => r.classList.remove('dimmed', 'active'));
+                    usecases.forEach(u => u.classList.remove('dimmed', 'usecase-faded'));
+                    labels.forEach(l => l.classList.remove('dimmed', 'usecase-faded'));
+                    connectors.forEach(c => c.classList.remove('dimmed', 'active', 'usecase-faded'));
+                    relationLines.forEach(r => r.classList.remove('dimmed', 'active', 'usecase-faded'));
                     return;
                 }
 
@@ -1340,13 +1385,21 @@
                     actor.classList.toggle('active', isActive);
                 });
 
-                usecases.forEach(u => u.classList.add('dimmed'));
-                labels.forEach(l => l.classList.add('dimmed'));
-                connectors.forEach(c => c.classList.add('dimmed'));
-                connectors.forEach(c => c.classList.remove('active'));
+                usecases.forEach(u => {
+                    u.classList.add('usecase-faded');
+                    u.classList.remove('dimmed');
+                });
+                labels.forEach(l => {
+                    l.classList.add('usecase-faded');
+                    l.classList.remove('dimmed');
+                });
+                connectors.forEach(c => {
+                    c.classList.add('usecase-faded');
+                    c.classList.remove('dimmed', 'active');
+                });
                 relationLines.forEach(r => {
-                    r.classList.add('dimmed');
-                    r.classList.remove('active');
+                    r.classList.add('usecase-faded');
+                    r.classList.remove('dimmed', 'active');
                 });
 
                 const activeActor = Array.from(actors).find(actor => actor.getAttribute('data-node').toLowerCase() === filter);
@@ -1354,22 +1407,22 @@
 
                 connectors.forEach(connector => {
                     if (connector.getAttribute('data-source') === activeName) {
-                        connector.classList.remove('dimmed');
+                        connector.classList.remove('usecase-faded');
                         connector.classList.add('active');
                         const target = connector.getAttribute('data-target');
-                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('dimmed'));
-                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('dimmed'));
+                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
+                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
                     }
                 });
 
                 relationLines.forEach(line => {
                     const source = line.getAttribute('data-source');
                     const target = line.getAttribute('data-target');
-                    if (source && document.querySelector(`[data-node="${source}"] .usecase:not(.dimmed)`)) {
-                        line.classList.remove('dimmed');
+                    if (source && document.querySelector(`[data-node="${source}"] .usecase:not(.usecase-faded)`)) {
+                        line.classList.remove('usecase-faded');
                         line.classList.add('active');
-                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('dimmed'));
-                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('dimmed'));
+                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
+                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
                     }
                 });
             });
