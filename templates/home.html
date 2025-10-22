@@ -181,24 +181,10 @@
         .panel-body {
             flex: 1;
             min-height: 0;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 320px;
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
             padding: 1.5rem 1.75rem 1.75rem;
-            align-items: stretch;
-        }
-
-        .panel-body > * {
-            min-height: 0;
-        }
-
-        .panel.focus-mode .panel-body {
-            grid-template-columns: 1fr;
-            padding-right: 1.5rem;
-        }
-
-        .panel.focus-mode .side-panel {
-            display: none;
         }
 
         .focus-button,
@@ -246,16 +232,6 @@
             width: 100%;
             height: auto;
             flex: 1;
-        }
-
-        .usecase-layout {
-            gap: 1.25rem;
-        }
-
-        .usecase-selector {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
         }
 
 
@@ -359,52 +335,99 @@
             opacity: 0.4;
         }
 
-        .side-panel {
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            border-radius: 22px;
-            background: rgba(248, 250, 252, 0.9);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+
+        .usecase-layout {
+            position: relative;
         }
 
-        .side-panel h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            letter-spacing: 0.08em;
-            color: #1f2937;
-            text-transform: uppercase;
-        }
-
-        .side-panel-content {
-            flex: 1;
-            overflow-y: auto;
-            color: #334155;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .side-panel-content p {
-            margin: 0;
-        }
+        .usecase-diagram {
+            width: 100%;
+            height: auto;
         }
 
         .actor {
             cursor: pointer;
-            transition: opacity 0.3s ease, filter 0.3s ease;
+            transform-box: fill-box;
+            transform-origin: center;
+            transition: transform 0.6s ease, opacity 0.45s ease, filter 0.45s ease;
         }
 
-        .actor.active {
-            filter: drop-shadow(0 0 18px rgba(37, 99, 235, 0.45));
+        .actor text {
+            transition: opacity 0.4s ease, transform 0.45s ease;
         }
 
-        .actor.dimmed,
-        .usecase.dimmed,
-        .usecase-label.dimmed,
-        .actor-connector.dimmed,
-        .relation-line.dimmed {
+        .usecase-diagram[data-state="teaser"] .actor {
+            transform: translate(var(--teaser-x, 0), var(--teaser-y, 0)) scale(1.04);
+        }
+
+        .usecase-diagram[data-state="teaser"] .actor text {
+            opacity: 0.55;
+            transform: translateY(-10px);
+        }
+
+        .usecase-diagram[data-active-actor] .actor {
             opacity: 0.35;
+        }
+
+        .usecase-diagram[data-active-actor] .actor.active-actor {
+            opacity: 1;
+            filter: drop-shadow(0 0 22px rgba(37, 99, 235, 0.45));
+        }
+
+        .system-elements {
+            transition: opacity 0.55s ease, transform 0.6s ease;
+        }
+
+        .usecase-diagram[data-state="teaser"] .system-elements {
+            opacity: 0;
+            transform: translateX(70px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .usecase-diagram[data-state="active"] .system-elements {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        .usecase-group {
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .usecase-diagram[data-active-actor] .usecase-group {
+            opacity: 0.28;
+        }
+
+        .usecase-group.highlight {
+            opacity: 1 !important;
+        }
+
+        .usecase {
+            fill: #f8fafc;
+            stroke: #2563eb;
+            stroke-width: 2.2;
+            transition: stroke-width 0.3s ease, fill 0.3s ease;
+        }
+
+        .usecase-group.highlight .usecase {
+            fill: #e0e7ff;
+            stroke-width: 2.6;
+        }
+
+        .usecase-label {
+            fill: #1f2937;
+            font-size: 14px;
+            transition: fill 0.3s ease, font-weight 0.3s ease;
+        }
+
+        .usecase-group.highlight .usecase-label {
+            fill: #0f172a;
+            font-weight: 600;
+        }
+
+        .system-rect {
+            fill: rgba(191, 219, 254, 0.32);
+            stroke: #2563eb;
+            stroke-width: 2;
         }
 
         .actor-connector {
@@ -414,29 +437,18 @@
             stroke-linejoin: round;
             stroke-dasharray: 6 10;
             stroke-dashoffset: 40;
-            transition: opacity 0.3s ease, stroke-dashoffset 0.4s ease;
+            opacity: 0;
+            transition: opacity 0.4s ease, stroke-dashoffset 0.6s ease;
             marker-end: url(#usecase-arrow);
         }
 
-        .actor-connector.active {
+        .usecase-diagram[data-active-actor] .actor-connector {
+            opacity: 0.18;
+        }
+
+        .actor-connector.active-connector {
+            opacity: 1 !important;
             stroke-dashoffset: 0;
-        }
-
-        .usecase {
-            fill: #f8fafc;
-            stroke: #2563eb;
-            stroke-width: 2.2;
-        }
-
-        .usecase-label {
-            fill: #1f2937;
-            font-size: 14px;
-        }
-
-        .system-rect {
-            fill: rgba(191, 219, 254, 0.32);
-            stroke: #2563eb;
-            stroke-width: 2;
         }
 
         .relation-line {
@@ -444,21 +456,31 @@
             fill: none;
             marker-end: url(#relation-arrow);
             stroke-dashoffset: 24;
-            transition: opacity 0.3s ease, stroke-dashoffset 0.4s ease;
+            opacity: 0;
+            transition: opacity 0.4s ease, stroke-dashoffset 0.6s ease;
+        }
+
+        .usecase-diagram[data-active-actor] .relation-line {
+            opacity: 0.18;
         }
 
         .relation-line.include { stroke: #059669; stroke-dasharray: 8 6; }
-        .relation-line.include.active { stroke-dashoffset: 0; }
         .relation-line.exclude { stroke: #dc2626; stroke-dasharray: 4 6; marker-end: none; }
+
+        .relation-line.active-relation {
+            opacity: 1 !important;
+            stroke-dashoffset: 0;
+        }
 
         .note {
             fill: #475569;
             font-size: 13px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .usecase-faded {
-            opacity: 0;
-            pointer-events: none;
+        .usecase-diagram[data-active-actor] .note {
+            opacity: 0.8;
         }
 
         .der-wrapper svg rect {
@@ -596,9 +618,10 @@
                         </g>
 
                         <g data-node="Entrada VPC" class="deployment-node">
-                            <rect x="720" y="340" width="140" height="220" rx="18" fill="#d1fae5" stroke="#34d399" stroke-width="2"></rect>
-                            <text x="790" y="390" text-anchor="middle" class="entity-header">Entrada VPC</text>
-                            <text x="790" y="420" text-anchor="middle" class="entity-attr">Security Group</text>
+                            <rect x="700" y="320" width="190" height="260" rx="20" fill="#bbf7d0" stroke="#22c55e" stroke-width="2.4"></rect>
+                            <text x="795" y="378" text-anchor="middle" class="entity-header">Entrada VPC</text>
+                            <text x="795" y="408" text-anchor="middle" class="entity-attr">Security Group</text>
+                            <text x="795" y="438" text-anchor="middle" class="entity-attr">HTTPS 443 · Egress controlado</text>
                         </g>
 
                         <g data-node="AWS VPC" class="deployment-node">
@@ -607,13 +630,13 @@
                         </g>
 
                         <g data-node="Subred pública" class="deployment-node">
-                            <rect x="820" y="220" width="420" height="440" rx="24" fill="rgba(187, 247, 208, 0.6)" stroke="#4ade80" stroke-width="2"></rect>
-                            <text x="1030" y="270" text-anchor="middle" class="entity-header">Subred pública</text>
+                            <rect x="820" y="220" width="540" height="440" rx="24" fill="rgba(187, 247, 208, 0.6)" stroke="#4ade80" stroke-width="2"></rect>
+                            <text x="1090" y="270" text-anchor="middle" class="entity-header">Subred pública</text>
                         </g>
 
                         <g data-node="Subred privada" class="deployment-node">
-                            <rect x="1280" y="220" width="360" height="440" rx="24" fill="rgba(191, 219, 254, 0.55)" stroke="#60a5fa" stroke-width="2"></rect>
-                            <text x="1460" y="270" text-anchor="middle" class="entity-header">Subred privada</text>
+                            <rect x="1380" y="220" width="240" height="440" rx="24" fill="rgba(191, 219, 254, 0.55)" stroke="#60a5fa" stroke-width="2"></rect>
+                            <text x="1500" y="270" text-anchor="middle" class="entity-header">Subred privada</text>
                         </g>
 
                         <g data-node="NAT Gateway" class="deployment-node planned hidden" data-toggle-group="nat">
@@ -624,105 +647,105 @@
                         </g>
 
                         <g data-node="EC2 App" class="deployment-node">
-                            <rect x="940" y="330" width="280" height="280" rx="20" fill="#dbeafe" stroke="#60a5fa" stroke-width="2.2"></rect>
-                            <line x1="940" y1="390" x2="1220" y2="390" stroke="#94a3b8" stroke-width="1.5"></line>
-                            <line x1="940" y1="450" x2="1220" y2="450" stroke="#94a3b8" stroke-width="1.5"></line>
-                            <text x="1080" y="360" text-anchor="middle" class="entity-header">EC2 App</text>
-                            <text x="1080" y="382" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
-                            <text x="1080" y="442" text-anchor="middle" class="entity-attr">Gunicorn</text>
-                            <text x="1080" y="502" text-anchor="middle" class="entity-attr">Django + DRF</text>
+                            <rect x="1080" y="330" width="280" height="280" rx="22" fill="#dbeafe" stroke="#60a5fa" stroke-width="2.4"></rect>
+                            <line x1="1080" y1="390" x2="1360" y2="390" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <line x1="1080" y1="450" x2="1360" y2="450" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <text x="1220" y="360" text-anchor="middle" class="entity-header">EC2 App</text>
+                            <text x="1220" y="382" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
+                            <text x="1220" y="442" text-anchor="middle" class="entity-attr">Gunicorn</text>
+                            <text x="1220" y="502" text-anchor="middle" class="entity-attr">Django + DRF</text>
                         </g>
 
                         <g data-node="WAF/ALB" class="deployment-node planned hidden" data-toggle-group="waf">
-                            <rect x="860" y="380" width="70" height="160" rx="18" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"></rect>
-                            <text x="895" y="452" text-anchor="middle" class="entity-attr">WAF / ALB</text>
-                            <text x="895" y="478" text-anchor="middle" class="badge">Por implementar</text>
+                            <rect x="920" y="340" width="110" height="220" rx="22" fill="#f8fafc" stroke="#d1d5db" stroke-width="2.4"></rect>
+                            <text x="975" y="412" text-anchor="middle" class="entity-attr">WAF / ALB</text>
+                            <text x="975" y="442" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Seguridad perimetral y balanceo de carga.</title>
                         </g>
 
                         <g data-node="/media" class="deployment-node">
-                            <rect x="1000" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
-                            <text x="1050" y="585" text-anchor="middle" class="entity-attr">/media</text>
-                            <text x="1050" y="610" text-anchor="middle" class="entity-attr">Adjuntos</text>
+                            <rect x="1120" y="560" width="120" height="90" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1180" y="600" text-anchor="middle" class="entity-attr">/media</text>
+                            <text x="1180" y="625" text-anchor="middle" class="entity-attr">Adjuntos</text>
                         </g>
 
                         <g data-node="Logs" class="deployment-node">
-                            <rect x="1140" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
-                            <text x="1190" y="585" text-anchor="middle" class="entity-attr">Logs</text>
-                            <text x="1190" y="610" text-anchor="middle" class="entity-attr">Aplicación</text>
+                            <rect x="1250" y="560" width="120" height="90" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1310" y="600" text-anchor="middle" class="entity-attr">Logs</text>
+                            <text x="1310" y="625" text-anchor="middle" class="entity-attr">Aplicación</text>
                         </g>
 
                         <g data-node="S3" class="deployment-node planned hidden" data-toggle-group="s3">
-                            <rect x="1320" y="560" width="170" height="110" rx="18" fill="#f9fafb" stroke="#cbd5f5" stroke-width="2"></rect>
-                            <text x="1405" y="605" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
-                            <text x="1405" y="632" text-anchor="middle" class="badge">Por implementar</text>
+                            <rect x="1420" y="560" width="190" height="120" rx="20" fill="#f9fafb" stroke="#cbd5f5" stroke-width="2"></rect>
+                            <text x="1515" y="608" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
+                            <text x="1515" y="638" text-anchor="middle" class="badge">Por implementar</text>
                             <title>Migración prevista de /media a S3 mediante django-storages.</title>
                         </g>
 
                         <g data-node="PostgreSQL" class="deployment-node">
-                            <ellipse cx="1460" cy="370" rx="125" ry="65" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.4"></ellipse>
-                            <text x="1460" y="360" text-anchor="middle" class="entity-header">PostgreSQL</text>
-                            <text x="1460" y="388" text-anchor="middle" class="entity-attr">Puerto 5432</text>
+                            <ellipse cx="1500" cy="370" rx="120" ry="65" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.4"></ellipse>
+                            <text x="1500" y="360" text-anchor="middle" class="entity-header">PostgreSQL</text>
+                            <text x="1500" y="388" text-anchor="middle" class="entity-attr">Puerto 5432</text>
                         </g>
                         <g data-edge="Cliente-Internet" class="deployment-link" data-source="Cliente" data-target="Internet">
                             <path d="M270 445 H320"></path>
                         </g>
 
                         <g data-edge="Internet-Entrada" class="deployment-link" data-source="Internet" data-target="Entrada VPC">
-                            <path d="M540 445 H720"></path>
+                            <path d="M540 445 H700"></path>
                         </g>
 
                         <g data-edge="Entrada-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Entrada VPC" data-target="WAF/ALB">
-                            <path d="M860 430 H865"></path>
+                            <path d="M890 450 H920"></path>
                         </g>
                         <g data-edge="WAF-EC2" class="deployment-link planned hidden" data-toggle-group="waf" data-source="WAF/ALB" data-target="EC2 App">
-                            <path d="M930 430 H940"></path>
+                            <path d="M1030 450 H1080"></path>
                         </g>
 
                         <g data-edge="Entrada-EC2" class="deployment-link" data-source="Entrada VPC" data-target="EC2 App">
-                            <path d="M860 430 H940"></path>
+                            <path d="M890 450 H1080"></path>
                         </g>
 
                         <g data-edge="EC2-Postgres" class="deployment-link" data-source="EC2 App" data-target="PostgreSQL">
-                            <path d="M1220 500 H1320 V370 H1335"></path>
-                            <text x="1338" y="332" class="link-label">Tráfico interno VPC</text>
+                            <path d="M1360 480 H1380 V370 H1380"></path>
+                            <text x="1405" y="332" class="link-label">Tráfico interno VPC</text>
                         </g>
 
                         <g data-edge="EC2-media" class="deployment-link" data-source="EC2 App" data-target="/media">
-                            <path d="M1050 510 V540"></path>
+                            <path d="M1180 610 V560"></path>
                         </g>
 
                         <g data-edge="EC2-logs" class="deployment-link" data-source="EC2 App" data-target="Logs">
-                            <path d="M1190 510 V540"></path>
+                            <path d="M1310 610 V560"></path>
                         </g>
 
                         <g data-edge="Postgres-EC2" class="deployment-link" data-source="PostgreSQL" data-target="EC2 App">
-                            <path d="M1585 370 H1620 V560 H1220"></path>
+                            <path d="M1620 370 V640 H1360"></path>
                         </g>
 
                         <g data-edge="NAT-Privada" class="deployment-link planned hidden" data-toggle-group="nat" data-source="NAT Gateway" data-target="Subred privada">
-                            <path d="M1155 210 V190 H1280 V220"></path>
-                            <text x="1250" y="198" class="link-label">Salida controlada</text>
+                            <path d="M1155 210 V190 H1380 V220"></path>
+                            <text x="1320" y="198" class="link-label">Salida controlada</text>
                         </g>
 
                         <g data-edge="Privada-NAT" class="deployment-link planned hidden" data-toggle-group="nat" data-source="Subred privada" data-target="NAT Gateway">
-                            <path d="M1280 220 V190 H1155 V210"></path>
+                            <path d="M1380 220 V190 H1155 V210"></path>
                         </g>
 
                         <g data-edge="Django-S3" class="deployment-link planned hidden" data-toggle-group="s3" data-source="EC2 App" data-target="S3">
-                            <path d="M1220 560 H1320"></path>
+                            <path d="M1360 600 V660 H1420 V560"></path>
                         </g>
 
                         <g data-edge="Internet-IGW" class="deployment-link planned hidden" data-toggle-group="igw" data-source="Internet" data-target="IGW">
-                            <path d="M520 320 L600 260"></path>
+                            <path d="M520 320 H560 V260 H600"></path>
                         </g>
 
                         <g data-edge="IGW-Entrada" class="deployment-link planned hidden" data-toggle-group="igw" data-source="IGW" data-target="Entrada VPC">
-                            <path d="M690 260 L720 340"></path>
+                            <path d="M660 300 V320 H700"></path>
                         </g>
 
                         <g data-edge="Internet-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Internet" data-target="WAF/ALB">
-                            <path d="M600 445 H860"></path>
+                            <path d="M600 445 H920"></path>
                         </g>
                     </svg>
                     <div class="legend">
@@ -732,10 +755,6 @@
                         <span class="data">/media · Logs</span>
                     </div>
                 </div>
-                <aside class="side-panel" data-side-panel>
-                    <h3 id="deployment-node-title">Cliente</h3>
-                    <div class="side-panel-content" id="deployment-panel-content"></div>
-                </aside>
             </div>
         </section>
         <!-- VISTA CASOS DE USO -->
@@ -749,13 +768,7 @@
             </div>
             <div class="panel-body">
                 <div class="usecase-layout">
-                    <div class="usecase-selector">
-                        <button class="active" data-actor-filter="todos">Todos</button>
-                        <button data-actor-filter="solicitante">Solicitante</button>
-                        <button data-actor-filter="tecnico">Técnico</button>
-                        <button data-actor-filter="administrador">Administrador</button>
-                    </div>
-                    <svg id="usecase-svg" viewBox="0 0 1120 760" role="img" aria-labelledby="usecaseTitle usecaseDesc">
+                    <svg id="usecase-svg" class="usecase-diagram" data-state="teaser" viewBox="0 0 1120 760" role="img" aria-labelledby="usecaseTitle usecaseDesc">
                         <title id="usecaseTitle">Casos de uso del sistema de tickets</title>
                         <desc id="usecaseDesc">Actor solicitante, técnico y administrador interactuando con el sistema de tickets y sus funcionalidades clave.</desc>
                         <defs>
@@ -767,128 +780,133 @@
                             </marker>
                         </defs>
 
-                        <g data-node="Sistema" data-kind="system">
-                            <rect class="system-rect" x="320" y="80" width="480" height="560" rx="24"></rect>
-                            <text x="560" y="120" text-anchor="middle" class="entity-header">Sistema de Tickets</text>
+                        <g class="actors-layer">
+                            <g class="actor" data-node="Solicitante" data-kind="actor" style="--teaser-x: 380px; --teaser-y: 20px;">
+                                <circle cx="140" cy="200" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                                <line x1="140" y1="218" x2="140" y2="270" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="110" y1="230" x2="170" y2="230" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="270" x2="118" y2="310" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="270" x2="162" y2="310" stroke="#2563eb" stroke-width="3"></line>
+                                <text x="140" y="340" text-anchor="middle" class="entity-header">Solicitante</text>
+                            </g>
+                            <g class="actor" data-node="Técnico" data-kind="actor" style="--teaser-x: 380px; --teaser-y: -140px;">
+                                <circle cx="140" cy="380" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                                <line x1="140" y1="398" x2="140" y2="450" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="110" y1="410" x2="170" y2="410" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="450" x2="118" y2="490" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="450" x2="162" y2="490" stroke="#2563eb" stroke-width="3"></line>
+                                <text x="140" y="520" text-anchor="middle" class="entity-header">Técnico</text>
+                            </g>
+                            <g class="actor" data-node="Administrador" data-kind="actor" style="--teaser-x: 380px; --teaser-y: -320px;">
+                                <circle cx="140" cy="560" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                                <line x1="140" y1="578" x2="140" y2="630" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="110" y1="590" x2="170" y2="590" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="630" x2="118" y2="670" stroke="#2563eb" stroke-width="3"></line>
+                                <line x1="140" y1="630" x2="162" y2="670" stroke="#2563eb" stroke-width="3"></line>
+                                <text x="140" y="700" text-anchor="middle" class="entity-header">Administrador</text>
+                            </g>
                         </g>
 
-                        <g class="actor" data-node="Solicitante" data-kind="actor">
-                            <circle cx="140" cy="200" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                            <line x1="140" y1="218" x2="140" y2="270" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="110" y1="230" x2="170" y2="230" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="140" y1="270" x2="118" y2="310" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="140" y1="270" x2="162" y2="310" stroke="#2563eb" stroke-width="3"></line>
-                            <text x="140" y="340" text-anchor="middle" class="entity-header">Solicitante</text>
-                        </g>
+                        <g class="system-elements">
+                            <g data-node="Sistema" data-kind="system">
+                                <rect class="system-rect" x="300" y="80" width="560" height="560" rx="24"></rect>
+                                <text x="580" y="120" text-anchor="middle" class="entity-header">Sistema de Tickets</text>
+                            </g>
 
-                        <g class="actor" data-node="Técnico" data-kind="actor">
-                            <circle cx="140" cy="500" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                            <line x1="140" y1="518" x2="140" y2="570" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="110" y1="530" x2="170" y2="530" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="140" y1="570" x2="118" y2="610" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="140" y1="570" x2="162" y2="610" stroke="#2563eb" stroke-width="3"></line>
-                            <text x="140" y="640" text-anchor="middle" class="entity-header">Técnico</text>
-                        </g>
+                            <g class="usecases-layer">
+                                <g data-node="Iniciar/Cerrar sesión" class="usecase-group">
+                                    <ellipse class="usecase" cx="580" cy="160" rx="132" ry="36"></ellipse>
+                                    <text class="usecase-label" data-usecase="Iniciar/Cerrar sesión" x="580" y="166" text-anchor="middle">Iniciar/Cerrar sesión</text>
+                                </g>
+                                <g data-node="Validar permisos por rol" class="usecase-group">
+                                    <ellipse class="usecase" cx="580" cy="210" rx="138" ry="36"></ellipse>
+                                    <text class="usecase-label" data-usecase="Validar permisos por rol" x="580" y="216" text-anchor="middle">Validar permisos por rol</text>
+                                </g>
+                                <g data-node="FAQ autoservicio" class="usecase-group">
+                                    <ellipse class="usecase" cx="420" cy="260" rx="118" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="FAQ autoservicio" x="420" y="266" text-anchor="middle">FAQ autoservicio</text>
+                                </g>
+                                <g data-node="Ver y filtrar tickets" class="usecase-group">
+                                    <ellipse class="usecase" cx="720" cy="260" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Ver y filtrar tickets" x="720" y="266" text-anchor="middle">Ver y filtrar tickets</text>
+                                </g>
+                                <g data-node="Crear ticket" class="usecase-group">
+                                    <ellipse class="usecase" cx="420" cy="320" rx="118" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Crear ticket" x="420" y="326" text-anchor="middle">Crear ticket</text>
+                                </g>
+                                <g data-node="Adjuntar y comentar" class="usecase-group">
+                                    <ellipse class="usecase" cx="720" cy="320" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Adjuntar y comentar" x="720" y="326" text-anchor="middle">Adjuntar y comentar</text>
+                                </g>
+                                <g data-node="Cambiar estado" class="usecase-group">
+                                    <ellipse class="usecase" cx="420" cy="380" rx="118" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Cambiar estado" x="420" y="386" text-anchor="middle">Cambiar estado</text>
+                                </g>
+                                <g data-node="Asignar/Reasignar" class="usecase-group">
+                                    <ellipse class="usecase" cx="720" cy="380" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Asignar/Reasignar" x="720" y="386" text-anchor="middle">Asignar/Reasignar</text>
+                                </g>
+                                <g data-node="Dashboard KPI" class="usecase-group">
+                                    <ellipse class="usecase" cx="420" cy="440" rx="118" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Dashboard KPI" x="420" y="446" text-anchor="middle">Dashboard KPI</text>
+                                </g>
+                                <g data-node="Exportar PDF/Excel" class="usecase-group">
+                                    <ellipse class="usecase" cx="720" cy="440" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Exportar PDF/Excel" x="720" y="446" text-anchor="middle">Exportar PDF/Excel</text>
+                                </g>
+                                <g data-node="Gestionar catálogos" class="usecase-group">
+                                    <ellipse class="usecase" cx="420" cy="500" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Gestionar catálogos" x="420" y="506" text-anchor="middle">Gestionar catálogos</text>
+                                </g>
+                                <g data-node="Auditoría" class="usecase-group">
+                                    <ellipse class="usecase" cx="720" cy="500" rx="128" ry="34"></ellipse>
+                                    <text class="usecase-label" data-usecase="Auditoría" x="720" y="506" text-anchor="middle">Auditoría</text>
+                                </g>
+                            </g>
 
-                        <g class="actor" data-node="Administrador" data-kind="actor">
-                            <circle cx="980" cy="320" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                            <line x1="980" y1="338" x2="980" y2="390" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="950" y1="350" x2="1010" y2="350" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="980" y1="390" x2="958" y2="430" stroke="#2563eb" stroke-width="3"></line>
-                            <line x1="980" y1="390" x2="1002" y2="430" stroke="#2563eb" stroke-width="3"></line>
-                            <text x="980" y="470" text-anchor="middle" class="entity-header">Administrador</text>
-                        </g>
+                            <g class="connectors-layer">
+                                <path class="actor-connector" data-source="Solicitante" data-target="Iniciar/Cerrar sesión" d="M240 220 H320 V160 H580"></path>
+                                <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio" d="M240 220 H320 V260 H420"></path>
+                                <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets" d="M240 220 H340 V260 H720"></path>
+                                <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket" d="M240 220 H320 V320 H420"></path>
+                                <path class="actor-connector" data-source="Solicitante" data-target="Adjuntar y comentar" d="M240 220 H340 V320 H720"></path>
 
-                        <g data-node="Iniciar/Cerrar sesión" class="usecase-group">
-                            <ellipse class="usecase" cx="560" cy="160" rx="130" ry="36"></ellipse>
-                            <text class="usecase-label" data-usecase="Iniciar/Cerrar sesión" x="560" y="166" text-anchor="middle">Iniciar/Cerrar sesión</text>
-                        </g>
-                        <g data-node="Validar permisos por rol" class="usecase-group">
-                            <ellipse class="usecase" cx="560" cy="210" rx="140" ry="36"></ellipse>
-                            <text class="usecase-label" data-usecase="Validar permisos por rol" x="560" y="216" text-anchor="middle">Validar permisos por rol</text>
-                        </g>
-                        <g data-node="FAQ autoservicio" class="usecase-group">
-                            <ellipse class="usecase" cx="420" cy="260" rx="120" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="FAQ autoservicio" x="420" y="266" text-anchor="middle">FAQ autoservicio</text>
-                        </g>
-                        <g data-node="Ver y filtrar tickets" class="usecase-group">
-                            <ellipse class="usecase" cx="700" cy="260" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Ver y filtrar tickets" x="700" y="266" text-anchor="middle">Ver y filtrar tickets</text>
-                        </g>
-                        <g data-node="Crear ticket" class="usecase-group">
-                            <ellipse class="usecase" cx="420" cy="320" rx="120" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Crear ticket" x="420" y="326" text-anchor="middle">Crear ticket</text>
-                        </g>
-                        <g data-node="Adjuntar y comentar" class="usecase-group">
-                            <ellipse class="usecase" cx="700" cy="320" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Adjuntar y comentar" x="700" y="326" text-anchor="middle">Adjuntar y comentar</text>
-                        </g>
-                        <g data-node="Cambiar estado" class="usecase-group">
-                            <ellipse class="usecase" cx="420" cy="380" rx="120" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Cambiar estado" x="420" y="386" text-anchor="middle">Cambiar estado</text>
-                        </g>
-                        <g data-node="Asignar/Reasignar" class="usecase-group">
-                            <ellipse class="usecase" cx="700" cy="380" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Asignar/Reasignar" x="700" y="386" text-anchor="middle">Asignar/Reasignar</text>
-                        </g>
-                        <g data-node="Dashboard KPI" class="usecase-group">
-                            <ellipse class="usecase" cx="420" cy="440" rx="120" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Dashboard KPI" x="420" y="446" text-anchor="middle">Dashboard KPI</text>
-                        </g>
-                        <g data-node="Exportar PDF/Excel" class="usecase-group">
-                            <ellipse class="usecase" cx="700" cy="440" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Exportar PDF/Excel" x="700" y="446" text-anchor="middle">Exportar PDF/Excel</text>
-                        </g>
-                        <g data-node="Gestionar catálogos" class="usecase-group">
-                            <ellipse class="usecase" cx="420" cy="500" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Gestionar catálogos" x="420" y="506" text-anchor="middle">Gestionar catálogos</text>
-                        </g>
-                        <g data-node="Auditoría" class="usecase-group">
-                            <ellipse class="usecase" cx="700" cy="500" rx="140" ry="34"></ellipse>
-                            <text class="usecase-label" data-usecase="Auditoría" x="700" y="506" text-anchor="middle">Auditoría</text>
-                        </g>
-                        <path class="actor-connector" data-source="Solicitante" data-target="Iniciar/Cerrar sesión" d="M240 230 H360 V160 H430"></path>
-                        <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio" d="M240 230 H300 V260 H300"></path>
-                        <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets" d="M240 230 H300 V260 H560"></path>
-                        <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket" d="M240 230 H300 V320 H300"></path>
-                        <path class="actor-connector" data-source="Solicitante" data-target="Adjuntar y comentar" d="M240 230 H300 V320 H560"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Iniciar/Cerrar sesión" d="M240 380 H320 V160 H580"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets" d="M240 380 H340 V260 H720"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Adjuntar y comentar" d="M240 380 H340 V320 H720"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado" d="M240 380 H320 V380 H420"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar" d="M240 380 H340 V380 H720"></path>
+                                <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI" d="M240 380 H320 V440 H420"></path>
 
-                        <path class="actor-connector" data-source="Técnico" data-target="Iniciar/Cerrar sesión" d="M240 530 H300 V160 H430"></path>
-                        <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets" d="M240 530 H300 V260 H560"></path>
-                        <path class="actor-connector" data-source="Técnico" data-target="Adjuntar y comentar" d="M240 530 H300 V320 H560"></path>
-                        <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado" d="M240 530 H300 V380 H300"></path>
-                        <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar" d="M240 530 H300 V380 H560"></path>
-                        <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI" d="M240 530 H300 V440 H300"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Iniciar/Cerrar sesión" d="M240 560 H320 V160 H580"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets" d="M240 560 H340 V260 H720"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar" d="M240 560 H340 V380 H720"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI" d="M240 560 H320 V440 H420"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos" d="M240 560 H320 V500 H420"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel" d="M240 560 H340 V440 H720"></path>
+                                <path class="actor-connector" data-source="Administrador" data-target="Auditoría" d="M240 560 H340 V500 H720"></path>
+                            </g>
 
-                        <path class="actor-connector" data-source="Administrador" data-target="Iniciar/Cerrar sesión" d="M880 350 H780 V160 H690"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets" d="M880 350 H820 V260 H780"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar" d="M880 350 H820 V380 H780"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI" d="M880 350 H820 V440 H780"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos" d="M880 350 H820 V500 H780"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel" d="M880 350 H820 V440 H780"></path>
-                        <path class="actor-connector" data-source="Administrador" data-target="Auditoría" d="M880 350 H820 V500 H780"></path>
+                            <g class="relations-layer">
+                                <path class="relation-line include" data-source="Crear ticket" data-target="Auditoría" d="M420 354 V470 H720"></path>
+                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Auditoría" d="M720 354 V470"></path>
+                                <path class="relation-line include" data-source="Cambiar estado" data-target="Auditoría" d="M420 414 V470 H720"></path>
+                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Auditoría" d="M720 414 V470"></path>
+                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Ver y filtrar tickets" d="M720 474 V300"></path>
+                                <path class="relation-line include" data-source="Crear ticket" data-target="Validar permisos por rol" d="M420 286 V230 H580"></path>
+                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Validar permisos por rol" d="M720 286 V230 H580"></path>
+                                <path class="relation-line include" data-source="Cambiar estado" data-target="Validar permisos por rol" d="M420 346 V230 H580"></path>
+                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Validar permisos por rol" d="M720 346 V230 H580"></path>
+                                <path class="relation-line include" data-source="Dashboard KPI" data-target="Validar permisos por rol" d="M420 406 V230 H580"></path>
+                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Validar permisos por rol" d="M720 406 V230 H580"></path>
+                                <path class="relation-line include" data-source="Gestionar catálogos" data-target="Validar permisos por rol" d="M420 466 V230 H580"></path>
+                                <path class="relation-line include" data-source="Auditoría" data-target="Validar permisos por rol" d="M720 466 V230 H580"></path>
+                            </g>
 
-                        <path class="relation-line include" data-source="Crear ticket" data-target="Auditoría" d="M420 354 V470 H700"></path>
-                        <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Auditoría" d="M700 354 V470"></path>
-                        <path class="relation-line include" data-source="Cambiar estado" data-target="Auditoría" d="M420 414 V470 H700"></path>
-                        <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Auditoría" d="M700 414 V470"></path>
-                        <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Ver y filtrar tickets" d="M700 474 V300"></path>
-                        <path class="relation-line include" data-source="Crear ticket" data-target="Validar permisos por rol" d="M420 286 V230 H560"></path>
-                        <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Validar permisos por rol" d="M700 286 V230"></path>
-                        <path class="relation-line include" data-source="Cambiar estado" data-target="Validar permisos por rol" d="M420 346 V230 H560"></path>
-                        <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Validar permisos por rol" d="M700 346 V230"></path>
-                        <path class="relation-line include" data-source="Dashboard KPI" data-target="Validar permisos por rol" d="M420 406 V230 H560"></path>
-                        <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Validar permisos por rol" d="M700 406 V230"></path>
-                        <path class="relation-line include" data-source="Gestionar catálogos" data-target="Validar permisos por rol" d="M420 466 V230 H560"></path>
-                        <path class="relation-line include" data-source="Auditoría" data-target="Validar permisos por rol" d="M700 466 V230"></path>
-
-                        <text x="780" y="620" class="note">FAQ excluye la creación de ticket cuando resuelve la solicitud.</text>
+                            <text x="760" y="620" class="note">FAQ excluye la creación de ticket cuando resuelve la solicitud.</text>
+                        </g>
                     </svg>
                 </div>
-                <aside class="side-panel" data-side-panel>
-                    <h3 id="usecases-node-title">Solicitante</h3>
-                    <div class="side-panel-content" id="usecases-panel-content"></div>
-                </aside>
             </div>
         </section>
         <!-- VISTA DER -->
@@ -1029,29 +1047,29 @@
                             <text x="20" y="180" class="entity-attr">• meta (JSON)</text>
                             <text x="20" y="200" class="entity-attr">• created_at</text>
                         </g>
-                        <path class="relationship-line" data-edge="user-ticket" data-source="auth_user" data-target="Ticket" d="M400 220 H840"></path>
+                        <path class="relationship-line" data-edge="user-ticket" data-source="auth_user" data-target="Ticket" d="M400 220 H820 V420 H840"></path>
                         <text x="420" y="208" class="cardinality">1..N</text>
                         <text x="420" y="232" class="relationship-label">requester (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-assigned" data-source="auth_user" data-target="Ticket" d="M400 260 H420 V520 H820"></path>
-                        <text x="430" y="350" class="cardinality">1..N</text>
-                        <text x="430" y="374" class="relationship-label">assigned_to (SET_NULL)</text>
+                        <path class="relationship-line" data-edge="user-assigned" data-source="auth_user" data-target="Ticket" d="M400 260 H430 V540 H820"></path>
+                        <text x="440" y="360" class="cardinality">1..N</text>
+                        <text x="440" y="384" class="relationship-label">assigned_to (SET_NULL)</text>
 
                         <path class="relationship-line" data-edge="category-subcategory" data-source="Category" data-target="Subcategory" d="M760 200 H840"></path>
                         <text x="780" y="188" class="cardinality">1..N</text>
                         <text x="780" y="214" class="relationship-label">category (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="category-ticket" data-source="Category" data-target="Ticket" d="M760 240 H820 V500 H840"></path>
-                        <text x="790" y="320" class="cardinality">1..N</text>
-                        <text x="790" y="344" class="relationship-label">category (PROTECT)</text>
+                        <path class="relationship-line" data-edge="category-ticket" data-source="Category" data-target="Ticket" d="M760 240 H780 V520 H840"></path>
+                        <text x="800" y="330" class="cardinality">1..N</text>
+                        <text x="800" y="354" class="relationship-label">category (PROTECT)</text>
 
                         <path class="relationship-line" data-edge="subcategory-ticket" data-source="Subcategory" data-target="Ticket" d="M1000 360 V420"></path>
                         <text x="1012" y="388" class="cardinality">1..N</text>
                         <text x="1020" y="410" class="relationship-label">subcategory (PROTECT, opcional)</text>
 
-                        <path class="relationship-line" data-edge="priority-ticket" data-source="Priority" data-target="Ticket" d="M1240 220 H1210 V520 H1180"></path>
-                        <text x="1218" y="420" class="cardinality">1..N</text>
-                        <text x="1210" y="444" class="relationship-label">priority (PROTECT)</text>
+                        <path class="relationship-line" data-edge="priority-ticket" data-source="Priority" data-target="Ticket" d="M1240 220 H1260 V520 H1180"></path>
+                        <text x="1238" y="420" class="cardinality">1..N</text>
+                        <text x="1230" y="444" class="relationship-label">priority (PROTECT)</text>
 
                         <path class="relationship-line" data-edge="area-ticket" data-source="Area" data-target="Ticket" d="M1240 520 H1180"></path>
                         <text x="1210" y="508" class="cardinality">1..N</text>
@@ -1096,10 +1114,6 @@
                         <text x="1120" y="1080" class="der-note">Ticket.code es único; created_at está indexado para reportes y ticket.cluster_id permanece por compatibilidad (deprecated).</text>
                     </svg>
                 </div>
-                <aside class="side-panel" data-side-panel>
-                    <h3 id="der-node-title">auth_user</h3>
-                    <div class="side-panel-content" id="der-panel-content"></div>
-                </aside>
             </div>
         </section>
     </div>
@@ -1156,93 +1170,6 @@
                 currentPanel = null;
             }
         });
-
-        function setupSidePanel(panelId, data) {
-            const panel = document.getElementById(panelId);
-            const sidePanel = panel.querySelector('[data-side-panel]');
-            const titleEl = sidePanel.querySelector('h3');
-            const contentEl = sidePanel.querySelector('.side-panel-content');
-            let currentNode = Object.keys(data)[0];
-
-            function render() {
-                const nodeData = data[currentNode];
-                titleEl.textContent = currentNode;
-                contentEl.innerHTML = `<p>${nodeData.explanation}</p>`;
-            }
-
-            panel.querySelectorAll('[data-node]').forEach(node => {
-                node.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    currentNode = node.getAttribute('data-node');
-                    render();
-                });
-            });
-
-            panel.addEventListener('nodeSelected', (evt) => {
-                currentNode = evt.detail.name;
-                render();
-            });
-
-            panel.addEventListener('nodeCleared', () => {
-                currentNode = Object.keys(data)[0];
-                render();
-            });
-
-            render();
-            return { panel, data };
-        }
-
-        const deploymentData = {
-            'Cliente': { explanation: 'Dispositivo del usuario final que accede por navegador protegido (HTTPS) y autentica contra el backend.' },
-            'Internet': { explanation: 'Capa pública que enruta el tráfico HTTPS hacia la VPC privada.' },
-            'IGW': { explanation: 'Internet Gateway pendiente de agregar para exponer la subred pública mediante la tabla de rutas.' },
-            'Entrada VPC': { explanation: 'Security Group que autoriza el tráfico HTTPS entrante y lo entrega a la instancia EC2.' },
-            'AWS VPC': { explanation: 'Red virtual de AWS que contiene subred pública para la aplicación y privada para la base de datos.' },
-            'Subred pública': { explanation: 'Segmento accesible donde vive la instancia EC2 con Nginx, Gunicorn y Django.' },
-            'Subred privada': { explanation: 'Segmento aislado sin exposición directa; aloja PostgreSQL con reglas estrictas.' },
-            'NAT Gateway': { explanation: 'Servicio administrado pendiente para permitir salidas controladas desde la subred privada.' },
-            'EC2 App': { explanation: 'Servidor EC2 que ejecuta la pila Nginx (terminación HTTPS), Gunicorn y la aplicación Django/DRF.' },
-            'WAF/ALB': { explanation: 'WAF/ALB planificado para añadir protección de borde y balanceo antes de Nginx.' },
-            '/media': { explanation: 'Directorio local para archivos adjuntos del sistema de tickets.' },
-            'Logs': { explanation: 'Carpeta de registros de aplicación y servidor para auditoría operativa.' },
-            'S3': { explanation: 'Bucket planificado para migrar adjuntos mediante django-storages.' },
-            'PostgreSQL': { explanation: 'Base de datos PostgreSQL en subred privada; expone el puerto 5432 solo dentro de la VPC.' }
-        };
-
-        const usecaseData = {
-            'Solicitante': { explanation: 'Usuario final que genera solicitudes, consulta el estado y comparte información del ticket.' },
-            'Técnico': { explanation: 'Agente que resuelve tickets, ajusta estados, añade comentarios y analiza métricas operativas.' },
-            'Administrador': { explanation: 'Perfil que supervisa la operación, administra catálogos y emite reportes y auditorías.' },
-            'Iniciar/Cerrar sesión': { explanation: 'Flujo de autenticación y cierre de sesión para todos los perfiles.' },
-            'Validar permisos por rol': { explanation: 'Control de autorización que condiciona las acciones según el rol del usuario.' },
-            'FAQ autoservicio': { explanation: 'Consulta de respuestas rápidas para intentar resolver sin crear ticket.' },
-            'Ver y filtrar tickets': { explanation: 'Visualización y filtrado por estado, prioridad o área de los tickets.' },
-            'Crear ticket': { explanation: 'Registro de una nueva solicitud con categoría, prioridad y descripción.' },
-            'Adjuntar y comentar': { explanation: 'Adjunta archivos y deja comentarios internos o públicos en el ticket.' },
-            'Cambiar estado': { explanation: 'Transición del estado del ticket según la evolución del caso.' },
-            'Asignar/Reasignar': { explanation: 'Entrega el ticket a otro técnico o equipo responsable.' },
-            'Dashboard KPI': { explanation: 'Visualiza indicadores SLA, tiempos de atención y carga operativa.' },
-            'Exportar PDF/Excel': { explanation: 'Genera reportes descargables en base a los filtros activos.' },
-            'Gestionar catálogos': { explanation: 'Administra categorías, subcategorías, prioridades y áreas disponibles.' },
-            'Auditoría': { explanation: 'Registra cada cambio relevante del ticket para trazabilidad completa.' }
-        };
-
-        const derData = {
-            'auth_user': { explanation: 'Usuarios autenticados con flags de staff. Referenciados por tickets, comentarios, adjuntos, asignaciones y auditoría.' },
-            'Category': { explanation: 'Clasificación principal del ticket. El nombre es único y se normaliza en MAYÚSCULAS.' },
-            'Subcategory': { explanation: 'Detalle específico ligado a una categoría. Mantiene unicidad por categoría.' },
-            'Ticket': { explanation: 'Entidad central del helpdesk con código único, campos indexados y múltiples referencias opcionales.' },
-            'Priority': { explanation: 'Define niveles de urgencia con nombre único y horas de SLA.' },
-            'Area': { explanation: 'Área o equipo responsable, con nombre único y flag de actividad.' },
-            'TicketComment': { explanation: 'Historial de comentarios y notas internas asociados a un ticket.' },
-            'TicketAttachment': { explanation: 'Archivos que acompañan un ticket, incluyen tipo de contenido y tamaño.' },
-            'TicketAssignment': { explanation: 'Bitácora de asignaciones con origen, destino y motivo.' },
-            'AuditLog': { explanation: 'Registro detallado de acciones sobre tickets, incluyendo metadatos y actor opcional.' }
-        };
-
-        setupSidePanel('deployment', deploymentData);
-        setupSidePanel('usecases', usecaseData);
-        setupSidePanel('der', derData);
 
         const toggleInputs = document.querySelectorAll('[data-toggle]');
         toggleInputs.forEach(input => {
@@ -1347,24 +1274,6 @@
             'PostgreSQL': ['EC2 App', 'Subred privada']
         });
 
-        buildAdjacency(document.getElementById('usecases'), {
-            'Solicitante': ['Iniciar/Cerrar sesión', 'FAQ autoservicio', 'Ver y filtrar tickets', 'Crear ticket', 'Adjuntar y comentar'],
-            'Técnico': ['Iniciar/Cerrar sesión', 'Ver y filtrar tickets', 'Adjuntar y comentar', 'Cambiar estado', 'Asignar/Reasignar', 'Dashboard KPI'],
-            'Administrador': ['Iniciar/Cerrar sesión', 'Ver y filtrar tickets', 'Asignar/Reasignar', 'Dashboard KPI', 'Gestionar catálogos', 'Exportar PDF/Excel', 'Auditoría'],
-            'Iniciar/Cerrar sesión': ['Solicitante', 'Técnico', 'Administrador', 'Validar permisos por rol'],
-            'Validar permisos por rol': ['Iniciar/Cerrar sesión', 'Crear ticket', 'Adjuntar y comentar', 'Cambiar estado', 'Asignar/Reasignar', 'Dashboard KPI', 'Exportar PDF/Excel', 'Gestionar catálogos', 'Auditoría'],
-            'FAQ autoservicio': ['Solicitante'],
-            'Ver y filtrar tickets': ['Solicitante', 'Técnico', 'Administrador', 'Exportar PDF/Excel'],
-            'Crear ticket': ['Solicitante', 'Validar permisos por rol', 'Auditoría'],
-            'Adjuntar y comentar': ['Solicitante', 'Técnico', 'Validar permisos por rol', 'Auditoría'],
-            'Cambiar estado': ['Técnico', 'Validar permisos por rol', 'Auditoría'],
-            'Asignar/Reasignar': ['Técnico', 'Administrador', 'Validar permisos por rol', 'Auditoría'],
-            'Dashboard KPI': ['Técnico', 'Administrador', 'Validar permisos por rol'],
-            'Exportar PDF/Excel': ['Administrador', 'Ver y filtrar tickets', 'Validar permisos por rol'],
-            'Gestionar catálogos': ['Administrador', 'Validar permisos por rol'],
-            'Auditoría': ['Administrador', 'Crear ticket', 'Adjuntar y comentar', 'Cambiar estado', 'Asignar/Reasignar']
-        });
-
         buildAdjacency(document.getElementById('der'), {
             'auth_user': ['Ticket', 'TicketComment', 'TicketAttachment', 'TicketAssignment', 'AuditLog'],
             'Category': ['Subcategory', 'Ticket'],
@@ -1378,76 +1287,81 @@
             'AuditLog': ['Ticket', 'auth_user']
         });
 
-        const actorFilters = document.querySelectorAll('[data-actor-filter]');
-        actorFilters.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const filter = btn.getAttribute('data-actor-filter');
-                actorFilters.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const panel = document.getElementById('usecases');
-                const actors = panel.querySelectorAll('.actor');
-                const usecases = panel.querySelectorAll('.usecase');
-                const labels = panel.querySelectorAll('.usecase-label');
-                const connectors = panel.querySelectorAll('.actor-connector');
-                const relationLines = panel.querySelectorAll('.relation-line');
+        const usecaseSvg = document.getElementById('usecase-svg');
+        const usecaseActors = usecaseSvg.querySelectorAll('.actor');
+        const usecaseConnectors = usecaseSvg.querySelectorAll('.actor-connector');
+        const usecaseGroups = usecaseSvg.querySelectorAll('.usecase-group');
+        const usecaseRelations = usecaseSvg.querySelectorAll('.relation-line');
 
-                if (filter === 'todos') {
-                    actors.forEach(a => a.classList.remove('dimmed'));
-                    usecases.forEach(u => u.classList.remove('dimmed', 'usecase-faded'));
-                    labels.forEach(l => l.classList.remove('dimmed', 'usecase-faded'));
-                    connectors.forEach(c => c.classList.remove('dimmed', 'active', 'usecase-faded'));
-                    relationLines.forEach(r => r.classList.remove('dimmed', 'active', 'usecase-faded'));
-                    return;
-                }
+        function resetUsecaseDiagram() {
+            usecaseSvg.dataset.state = 'teaser';
+            delete usecaseSvg.dataset.activeActor;
+            usecaseActors.forEach(actor => actor.classList.remove('active-actor'));
+            usecaseConnectors.forEach(connector => connector.classList.remove('active-connector'));
+            usecaseGroups.forEach(group => group.classList.remove('highlight'));
+            usecaseRelations.forEach(line => line.classList.remove('active-relation'));
+        }
 
-                actors.forEach(actor => {
-                    const name = actor.getAttribute('data-node');
-                    const isActive = name.toLowerCase() === filter;
-                    actor.classList.toggle('dimmed', !isActive);
-                    actor.classList.toggle('active', isActive);
-                });
+        function activateUsecaseActor(actorName) {
+            usecaseSvg.dataset.state = 'active';
+            usecaseSvg.dataset.activeActor = actorName;
 
-                usecases.forEach(u => {
-                    u.classList.add('usecase-faded');
-                    u.classList.remove('dimmed');
-                });
-                labels.forEach(l => {
-                    l.classList.add('usecase-faded');
-                    l.classList.remove('dimmed');
-                });
-                connectors.forEach(c => {
-                    c.classList.add('usecase-faded');
-                    c.classList.remove('dimmed', 'active');
-                });
-                relationLines.forEach(r => {
-                    r.classList.add('usecase-faded');
-                    r.classList.remove('dimmed', 'active');
-                });
+            const activeTargets = new Set();
 
-                const activeActor = Array.from(actors).find(actor => actor.getAttribute('data-node').toLowerCase() === filter);
-                const activeName = activeActor ? activeActor.getAttribute('data-node') : null;
-
-                connectors.forEach(connector => {
-                    if (connector.getAttribute('data-source') === activeName) {
-                        connector.classList.remove('usecase-faded');
-                        connector.classList.add('active');
-                        const target = connector.getAttribute('data-target');
-                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
-                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
-                    }
-                });
-
-                relationLines.forEach(line => {
-                    const source = line.getAttribute('data-source');
-                    const target = line.getAttribute('data-target');
-                    if (source && document.querySelector(`[data-node="${source}"] .usecase:not(.usecase-faded)`)) {
-                        line.classList.remove('usecase-faded');
-                        line.classList.add('active');
-                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
-                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
-                    }
-                });
+            usecaseActors.forEach(actor => {
+                const name = actor.getAttribute('data-node');
+                const isActive = name === actorName;
+                actor.classList.toggle('active-actor', isActive);
             });
+
+            usecaseConnectors.forEach(connector => {
+                const isActive = connector.getAttribute('data-source') === actorName;
+                connector.classList.toggle('active-connector', isActive);
+                if (isActive) {
+                    activeTargets.add(connector.getAttribute('data-target'));
+                }
+            });
+
+            const expandedTargets = new Set(activeTargets);
+
+            usecaseRelations.forEach(line => {
+                const source = line.getAttribute('data-source');
+                const target = line.getAttribute('data-target');
+                const relevant = expandedTargets.has(source) || expandedTargets.has(target);
+                line.classList.toggle('active-relation', relevant);
+                if (relevant) {
+                    expandedTargets.add(source);
+                    expandedTargets.add(target);
+                }
+            });
+
+            usecaseGroups.forEach(group => {
+                const nodeName = group.getAttribute('data-node');
+                group.classList.toggle('highlight', expandedTargets.has(nodeName));
+            });
+        }
+
+        resetUsecaseDiagram();
+
+        usecaseActors.forEach(actor => {
+            actor.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const actorName = actor.getAttribute('data-node');
+                const current = usecaseSvg.dataset.activeActor;
+                if (usecaseSvg.dataset.state === 'active' && current === actorName) {
+                    resetUsecaseDiagram();
+                } else {
+                    activateUsecaseActor(actorName);
+                }
+            });
+        });
+
+        usecaseSvg.addEventListener('click', (event) => {
+            if (usecaseSvg.dataset.state !== 'active') return;
+            if (event.target.closest('.actor') || event.target.closest('.usecase-group') || event.target.closest('.actor-connector') || event.target.closest('.relations-layer')) {
+                return;
+            }
+            resetUsecaseDiagram();
         });
     </script>
 </body>
