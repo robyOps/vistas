@@ -129,8 +129,8 @@
         }
 
         .panel {
-            width: min(1600px, calc(100vw - 64px));
-            height: min(1080px, calc(100vh - 64px));
+            width: min(1500px, calc(100vw - 72px));
+            height: min(940px, calc(100vh - 72px));
             border-radius: 28px;
             border: 1px solid rgba(148, 163, 184, 0.35);
             background: linear-gradient(160deg, rgba(15, 23, 42, 0.94), rgba(17, 24, 39, 0.88));
@@ -185,17 +185,16 @@
 
         .panel-body {
             flex: 1;
-            padding: 2.4rem;
-            overflow: auto;
+            padding: 2rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .panel-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .panel-body::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.4);
-            border-radius: 999px;
+        .panel-body > * {
+            flex: 1;
+            min-height: 0;
         }
 
         .diagram-wrapper {
@@ -208,10 +207,38 @@
 
         .diagram-wrapper svg {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 100%;
             background: rgba(15, 23, 42, 0.45);
             border: 1px solid rgba(96, 165, 250, 0.32);
             border-radius: 26px;
+        }
+
+        .usecase-layout {
+            display: grid;
+            grid-template-columns: minmax(460px, 1fr) minmax(240px, 320px);
+            gap: 1.5rem;
+            height: 100%;
+            min-height: 0;
+            align-items: center;
+        }
+
+        .usecase-diagram {
+            position: relative;
+            border-radius: 24px;
+            border: 1px solid rgba(129, 140, 248, 0.35);
+            background: rgba(30, 27, 75, 0.55);
+            padding: 1rem;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #usecase-svg {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
         }
 
         .legend {
@@ -294,26 +321,6 @@
             50% { stroke-dashoffset: -40; opacity: 0.95; }
         }
 
-        .usecase-layout {
-            display: grid;
-            grid-template-columns: minmax(520px, 1fr) minmax(280px, 360px);
-            gap: 2rem;
-            height: 100%;
-        }
-
-        .usecase-diagram {
-            position: relative;
-            border-radius: 24px;
-            border: 1px solid rgba(129, 140, 248, 0.35);
-            background: rgba(30, 27, 75, 0.55);
-            padding: 1.4rem;
-        }
-
-        #usecase-svg {
-            width: 100%;
-            height: 100%;
-        }
-
         .actor {
             cursor: pointer;
             transition: transform 0.4s ease, filter 0.4s ease;
@@ -326,6 +333,18 @@
 
         .actor.active {
             filter: drop-shadow(0 0 18px rgba(192, 132, 252, 0.75));
+        }
+
+        .actor-hitzone {
+            pointer-events: all;
+            fill: rgba(165, 180, 252, 0.18);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .actor:hover .actor-hitzone,
+        .actor.active .actor-hitzone {
+            opacity: 0.45;
         }
 
         .usecase {
@@ -409,6 +428,20 @@
 
         .extend-label {
             fill: rgba(248, 113, 113, 0.9);
+        }
+
+        .relation {
+            opacity: 0.35;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .relation.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .relation.active {
+            opacity: 1;
         }
 
         .usecase-info {
@@ -644,7 +677,7 @@
             <div class="panel-body">
                 <div class="usecase-layout">
                     <div class="usecase-diagram">
-                        <svg id="usecase-svg" viewBox="0 0 960 640" aria-labelledby="usecaseTitle usecaseDesc" role="img">
+                        <svg id="usecase-svg" viewBox="0 0 880 600" aria-labelledby="usecaseTitle usecaseDesc" role="img">
                             <title id="usecaseTitle">Diagrama de casos de uso</title>
                             <desc id="usecaseDesc">Actores solicitante, técnico y administrador con relaciones include/extend.</desc>
                             <defs>
@@ -656,113 +689,143 @@
                                 </marker>
                             </defs>
 
-                            <rect x="280" y="70" width="420" height="500" rx="26" fill="rgba(30, 64, 175, 0.22)" stroke="rgba(129, 140, 248, 0.7)" stroke-width="2.4"></rect>
-                            <text x="490" y="100" text-anchor="middle" fill="rgba(226, 232, 240, 0.85)" font-size="16" letter-spacing="2">Coyahue Helpdesk</text>
+                            <g id="usecase-canvas">
+                                <rect x="220" y="60" width="520" height="470" rx="24" fill="rgba(30, 64, 175, 0.22)" stroke="rgba(129, 140, 248, 0.7)" stroke-width="2.4"></rect>
+                                <text x="480" y="96" text-anchor="middle" fill="rgba(226, 232, 240, 0.85)" font-size="16" letter-spacing="2">Coyahue Helpdesk</text>
 
-                            <g id="actor-solicitante" class="actor" data-actor="solicitante">
-                                <circle cx="120" cy="180" r="26" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                <line x1="120" y1="206" x2="120" y2="280" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="90" y1="230" x2="150" y2="230" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="120" y1="280" x2="95" y2="330" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="120" y1="280" x2="145" y2="330" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <text x="120" y="360" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="16">Solicitante</text>
+                                <g id="actor-solicitante" class="actor" data-actor="solicitante">
+                                    <circle class="actor-hitzone" cx="110" cy="210" r="58"></circle>
+                                    <circle cx="110" cy="170" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
+                                    <line x1="110" y1="188" x2="110" y2="240" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="82" y1="206" x2="138" y2="206" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="110" y1="240" x2="90" y2="286" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="110" y1="240" x2="132" y2="286" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <text x="110" y="310" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="15">Solicitante</text>
+                                </g>
+
+                                <g id="actor-tecnico" class="actor" data-actor="tecnico">
+                                    <circle class="actor-hitzone" cx="110" cy="410" r="58"></circle>
+                                    <circle cx="110" cy="370" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
+                                    <line x1="110" y1="388" x2="110" y2="440" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="82" y1="406" x2="138" y2="406" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="110" y1="440" x2="90" y2="486" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="110" y1="440" x2="132" y2="486" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <text x="110" y="510" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="15">Técnico</text>
+                                </g>
+
+                                <g id="actor-administrador" class="actor" data-actor="administrador">
+                                    <circle class="actor-hitzone" cx="770" cy="320" r="58"></circle>
+                                    <circle cx="770" cy="280" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
+                                    <line x1="770" y1="298" x2="770" y2="350" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="742" y1="316" x2="798" y2="316" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="770" y1="350" x2="752" y2="392" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <line x1="770" y1="350" x2="792" y2="392" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
+                                    <text x="770" y="414" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="15">Administrador</text>
+                                </g>
+
+                                <ellipse id="usecase-login" class="usecase" cx="480" cy="150" rx="90" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-login" x="480" y="156" text-anchor="middle">Iniciar / Cerrar sesión</text>
+
+                                <ellipse id="usecase-faq" class="usecase" cx="360" cy="220" rx="90" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-faq" x="360" y="226" text-anchor="middle">FAQ autoservicio</text>
+
+                                <ellipse id="usecase-ver" class="usecase" cx="540" cy="220" rx="100" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-ver" x="540" y="226" text-anchor="middle">Ver y filtrar tickets</text>
+
+                                <ellipse id="usecase-crear" class="usecase" cx="360" cy="300" rx="100" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-crear" x="360" y="306" text-anchor="middle">Crear ticket</text>
+
+                                <ellipse id="usecase-adjuntar" class="usecase" cx="540" cy="300" rx="100" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-adjuntar" x="540" y="306" text-anchor="middle">Adjuntar y comentar</text>
+
+                                <ellipse id="usecase-estado" class="usecase" cx="360" cy="380" rx="100" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-estado" x="360" y="386" text-anchor="middle">Cambiar estado</text>
+
+                                <ellipse id="usecase-asignar" class="usecase" cx="540" cy="380" rx="100" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-asignar" x="540" y="386" text-anchor="middle">Asignar / Reasignar</text>
+
+                                <ellipse id="usecase-dashboard" class="usecase" cx="440" cy="460" rx="105" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-dashboard" x="440" y="466" text-anchor="middle">Dashboard KPI</text>
+
+                                <ellipse id="usecase-catalogos" class="usecase" cx="640" cy="280" rx="95" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-catalogos" x="640" y="286" text-anchor="middle">Gestionar catálogos</text>
+
+                                <ellipse id="usecase-exportar" class="usecase" cx="640" cy="360" rx="95" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-exportar" x="640" y="366" text-anchor="middle">Exportar PDF / Excel</text>
+
+                                <ellipse id="usecase-auditoria" class="usecase" cx="640" cy="440" rx="95" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-auditoria" x="640" y="446" text-anchor="middle">Auditoría</text>
+
+                                <ellipse id="usecase-permisos" class="usecase" cx="440" cy="540" rx="105" ry="34"></ellipse>
+                                <text class="usecase-label" data-usecase="usecase-permisos" x="440" y="546" text-anchor="middle">Validar permisos por rol</text>
+
+                                <path id="conn-solicitante-login" class="connector" d="M168 210 C244 176, 344 158, 390 152"></path>
+                                <path id="conn-solicitante-faq" class="connector" d="M160 216 C240 214, 280 220, 300 222"></path>
+                                <path id="conn-solicitante-ver" class="connector" d="M168 222 C248 214, 420 214, 472 220"></path>
+                                <path id="conn-solicitante-crear" class="connector" d="M168 230 C244 260, 292 288, 308 300"></path>
+                                <path id="conn-solicitante-adjuntar" class="connector" d="M168 236 C260 276, 420 300, 480 300"></path>
+
+                                <path id="conn-tecnico-login" class="connector" d="M168 410 C252 340, 360 250, 420 190"></path>
+                                <path id="conn-tecnico-ver" class="connector" d="M168 404 C252 340, 380 260, 450 236"></path>
+                                <path id="conn-tecnico-adjuntar" class="connector" d="M168 416 C252 360, 420 308, 480 300"></path>
+                                <path id="conn-tecnico-estado" class="connector" d="M168 428 C248 410, 292 388, 312 380"></path>
+                                <path id="conn-tecnico-asignar" class="connector" d="M168 432 C280 420, 420 388, 480 380"></path>
+                                <path id="conn-tecnico-dashboard" class="connector" d="M168 446 C248 456, 320 462, 360 462"></path>
+
+                                <path id="conn-admin-login" class="connector" d="M720 304 C660 248, 580 190, 520 164"></path>
+                                <path id="conn-admin-ver" class="connector" d="M720 312 C660 276, 600 244, 560 232"></path>
+                                <path id="conn-admin-asignar" class="connector" d="M720 328 C660 356, 600 378, 560 382"></path>
+                                <path id="conn-admin-dashboard" class="connector" d="M720 340 C660 380, 540 440, 500 454"></path>
+                                <path id="conn-admin-catalogos" class="connector" d="M720 300 C700 300, 684 288, 664 284"></path>
+                                <path id="conn-admin-exportar" class="connector" d="M720 324 C700 332, 684 344, 664 352"></path>
+                                <path id="conn-admin-auditoria" class="connector" d="M720 348 C700 372, 684 412, 664 424"></path>
+                                <path id="conn-admin-permisos" class="connector" d="M720 356 C660 420, 540 500, 500 520"></path>
+
+                                <g id="rel-faq-crear" class="relation relation-extend" data-usecases="usecase-faq,usecase-crear">
+                                    <path class="extend-arrow" d="M360 254 L360 286" marker-end="url(#extend-arrow)"></path>
+                                    <text class="relation-label extend-label" x="372" y="272">«extend»</text>
+                                </g>
+
+                                <g id="rel-crear-auditoria" class="relation relation-include" data-usecases="usecase-crear,usecase-auditoria">
+                                    <path class="include-arrow" d="M376 308 C440 320, 556 348, 608 406" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="470" y="360">«include»</text>
+                                </g>
+
+                                <g id="rel-adjuntar-crear" class="relation relation-extend" data-usecases="usecase-adjuntar,usecase-crear">
+                                    <path class="extend-arrow" d="M504 300 L408 300" marker-end="url(#extend-arrow)"></path>
+                                    <text class="relation-label extend-label" x="458" y="290">«extend»</text>
+                                </g>
+
+                                <g id="rel-adjuntar-auditoria" class="relation relation-include" data-usecases="usecase-adjuntar,usecase-auditoria">
+                                    <path class="include-arrow" d="M540 312 C580 332, 620 364, 632 406" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="584" y="360">«include»</text>
+                                </g>
+
+                                <g id="rel-estado-auditoria" class="relation relation-include" data-usecases="usecase-estado,usecase-auditoria">
+                                    <path class="include-arrow" d="M360 412 C424 420, 560 420, 612 410" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="474" y="404">«include»</text>
+                                </g>
+
+                                <g id="rel-asignar-auditoria" class="relation relation-include" data-usecases="usecase-asignar,usecase-auditoria">
+                                    <path class="include-arrow" d="M540 404 C584 408, 620 412, 636 410" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="580" y="398">«include»</text>
+                                </g>
+
+                                <g id="rel-dashboard-permisos" class="relation relation-include" data-usecases="usecase-dashboard,usecase-permisos">
+                                    <path class="include-arrow" d="M440 494 L440 506" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="454" y="500">«include»</text>
+                                </g>
+
+                                <g id="rel-exportar-ver" class="relation relation-include" data-usecases="usecase-exportar,usecase-ver">
+                                    <path class="include-arrow" d="M620 344 C592 312, 556 264, 544 244" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="588" y="302">«include»</text>
+                                </g>
+
+                                <g id="rel-catalogos-permisos" class="relation relation-include" data-usecases="usecase-catalogos,usecase-permisos">
+                                    <path class="include-arrow" d="M612 288 C556 320, 484 440, 456 506" marker-end="url(#include-arrow)"></path>
+                                    <text class="relation-label" x="520" y="420">«include»</text>
+                                </g>
                             </g>
-
-                            <g id="actor-tecnico" class="actor" data-actor="tecnico">
-                                <circle cx="120" cy="420" r="26" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                <line x1="120" y1="446" x2="120" y2="520" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="90" y1="470" x2="150" y2="470" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="120" y1="520" x2="95" y2="570" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="120" y1="520" x2="145" y2="570" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <text x="120" y="600" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="16">Técnico</text>
-                            </g>
-
-                            <g id="actor-administrador" class="actor" data-actor="administrador">
-                                <circle cx="840" cy="320" r="26" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                <line x1="840" y1="346" x2="840" y2="420" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="810" y1="370" x2="870" y2="370" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="840" y1="420" x2="815" y2="470" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <line x1="840" y1="420" x2="865" y2="470" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                <text x="840" y="500" text-anchor="middle" fill="rgba(196, 181, 253, 0.9)" font-size="16">Administrador</text>
-                            </g>
-
-                            <ellipse id="usecase-login" class="usecase" cx="490" cy="170" rx="110" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-login" x="490" y="176" text-anchor="middle">Iniciar / Cerrar sesión</text>
-
-                            <ellipse id="usecase-faq" class="usecase" cx="420" cy="260" rx="105" ry="38"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-faq" x="420" y="266" text-anchor="middle">FAQ autoservicio</text>
-
-                            <ellipse id="usecase-ver" class="usecase" cx="560" cy="260" rx="115" ry="38"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-ver" x="560" y="266" text-anchor="middle">Ver y filtrar tickets</text>
-
-                            <ellipse id="usecase-crear" class="usecase" cx="430" cy="350" rx="115" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-crear" x="430" y="356" text-anchor="middle">Crear ticket</text>
-
-                            <ellipse id="usecase-adjuntar" class="usecase" cx="560" cy="350" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-adjuntar" x="560" y="356" text-anchor="middle">Adjuntar y comentar</text>
-
-                            <ellipse id="usecase-estado" class="usecase" cx="430" cy="440" rx="115" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-estado" x="430" y="446" text-anchor="middle">Cambiar estado</text>
-
-                            <ellipse id="usecase-asignar" class="usecase" cx="560" cy="440" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-asignar" x="560" y="446" text-anchor="middle">Asignar / Reasignar</text>
-
-                            <ellipse id="usecase-dashboard" class="usecase" cx="490" cy="520" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-dashboard" x="490" y="526" text-anchor="middle">Dashboard KPI</text>
-
-                            <ellipse id="usecase-catalogos" class="usecase" cx="650" cy="330" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-catalogos" x="650" y="336" text-anchor="middle">Gestionar catálogos</text>
-
-                            <ellipse id="usecase-exportar" class="usecase" cx="650" cy="420" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-exportar" x="650" y="426" text-anchor="middle">Exportar PDF / Excel</text>
-
-                            <ellipse id="usecase-auditoria" class="usecase" cx="650" cy="520" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-auditoria" x="650" y="526" text-anchor="middle">Auditoría</text>
-
-                            <ellipse id="usecase-permisos" class="usecase" cx="490" cy="600" rx="120" ry="40"></ellipse>
-                            <text class="usecase-label" data-usecase="usecase-permisos" x="490" y="606" text-anchor="middle">Validar permisos por rol</text>
-
-                            <path id="conn-solicitante-login" class="connector" d="M180 230 C260 210, 340 190, 380 180"></path>
-                            <path id="conn-solicitante-faq" class="connector" d="M170 250 C260 240, 320 240, 360 250"></path>
-                            <path id="conn-solicitante-ver" class="connector" d="M180 270 C260 270, 360 280, 460 270"></path>
-                            <path id="conn-solicitante-crear" class="connector" d="M180 290 C260 320, 320 340, 330 350"></path>
-                            <path id="conn-solicitante-adjuntar" class="connector" d="M180 300 C300 350, 420 360, 440 360"></path>
-
-                            <path id="conn-tecnico-login" class="connector" d="M180 470 C260 450, 340 210, 420 200"></path>
-                            <path id="conn-tecnico-ver" class="connector" d="M180 470 C260 430, 420 340, 460 320"></path>
-                            <path id="conn-tecnico-adjuntar" class="connector" d="M180 490 C260 450, 380 390, 420 380"></path>
-                            <path id="conn-tecnico-estado" class="connector" d="M180 500 C260 480, 320 460, 330 450"></path>
-                            <path id="conn-tecnico-asignar" class="connector" d="M180 520 C320 520, 400 460, 440 450"></path>
-                            <path id="conn-tecnico-dashboard" class="connector" d="M180 530 C320 580, 420 560, 460 550"></path>
-
-                            <path id="conn-admin-login" class="connector" d="M780 320 C700 230, 620 200, 560 190"></path>
-                            <path id="conn-admin-ver" class="connector" d="M780 330 C700 300, 640 280, 620 270"></path>
-                            <path id="conn-admin-asignar" class="connector" d="M780 340 C700 360, 640 400, 620 420"></path>
-                            <path id="conn-admin-dashboard" class="connector" d="M780 360 C700 420, 600 520, 560 530"></path>
-                            <path id="conn-admin-catalogos" class="connector" d="M780 340 C740 340, 720 330, 700 330"></path>
-                            <path id="conn-admin-exportar" class="connector" d="M780 360 C740 380, 720 400, 700 410"></path>
-                            <path id="conn-admin-auditoria" class="connector" d="M780 380 C740 440, 720 500, 700 510"></path>
-
-                            <path class="include-arrow" d="M430 390 L430 425" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="446" y="405">«include»</text>
-
-                            <path class="include-arrow" d="M560 390 L560 425" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="576" y="405">«include»</text>
-
-                            <path class="include-arrow" d="M650 460 L650 500" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="666" y="475">«include»</text>
-
-                            <path class="include-arrow" d="M490 560 L490 585" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="506" y="570">«include»</text>
-
-                            <path class="include-arrow" d="M650 365 L650 400" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="666" y="380">«include»</text>
-
-                            <path class="include-arrow" d="M560 300 L560 340" marker-end="url(#include-arrow)"></path>
-                            <text class="relation-label" x="576" y="315">«include»</text>
-
-                            <path class="extend-arrow" d="M420 222 L420 240" marker-end="url(#extend-arrow)"></path>
-                            <text class="relation-label extend-label" x="436" y="232">«extend»</text>
                         </svg>
                         <p class="info-note">Pulsa un actor del diagrama para animar sus casos de uso y relaciones.</p>
                     </div>
@@ -1038,6 +1101,7 @@
         const usecaseShapes = document.querySelectorAll('.usecase');
         const usecaseLabels = document.querySelectorAll('.usecase-label');
         const connectors = document.querySelectorAll('.connector');
+        const relationGroups = document.querySelectorAll('.relation');
         const usecaseInfo = document.getElementById('usecase-info');
         const initialResetButton = document.getElementById('reset-actors');
 
@@ -1049,19 +1113,20 @@
                     'FAQ autoservicio',
                     'Ver y filtrar tickets',
                     'Crear ticket',
-                    'Adjuntar y comentar'
+                    'Adjuntar y comentar',
+                    'Auditoría (registro automático)'
                 ],
                 relationships: [
                     'FAQ autoservicio extiende la creación solo si no resuelve la consulta.',
-                    'Crear ticket incluye validar permisos por rol y registrar auditoría.',
-                    'Adjuntar y comentar incluye trazabilidad en auditoría.'
+                    'Crear ticket incluye auditoría para garantizar trazabilidad.',
+                    'Adjuntar y comentar registra evidencia dentro de auditoría.'
                 ],
                 rules: [
                     'Tipos permitidos: REQUEST | INCIDENT definidos al crear el ticket.',
                     'Estado inicial OPEN con flujo OPEN → IN_PROGRESS → RESOLVED → CLOSED.',
                     'Adjuntos guardados en /media con AuditLog(action=ATTACH).'
                 ],
-                usecases: ['usecase-login', 'usecase-faq', 'usecase-ver', 'usecase-crear', 'usecase-adjuntar'],
+                usecases: ['usecase-login', 'usecase-faq', 'usecase-ver', 'usecase-crear', 'usecase-adjuntar', 'usecase-auditoria'],
                 connectors: [
                     'conn-solicitante-login', 'conn-solicitante-faq', 'conn-solicitante-ver',
                     'conn-solicitante-crear', 'conn-solicitante-adjuntar'
@@ -1075,13 +1140,14 @@
                     'Adjuntar y comentar',
                     'Cambiar estado',
                     'Asignar / Reasignar',
-                    'Dashboard KPI'
+                    'Dashboard KPI',
+                    'Auditoría (registro automático)'
                 ],
                 relationships: [
                     'Cambiar estado incluye auditoría (registro STATUS).',
                     'Asignar/Reasignar incluye auditoría (registro ASSIGN).',
-                    'Dashboard KPI incluye validar permisos por rol.',
-                    'Adjuntar y comentar puede extender la creación agregando evidencia inicial.'
+                    'Dashboard KPI restringido a perfiles con permisos técnicos.',
+                    'Adjuntar y comentar alimenta el historial auditado del ticket.'
                 ],
                 rules: [
                     'Permisos otorgados vía grupos de Django (rol técnico).',
@@ -1090,7 +1156,8 @@
                 ],
                 usecases: [
                     'usecase-login', 'usecase-ver', 'usecase-adjuntar',
-                    'usecase-estado', 'usecase-asignar', 'usecase-dashboard'
+                    'usecase-estado', 'usecase-asignar', 'usecase-dashboard',
+                    'usecase-auditoria'
                 ],
                 connectors: [
                     'conn-tecnico-login', 'conn-tecnico-ver', 'conn-tecnico-adjuntar',
@@ -1127,7 +1194,7 @@
                 connectors: [
                     'conn-admin-login', 'conn-admin-ver', 'conn-admin-asignar',
                     'conn-admin-dashboard', 'conn-admin-catalogos', 'conn-admin-exportar',
-                    'conn-admin-auditoria'
+                    'conn-admin-auditoria', 'conn-admin-permisos'
                 ]
             }
         };
@@ -1137,6 +1204,7 @@
             usecaseShapes.forEach(shape => shape.classList.remove('active', 'hidden'));
             usecaseLabels.forEach(label => label.classList.remove('active', 'hidden'));
             connectors.forEach(line => line.classList.remove('active'));
+            relationGroups.forEach(group => group.classList.remove('active', 'hidden'));
         }
 
         function renderActorInfo(actorKey) {
@@ -1195,6 +1263,17 @@
                 const connector = document.getElementById(id);
                 if (connector) {
                     connector.classList.add('active');
+                }
+            });
+
+            relationGroups.forEach(group => {
+                const relatedIds = (group.dataset.usecases || '').split(',').filter(Boolean);
+                const isRelevant = relatedIds.every(id => data.usecases.includes(id));
+                if (isRelevant) {
+                    group.classList.remove('hidden');
+                    group.classList.add('active');
+                } else {
+                    group.classList.add('hidden');
                 }
             });
 
