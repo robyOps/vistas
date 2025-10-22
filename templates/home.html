@@ -6,10 +6,10 @@
     <title>Coyahue Helpdesk · Diagramas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            color-scheme: dark;
+            color-scheme: light;
             font-size: 16px;
         }
 
@@ -20,113 +20,83 @@
         body {
             margin: 0;
             min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.45), transparent 42%),
-                        radial-gradient(circle at bottom right, rgba(147, 51, 234, 0.4), transparent 48%),
-                        linear-gradient(135deg, #0f172a 0%, #111827 45%, #1f2937 100%);
-            color: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 40%, #eef2ff 100%);
+            color: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            padding: clamp(1.5rem, 3vw, 3rem);
         }
 
-        .aurora {
-            position: fixed;
-            inset: -35vh -35vw;
-            background: conic-gradient(from 90deg,
-                    rgba(6, 182, 212, 0.35),
-                    rgba(99, 102, 241, 0.42),
-                    rgba(236, 72, 153, 0.38),
-                    rgba(6, 182, 212, 0.35));
-            filter: blur(140px);
-            opacity: 0.9;
-            animation: aurora 28s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes aurora {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .container {
+        .hero {
             position: relative;
             z-index: 1;
+            width: min(960px, 100%);
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            border-radius: 32px;
+            padding: clamp(2.5rem, 5vw, 3.75rem);
+            box-shadow: 0 35px 80px rgba(15, 23, 42, 0.12);
             text-align: center;
-            padding: 4.5rem 4rem;
-            border-radius: 38px;
-            background: rgba(15, 23, 42, 0.78);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            backdrop-filter: blur(18px);
-            box-shadow: 0 35px 90px rgba(15, 23, 42, 0.55);
-            max-width: 760px;
-            width: min(92vw, 760px);
+            backdrop-filter: blur(12px);
         }
 
         h1 {
-            font-size: clamp(2.6rem, 4vw + 1rem, 4.2rem);
-            margin-bottom: 3.2rem;
-            letter-spacing: 0.12em;
+            font-size: clamp(2.4rem, 3.4vw, 3.2rem);
+            margin: 0 0 1rem;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            text-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
+            color: #1e3a8a;
+        }
+
+        .hero p {
+            margin: 0 auto 2.5rem;
+            max-width: 640px;
+            font-size: 1rem;
+            color: #334155;
+            line-height: 1.6;
         }
 
         .buttons {
             display: grid;
-            gap: 1.3rem;
+            gap: 1.25rem;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         }
 
         .diagram-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.2rem 1.6rem;
-            border-radius: 18px;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-decoration: none;
-            color: #0f172a;
-            background: linear-gradient(135deg, #facc15, #f472b6);
-            box-shadow: 0 18px 45px rgba(250, 204, 21, 0.45);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            appearance: none;
             border: none;
+            border-radius: 18px;
+            padding: 1.2rem 1.6rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #f8fafc;
             cursor: pointer;
-        }
-
-        .diagram-button::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.35);
-            clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            box-shadow: 0 18px 36px rgba(79, 70, 229, 0.25);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .diagram-button:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 28px 55px rgba(244, 114, 182, 0.6);
-        }
-
-        .diagram-button:hover::before {
-            opacity: 0.45;
+            transform: translateY(-4px);
+            box-shadow: 0 24px 46px rgba(79, 70, 229, 0.3);
         }
 
         .panels {
             position: fixed;
             inset: 0;
-            display: grid;
-            place-items: center;
-            background: rgba(8, 15, 35, 0.82);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.45s ease;
-            z-index: 5;
+            transition: opacity 0.35s ease;
+            z-index: 20;
+            overflow: auto;
         }
 
         .panels.visible {
@@ -135,41 +105,46 @@
         }
 
         .panel {
-            width: min(1500px, calc(100vw - 72px));
-            height: min(960px, calc(100vh - 72px));
+            width: min(1500px, 100vw - 64px);
+            max-height: calc(100vh - 96px);
+            background: #f8fafc;
             border-radius: 28px;
             border: 1px solid rgba(148, 163, 184, 0.35);
-            background: linear-gradient(160deg, rgba(15, 23, 42, 0.94), rgba(17, 24, 39, 0.88));
-            box-shadow: 0 45px 100px rgba(15, 23, 42, 0.65);
-            transform: translateY(40px) scale(0.96);
-            opacity: 0;
-            transition: transform 0.5s cubic-bezier(.16,.84,.44,1), opacity 0.5s ease;
+            box-shadow: 0 35px 70px rgba(15, 23, 42, 0.25);
             display: none;
+            flex-direction: column;
             overflow: hidden;
+            transform: translateY(40px) scale(0.97);
+            opacity: 0;
+            transition: transform 0.35s ease, opacity 0.35s ease;
         }
 
         .panel.active {
             display: flex;
-            flex-direction: column;
             transform: translateY(0) scale(1);
             opacity: 1;
         }
 
+        .panel.focus-mode {
+            width: min(1740px, 100vw - 40px);
+            max-height: calc(100vh - 48px);
+        }
+
         .panel-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1.6rem 2.4rem;
-            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
-            flex-shrink: 0;
-            gap: 1.5rem;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+            background: rgba(226, 232, 240, 0.6);
         }
 
         .panel-header h2 {
             margin: 0;
-            font-size: 1.9rem;
-            letter-spacing: 0.1em;
+            font-size: 1.8rem;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            color: #1f2937;
         }
 
         .panel-actions {
@@ -178,217 +153,205 @@
             gap: 1rem;
         }
 
-        .back-button,
-        .focus-button {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            color: rgba(226, 232, 240, 0.92);
-            padding: 0.65rem 1.6rem;
-            border-radius: 999px;
-            cursor: pointer;
-            font-weight: 500;
-            letter-spacing: 0.08em;
-            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        .toggle-bar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
         }
 
-        .back-button:hover,
-        .focus-button:hover {
-            background: rgba(59, 130, 246, 0.25);
-            color: #fff;
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
+        .toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(248, 250, 252, 0.85);
+            font-size: 0.82rem;
+            color: #1f2937;
+        }
+
+        .toggle input {
+            accent-color: #2563eb;
+            width: 16px;
+            height: 16px;
         }
 
         .panel-body {
             flex: 1;
-            padding: 2rem;
+            min-height: 0;
             display: grid;
             grid-template-columns: minmax(0, 1fr) 320px;
-            gap: 1.8rem;
-            overflow: hidden;
+            gap: 1.5rem;
+            padding: 1.5rem 1.75rem 1.75rem;
+            align-items: stretch;
         }
 
-        .panel.focus-mode .panel-header,
-        .panel.focus-mode .panel-body {
-            transition: all 0.4s ease;
+        .panel-body > * {
+            min-height: 0;
         }
 
         .panel.focus-mode .panel-body {
             grid-template-columns: 1fr;
+            padding-right: 1.5rem;
         }
 
         .panel.focus-mode .side-panel {
             display: none;
         }
 
-        .panel.focus-mode .diagram-wrapper,
-        .panel.focus-mode .usecase-layout,
-        .panel.focus-mode .der-wrapper {
-            height: calc(100% - 0.5rem);
+        .focus-button,
+        .back-button {
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            border-radius: 999px;
+            padding: 0.55rem 1.35rem;
+            background: #fff;
+            color: #1f2937;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .panel.focus-mode .focus-button {
-            background: rgba(59, 130, 246, 0.25);
+        .focus-button:hover,
+        .back-button:hover {
+            background: #2563eb;
             color: #fff;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+        }
+
+        .focus-button.active {
+            background: #1e40af;
+            color: #f8fafc;
         }
 
         .diagram-wrapper,
-        .der-wrapper,
-        .usecase-layout {
-            width: 100%;
-            height: 100%;
-            border: 1px solid rgba(96, 165, 250, 0.32);
-            border-radius: 26px;
-            background: rgba(15, 23, 42, 0.45);
-            padding: 1.6rem;
+        .usecase-layout,
+        .der-wrapper {
             position: relative;
-        }
-
-        .side-panel {
+            border: 1px solid rgba(148, 163, 184, 0.35);
             border-radius: 22px;
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            background: rgba(17, 24, 39, 0.7);
-            padding: 1.6rem;
+            background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+            padding: 1.25rem;
+            overflow: auto;
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
-        .side-panel h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-        .tab-switcher {
-            display: inline-flex;
-            border-radius: 999px;
-            padding: 0.25rem;
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            align-self: flex-start;
-            gap: 0.25rem;
-        }
-
-        .tab-switcher button {
-            border: none;
-            border-radius: 999px;
-            padding: 0.45rem 1.1rem;
-            font-weight: 500;
-            color: rgba(226, 232, 240, 0.8);
-            background: transparent;
-            cursor: pointer;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .tab-switcher button.active {
-            background: rgba(59, 130, 246, 0.35);
-            color: #fff;
-        }
-
-        .side-panel-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 0.4rem;
-        }
-
-        .side-panel-content p,
-        .side-panel-content ul {
-            margin-top: 0;
-            color: rgba(226, 232, 240, 0.85);
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .side-panel-content table {
+        .diagram-wrapper svg,
+        .usecase-layout svg,
+        .der-wrapper svg {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.92rem;
+            height: auto;
+            flex: 1;
         }
 
-        .side-panel-content th,
-        .side-panel-content td {
-            text-align: left;
-            padding: 0.45rem 0.35rem;
-            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-            color: rgba(226, 232, 240, 0.82);
+        .usecase-layout {
+            gap: 1.25rem;
         }
 
-        .side-panel-content th {
-            font-weight: 600;
-            color: rgba(148, 163, 184, 0.9);
-            text-transform: uppercase;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-        }
-
-        .toggle-bar {
+        .usecase-selector {
             display: flex;
-            flex-wrap: wrap;
             gap: 0.75rem;
-            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.55rem 0.9rem;
-            border-radius: 999px;
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            font-size: 0.82rem;
-            letter-spacing: 0.05em;
-        }
 
-        .toggle input {
-            accent-color: rgba(59, 130, 246, 0.85);
+        .hidden {
+            display: none !important;
         }
 
         .legend {
+            margin-top: auto;
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem 1.4rem;
-            padding: 1.2rem 1.4rem;
-            border-radius: 18px;
-            background: rgba(30, 41, 59, 0.55);
-            border: 1px solid rgba(96, 165, 250, 0.32);
-            font-size: 0.9rem;
-            position: absolute;
-            left: 1.6rem;
-            bottom: 1.6rem;
-        }
-
-        .legend span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: #475569;
         }
 
         .legend span::before {
             content: "";
             display: inline-block;
-            width: 14px;
-            height: 14px;
-            border-radius: 999px;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 0.5rem;
         }
 
-        .legend .public::before { background: #38bdf8; }
-        .legend .private::before { background: #22d3ee; }
-        .legend .security::before { background: #f97316; }
-        .legend .data::before { background: #34d399; }
+        .legend .public::before { background: #bfdbfe; }
+        .legend .private::before { background: #bbf7d0; }
+        .legend .security::before { background: #fde68a; }
+        .legend .data::before { background: #c7d2fe; }
+
+        svg text {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+        }
+
+        .entity-header {
+            font-weight: 600;
+            fill: #0f172a;
+        }
+
+        .entity-attr {
+            fill: #1f2937;
+            font-size: 15px;
+        }
 
         .deployment-node rect,
-        .deployment-node circle,
+        .deployment-node ellipse,
         .deployment-node path,
         .deployment-node polygon {
-            transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+            transition: filter 0.3s ease, opacity 0.3s ease;
         }
 
-        .deployment-node.active rect,
-        .deployment-node.active circle,
-        .deployment-node.active path,
-        .deployment-node.active polygon {
-            filter: drop-shadow(0 0 18px rgba(96, 165, 250, 0.75));
+        .deployment-link path,
+        .deployment-link text {
+            transition: opacity 0.3s ease;
+        }
+
+        .deployment-link path {
+            stroke: #2563eb;
+            stroke-width: 3;
+            fill: none;
+            marker-end: url(#deployment-arrow);
+        }
+
+        .deployment-link text {
+            font-size: 14px;
+            fill: #1e3a8a;
+        }
+
+        .link-label {
+            fill: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .deployment-link.planned path {
+            stroke: #9ca3af;
+            stroke-dasharray: 10 8;
+            marker-end: url(#deployment-arrow-muted);
+        }
+
+        .deployment-node .badge {
+            font-size: 12px;
+            fill: #1f2937;
+        }
+
+        .planned {
+            opacity: 0.35;
+        }
+
+        .planned.active-planned {
+            opacity: 0.65;
+        }
+
+        .deployment-node.active {
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.35));
         }
 
         .deployment-node.dimmed,
@@ -396,123 +359,119 @@
             opacity: 0.4;
         }
 
-        .deployment-link {
-            stroke: rgba(96, 165, 250, 0.75);
-            stroke-width: 2.8;
-            fill: none;
-            stroke-linecap: round;
-            marker-end: url(#arrow-head);
-            transition: opacity 0.35s ease, filter 0.35s ease;
+        .side-panel {
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 22px;
+            background: rgba(248, 250, 252, 0.9);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .deployment-link.active {
-            opacity: 1;
-            filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.75));
-        }
-
-        .badge {
-            font-size: 0.75rem;
+        .side-panel h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+            color: #1f2937;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            fill: #facc15;
         }
 
-        .planned rect,
-        .planned path,
-        .planned polygon,
-        .planned text,
-        .planned line {
-            opacity: 0.55;
+        .side-panel-content {
+            flex: 1;
+            overflow-y: auto;
+            color: #334155;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
-        .planned .badge {
-            fill: rgba(250, 204, 21, 0.85);
+        .side-panel-content p {
+            margin: 0;
+        }
         }
 
-        .actor { cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease; }
-        .actor .actor-hitzone { fill: rgba(165, 180, 252, 0.15); opacity: 0; transition: opacity 0.3s ease; }
-        .actor:hover .actor-hitzone,
-        .actor.active .actor-hitzone { opacity: 0.5; }
-        .actor.active { filter: drop-shadow(0 0 16px rgba(165, 180, 252, 0.75)); }
+        .actor {
+            cursor: pointer;
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
 
-        .usecase { fill: rgba(59, 130, 246, 0.18); stroke: rgba(96, 165, 250, 0.8); stroke-width: 2.2; transition: transform 0.3s ease, opacity 0.3s ease; }
-        .usecase-label { fill: rgba(226, 232, 240, 0.85); font-size: 14px; pointer-events: none; transition: opacity 0.3s ease; }
+        .actor.active {
+            filter: drop-shadow(0 0 18px rgba(37, 99, 235, 0.45));
+        }
+
+        .actor.dimmed,
         .usecase.dimmed,
         .usecase-label.dimmed,
-        .actor.dimmed { opacity: 0.3; }
-        .usecase.active { transform: scale(1.04); stroke: rgba(125, 211, 252, 0.95); fill: rgba(59, 130, 246, 0.3); }
-        .usecase-label.active { opacity: 1; }
+        .actor-connector.dimmed,
+        .relation-line.dimmed {
+            opacity: 0.35;
+        }
 
-        .actor-connector { stroke: rgba(226, 232, 240, 0.55); stroke-width: 2.4; fill: none; transition: opacity 0.3s ease; }
-        .actor-connector.active { opacity: 1; }
-        .actor-connector.dimmed { opacity: 0.2; }
+        .actor-connector {
+            stroke: #1d4ed8;
+            stroke-width: 2.4;
+            fill: none;
+            stroke-linejoin: round;
+            stroke-dasharray: 6 10;
+            stroke-dashoffset: 40;
+            transition: opacity 0.3s ease, stroke-dashoffset 0.4s ease;
+            marker-end: url(#usecase-arrow);
+        }
 
-        .relation-line { stroke-width: 2; fill: none; stroke-dasharray: 6 8; transition: opacity 0.3s ease; }
-        .relation-line.include { stroke: rgba(250, 204, 21, 0.9); marker-end: url(#include-arrow); }
-        .relation-line.exclude { stroke: rgba(248, 113, 113, 0.85); marker-end: url(#extend-arrow); }
-        .relation-line.dimmed { opacity: 0.2; }
-        .relation-label { fill: rgba(250, 204, 21, 0.85); font-size: 12px; }
+        .actor-connector.active {
+            stroke-dashoffset: 0;
+        }
+
+        .usecase {
+            fill: #f8fafc;
+            stroke: #2563eb;
+            stroke-width: 2.2;
+        }
+
+        .usecase-label {
+            fill: #1f2937;
+            font-size: 14px;
+        }
+
+        .system-rect {
+            fill: rgba(191, 219, 254, 0.32);
+            stroke: #2563eb;
+            stroke-width: 2;
+        }
+
+        .relation-line {
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#relation-arrow);
+            stroke-dashoffset: 24;
+            transition: opacity 0.3s ease, stroke-dashoffset 0.4s ease;
+        }
+
+        .relation-line.include { stroke: #059669; stroke-dasharray: 8 6; }
+        .relation-line.include.active { stroke-dashoffset: 0; }
+        .relation-line.exclude { stroke: #dc2626; stroke-dasharray: 4 6; marker-end: none; }
 
         .note {
-            position: absolute;
-            right: 1.6rem;
-            bottom: 1.6rem;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            border-radius: 16px;
-            padding: 0.85rem 1.1rem;
-            font-size: 0.85rem;
-            max-width: 260px;
-            line-height: 1.5;
-        }
-
-        .usecase-selector {
-            display: inline-flex;
-            border-radius: 999px;
-            padding: 0.35rem;
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            gap: 0.35rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .usecase-selector button {
-            border: none;
-            border-radius: 999px;
-            padding: 0.5rem 1.3rem;
-            font-weight: 500;
-            color: rgba(226, 232, 240, 0.8);
-            background: transparent;
-            cursor: pointer;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .usecase-selector button.active {
-            background: rgba(59, 130, 246, 0.35);
-            color: #fff;
-        }
-
-        .der-wrapper {
-            padding: 1.6rem 1.6rem 3.5rem;
-        }
-
-        .entity {
-            fill: rgba(30, 64, 175, 0.28);
-            stroke: rgba(129, 140, 248, 0.75);
-            stroke-width: 2.4;
-            transition: filter 0.3s ease, opacity 0.3s ease;
-        }
-
-        .entity-header {
-            fill: rgba(226, 232, 240, 0.95);
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-        }
-
-        .entity-attr {
-            fill: rgba(191, 219, 254, 0.9);
+            fill: #475569;
             font-size: 13px;
+        }
+
+        .usecase-faded {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .der-wrapper svg rect {
+            fill: #f8fafc;
+            stroke: #cbd5f5;
+            stroke-width: 2;
+            rx: 18;
+        }
+
+        .entity-badges {
+            fill: #1f2937;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .entity-badges {
@@ -523,103 +482,70 @@
         }
 
         .relationship-line {
-            stroke: rgba(129, 140, 248, 0.85);
-            stroke-width: 2.8;
+            stroke: #1d4ed8;
+            stroke-width: 2.6;
             fill: none;
             marker-end: url(#der-arrow);
-            transition: opacity 0.3s ease, filter 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
-        .relationship-line.dimmed { opacity: 0.25; }
-        .relationship-line.active { filter: drop-shadow(0 0 10px rgba(129, 140, 248, 0.7)); }
+        .relationship-line.dimmed,
+        .entity.dimmed {
+            opacity: 0.4;
+        }
+
+        .cardinality {
+            fill: #1f2937;
+            font-size: 13px;
+            font-weight: 600;
+        }
 
         .cardinality,
         .relationship-label {
-            fill: rgba(224, 231, 255, 0.9);
-            font-size: 12px;
+            fill: #334155;
+            font-size: 13px;
         }
 
         .entity.dimmed { opacity: 0.4; }
         .entity.active { filter: drop-shadow(0 0 20px rgba(129, 140, 248, 0.75)); }
 
         .der-note {
-            position: absolute;
-            right: 1.6rem;
-            bottom: 1.6rem;
-            border-radius: 22px;
-            border: 1px solid rgba(129, 140, 248, 0.45);
-            background: rgba(30, 64, 175, 0.35);
-            padding: 1.4rem 1.6rem;
-            color: rgba(226, 232, 240, 0.9);
-            line-height: 1.6;
-            max-width: 320px;
-            font-size: 0.9rem;
-        }
-
-        .focus-mode .legend,
-        .focus-mode .note,
-        .focus-mode .der-note {
-            display: none;
-        }
-
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .gap-6 { gap: 1.5rem; }
-        .gap-4 { gap: 1rem; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .text-sm { font-size: 0.875rem; }
-        .font-medium { font-weight: 500; }
-        .hidden { display: none !important; }
-
-        @media (max-width: 1280px) {
-            .panel {
-                width: min(1100px, calc(100vw - 48px));
-            }
+            fill: #475569;
+            font-size: 13px;
         }
 
         @media (max-width: 1024px) {
+            body { padding: 1.5rem; }
+            .hero { padding: 2.25rem 1.75rem; }
+            .panel {
+                width: min(100%, 100vw - 32px);
+                height: min(100%, 100vh - 32px);
+            }
             .panel-body {
                 grid-template-columns: 1fr;
             }
-
             .side-panel {
                 order: -1;
                 height: 240px;
                 overflow-y: auto;
             }
         }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 3.2rem 2.4rem;
-            }
-
-            .panel-body {
-                padding: 1.4rem;
-            }
-
-            .panel-header {
-                padding: 1.2rem 1.6rem;
-                flex-wrap: wrap;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="aurora"></div>
-    <div class="container">
-        <h1>Coyahue Helpdesk</h1>
+    <section class="hero">
+        <h1>Diagrama del Helpdesk</h1>
+        <p>Explora la infraestructura desplegada, los casos de uso clave por actor y el modelo entidad-relación real del sistema de tickets Coyahue. Cada vista admite modo foco, resaltado contextual y elementos planificados.</p>
         <div class="buttons">
             <button class="diagram-button" data-panel="deployment">Vista de Despliegue</button>
             <button class="diagram-button" data-panel="usecases">Casos de Uso</button>
             <button class="diagram-button" data-panel="der">Modelo de Datos</button>
         </div>
-    </div>
+    </section>
 
     <div class="panels" id="panels">
         <!-- VISTA DE DESPLIEGUE -->
-        <div class="panel" id="deployment" data-view="deployment">
+        <section class="panel" id="deployment" data-view="deployment">
             <div class="panel-header">
                 <h2>Arquitectura de Despliegue</h2>
                 <div class="panel-actions">
@@ -635,177 +561,185 @@
             </div>
             <div class="panel-body">
                 <div class="diagram-wrapper">
-                    <svg id="deployment-svg" viewBox="0 0 1500 860" aria-labelledby="deploymentTitle deploymentDesc" role="img">
+                    <svg id="deployment-svg" viewBox="0 0 1680 920" role="img" aria-labelledby="deploymentTitle deploymentDesc" preserveAspectRatio="xMidYMid meet">
                         <title id="deploymentTitle">Despliegue Coyahue Helpdesk en AWS</title>
-                        <desc id="deploymentDesc">Topología física mínima con EC2, Nginx, Gunicorn, Django, PostgreSQL y componentes planificados.</desc>
+                        <desc id="deploymentDesc">Topología con cliente, internet, VPC en AWS, EC2 con Nginx, Gunicorn y Django, almacenamiento local y PostgreSQL en subred privada.</desc>
                         <defs>
-                            <marker id="arrow-head" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
-                                <polygon points="0 0, 10 5, 0 10" fill="rgba(96, 165, 250, 0.9)"></polygon>
+                            <marker id="deployment-arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="strokeWidth">
+                                <polygon points="0 0, 12 6, 0 12" fill="#2563eb"></polygon>
+                            </marker>
+                            <marker id="deployment-arrow-muted" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="strokeWidth">
+                                <polygon points="0 0, 12 6, 0 12" fill="#9ca3af"></polygon>
                             </marker>
                             <marker id="arrow-dashed" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
                                 <polygon points="0 0, 10 5, 0 10" fill="rgba(148, 163, 184, 0.7)"></polygon>
                             </marker>
                         </defs>
                         <g data-node="Cliente" class="deployment-node">
-                            <rect x="80" y="320" width="200" height="200" rx="22" fill="rgba(12, 74, 110, 0.32)" stroke="rgba(125, 211, 252, 0.55)" stroke-width="2.4"></rect>
-                            <text x="180" y="370" text-anchor="middle" class="entity-header">Cliente</text>
-                            <text x="180" y="402" text-anchor="middle" class="entity-attr">Navegador web</text>
-                            <text x="180" y="426" text-anchor="middle" class="entity-attr">TLS + OIDC</text>
+                            <rect x="80" y="350" width="190" height="190" rx="22" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2.4"></rect>
+                            <text x="175" y="405" text-anchor="middle" class="entity-header">Cliente</text>
+                            <text x="175" y="435" text-anchor="middle" class="entity-attr">Navegador web</text>
+                            <text x="175" y="463" text-anchor="middle" class="entity-attr">TLS + Autenticación</text>
                         </g>
 
                         <g data-node="Internet" class="deployment-node">
-                            <path d="M330 360 C320 320 360 290 400 300 C420 260 480 260 500 300 C540 290 580 320 570 360 C620 380 610 430 560 440 C540 480 460 490 430 460 C380 480 320 460 330 420 C280 410 290 370 330 360 Z" fill="rgba(30, 64, 175, 0.28)" stroke="rgba(96, 165, 250, 0.55)" stroke-width="2.4"></path>
-                            <text x="440" y="360" text-anchor="middle" class="entity-header">Internet</text>
-                            <text x="440" y="392" text-anchor="middle" class="entity-attr">Enlace público</text>
-                        </g>
-
-                        <g data-node="Entrada VPC" class="deployment-node">
-                            <rect x="560" y="300" width="120" height="240" rx="20" fill="rgba(15, 118, 110, 0.2)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2.2"></rect>
-                            <text x="620" y="348" text-anchor="middle" class="entity-header">Entrada VPC</text>
-                            <text x="620" y="378" text-anchor="middle" class="entity-attr">SG público</text>
-                        </g>
-
-                        <g data-node="AWS VPC" class="deployment-node">
-                            <rect x="700" y="140" width="720" height="560" rx="28" fill="rgba(15, 118, 110, 0.12)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2.6"></rect>
-                            <text x="1410" y="180" text-anchor="end" class="entity-header">AWS VPC</text>
-                            <text x="1410" y="210" text-anchor="end" class="entity-attr">CIDR 10.0.0.0/16</text>
-                        </g>
-
-                        <g data-node="Subred Pública" class="deployment-node">
-                            <rect x="740" y="200" width="320" height="440" rx="24" fill="rgba(13, 148, 136, 0.18)" stroke="rgba(20, 184, 166, 0.5)" stroke-width="2"></rect>
-                            <text x="900" y="248" text-anchor="middle" class="entity-header">Subred Pública</text>
-                            <text x="900" y="278" text-anchor="middle" class="entity-attr">10.0.1.0/24</text>
-                        </g>
-
-                        <g data-node="Subred Privada" class="deployment-node">
-                            <rect x="1100" y="200" width="280" height="440" rx="24" fill="rgba(6, 95, 70, 0.18)" stroke="rgba(20, 184, 166, 0.5)" stroke-width="2"></rect>
-                            <text x="1240" y="248" text-anchor="middle" class="entity-header">Subred Privada</text>
-                            <text x="1240" y="278" text-anchor="middle" class="entity-attr">10.0.2.0/24</text>
-                        </g>
-
-                        <g data-node="EC2 App" class="deployment-node">
-                            <rect x="780" y="320" width="240" height="280" rx="20" fill="rgba(12, 74, 110, 0.32)" stroke="rgba(125, 211, 252, 0.55)" stroke-width="2.4"></rect>
-                            <line x1="780" y1="380" x2="1020" y2="380" stroke="rgba(148, 163, 184, 0.35)" stroke-width="1.4"></line>
-                            <line x1="780" y1="440" x2="1020" y2="440" stroke="rgba(148, 163, 184, 0.35)" stroke-width="1.4"></line>
-                            <text x="900" y="350" text-anchor="middle" class="entity-header">EC2 App</text>
-                            <text x="900" y="372" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
-                            <text x="900" y="432" text-anchor="middle" class="entity-attr">Gunicorn</text>
-                            <text x="900" y="492" text-anchor="middle" class="entity-attr">Django + DRF</text>
-                        </g>
-
-                        <g data-node="/media" class="deployment-node">
-                            <rect x="820" y="520" width="80" height="80" rx="14" fill="rgba(15, 118, 110, 0.26)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2"></rect>
-                            <text x="860" y="568" text-anchor="middle" class="entity-attr">/media</text>
-                            <text x="860" y="588" text-anchor="middle" class="entity-attr">Adjuntos</text>
-                        </g>
-
-                        <g data-node="Logs" class="deployment-node">
-                            <rect x="960" y="520" width="80" height="80" rx="14" fill="rgba(15, 118, 110, 0.26)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2"></rect>
-                            <text x="1000" y="568" text-anchor="middle" class="entity-attr">Logs</text>
-                            <text x="1000" y="588" text-anchor="middle" class="entity-attr">Aplicación</text>
-                        </g>
-
-                        <g data-node="PostgreSQL" class="deployment-node">
-                            <ellipse cx="1240" cy="360" rx="120" ry="60" fill="rgba(12, 74, 110, 0.32)" stroke="rgba(125, 211, 252, 0.55)" stroke-width="2.4"></ellipse>
-                            <text x="1240" y="350" text-anchor="middle" class="entity-header">PostgreSQL</text>
-                            <text x="1240" y="376" text-anchor="middle" class="entity-attr">Puerto 5432</text>
+                            <path d="M310 360 C300 310 360 280 400 295 C420 250 500 250 520 295 C570 285 610 320 600 360 C640 380 630 430 580 440 C560 480 480 490 450 460 C400 480 340 460 350 415 C300 410 300 370 310 360 Z" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.4"></path>
+                            <text x="455" y="358" text-anchor="middle" class="entity-header">Internet</text>
+                            <text x="455" y="388" text-anchor="middle" class="entity-attr">Acceso público</text>
                         </g>
 
                         <g data-node="IGW" class="deployment-node planned hidden" data-toggle-group="igw">
-                            <polygon points="520,230 580,230 610,270 580,310 520,310 490,270" fill="rgba(71, 85, 105, 0.3)" stroke="rgba(148, 163, 184, 0.6)" stroke-width="2"></polygon>
-                            <text x="550" y="260" text-anchor="middle" class="entity-attr">IGW</text>
-                            <text x="550" y="282" text-anchor="middle" class="badge">Por implementar</text>
-                            <title>Se agregará a la tabla de rutas de subred pública.</title>
+                            <polygon points="600,220 660,220 690,260 660,300 600,300 570,260" fill="#e5e7eb" stroke="#94a3b8" stroke-width="2"></polygon>
+                            <text x="605" y="252" text-anchor="middle" class="entity-attr">Internet Gateway</text>
+                            <text x="605" y="276" text-anchor="middle" class="badge">Por implementar</text>
+                            <title>Se agregará a la tabla de rutas de la subred pública.</title>
+                        </g>
+
+                        <g data-node="Entrada VPC" class="deployment-node">
+                            <rect x="720" y="340" width="140" height="220" rx="18" fill="#d1fae5" stroke="#34d399" stroke-width="2"></rect>
+                            <text x="790" y="390" text-anchor="middle" class="entity-header">Entrada VPC</text>
+                            <text x="790" y="420" text-anchor="middle" class="entity-attr">Security Group</text>
+                        </g>
+
+                        <g data-node="AWS VPC" class="deployment-node">
+                            <rect x="780" y="150" width="840" height="560" rx="28" fill="rgba(191, 219, 254, 0.25)" stroke="#38bdf8" stroke-width="2.6"></rect>
+                            <text x="1580" y="190" text-anchor="end" class="entity-header">AWS VPC</text>
+                        </g>
+
+                        <g data-node="Subred pública" class="deployment-node">
+                            <rect x="820" y="220" width="420" height="440" rx="24" fill="rgba(187, 247, 208, 0.6)" stroke="#4ade80" stroke-width="2"></rect>
+                            <text x="1030" y="270" text-anchor="middle" class="entity-header">Subred pública</text>
+                        </g>
+
+                        <g data-node="Subred privada" class="deployment-node">
+                            <rect x="1280" y="220" width="360" height="440" rx="24" fill="rgba(191, 219, 254, 0.55)" stroke="#60a5fa" stroke-width="2"></rect>
+                            <text x="1460" y="270" text-anchor="middle" class="entity-header">Subred privada</text>
                         </g>
 
                         <g data-node="NAT Gateway" class="deployment-node planned hidden" data-toggle-group="nat">
-                            <rect x="820" y="220" width="160" height="60" rx="14" fill="rgba(71, 85, 105, 0.3)" stroke="rgba(148, 163, 184, 0.6)" stroke-width="2"></rect>
-                            <text x="900" y="250" text-anchor="middle" class="entity-attr">NAT Gateway</text>
-                            <text x="900" y="272" text-anchor="middle" class="badge">Por implementar</text>
-                            <title>Para actualizaciones sin exponer la BD.</title>
+                            <rect x="1080" y="210" width="150" height="60" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"></rect>
+                            <text x="1155" y="242" text-anchor="middle" class="entity-attr">NAT Gateway</text>
+                            <text x="1155" y="268" text-anchor="middle" class="badge">Por implementar</text>
+                            <title>Para actualizaciones desde la subred privada sin exponer la base de datos.</title>
                         </g>
 
-                        <g data-node="S3" class="deployment-node planned hidden" data-toggle-group="s3">
-                            <rect x="1080" y="520" width="140" height="100" rx="18" fill="rgba(71, 85, 105, 0.3)" stroke="rgba(148, 163, 184, 0.6)" stroke-width="2"></rect>
-                            <text x="1150" y="560" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
-                            <text x="1150" y="586" text-anchor="middle" class="badge">Por implementar</text>
-                            <title>Migración de /media a S3 con django-storages.</title>
+                        <g data-node="EC2 App" class="deployment-node">
+                            <rect x="940" y="330" width="280" height="280" rx="20" fill="#dbeafe" stroke="#60a5fa" stroke-width="2.2"></rect>
+                            <line x1="940" y1="390" x2="1220" y2="390" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <line x1="940" y1="450" x2="1220" y2="450" stroke="#94a3b8" stroke-width="1.5"></line>
+                            <text x="1080" y="360" text-anchor="middle" class="entity-header">EC2 App</text>
+                            <text x="1080" y="382" text-anchor="middle" class="entity-attr">Nginx · HTTPS (443)</text>
+                            <text x="1080" y="442" text-anchor="middle" class="entity-attr">Gunicorn</text>
+                            <text x="1080" y="502" text-anchor="middle" class="entity-attr">Django + DRF</text>
                         </g>
 
                         <g data-node="WAF/ALB" class="deployment-node planned hidden" data-toggle-group="waf">
-                            <rect x="640" y="420" width="100" height="160" rx="18" fill="rgba(71, 85, 105, 0.3)" stroke="rgba(148, 163, 184, 0.6)" stroke-width="2"></rect>
-                            <text x="690" y="476" text-anchor="middle" class="entity-attr">WAF / ALB</text>
-                            <text x="690" y="502" text-anchor="middle" class="badge">Por implementar</text>
-                            <title>Seguridad y balanceo.</title>
+                            <rect x="860" y="380" width="70" height="160" rx="18" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"></rect>
+                            <text x="895" y="452" text-anchor="middle" class="entity-attr">WAF / ALB</text>
+                            <text x="895" y="478" text-anchor="middle" class="badge">Por implementar</text>
+                            <title>Seguridad perimetral y balanceo de carga.</title>
                         </g>
 
+                        <g data-node="/media" class="deployment-node">
+                            <rect x="1000" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1050" y="585" text-anchor="middle" class="entity-attr">/media</text>
+                            <text x="1050" y="610" text-anchor="middle" class="entity-attr">Adjuntos</text>
+                        </g>
+
+                        <g data-node="Logs" class="deployment-node">
+                            <rect x="1140" y="540" width="100" height="90" rx="14" fill="#ede9fe" stroke="#a855f7" stroke-width="1.8"></rect>
+                            <text x="1190" y="585" text-anchor="middle" class="entity-attr">Logs</text>
+                            <text x="1190" y="610" text-anchor="middle" class="entity-attr">Aplicación</text>
+                        </g>
+
+                        <g data-node="S3" class="deployment-node planned hidden" data-toggle-group="s3">
+                            <rect x="1320" y="560" width="170" height="110" rx="18" fill="#f9fafb" stroke="#cbd5f5" stroke-width="2"></rect>
+                            <text x="1405" y="605" text-anchor="middle" class="entity-attr">S3 (adjuntos)</text>
+                            <text x="1405" y="632" text-anchor="middle" class="badge">Por implementar</text>
+                            <title>Migración prevista de /media a S3 mediante django-storages.</title>
+                        </g>
+
+                        <g data-node="PostgreSQL" class="deployment-node">
+                            <ellipse cx="1460" cy="370" rx="125" ry="65" fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.4"></ellipse>
+                            <text x="1460" y="360" text-anchor="middle" class="entity-header">PostgreSQL</text>
+                            <text x="1460" y="388" text-anchor="middle" class="entity-attr">Puerto 5432</text>
+                        </g>
                         <g data-edge="Cliente-Internet" class="deployment-link" data-source="Cliente" data-target="Internet">
-                            <path d="M280 420 H320" fill="none"></path>
+                            <path d="M270 445 H320"></path>
                         </g>
+
                         <g data-edge="Internet-Entrada" class="deployment-link" data-source="Internet" data-target="Entrada VPC">
-                            <path d="M520 420 H560" fill="none"></path>
+                            <path d="M540 445 H720"></path>
                         </g>
+
+                        <g data-edge="Entrada-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Entrada VPC" data-target="WAF/ALB">
+                            <path d="M860 430 H865"></path>
+                        </g>
+                        <g data-edge="WAF-EC2" class="deployment-link planned hidden" data-toggle-group="waf" data-source="WAF/ALB" data-target="EC2 App">
+                            <path d="M930 430 H940"></path>
+                        </g>
+
                         <g data-edge="Entrada-EC2" class="deployment-link" data-source="Entrada VPC" data-target="EC2 App">
-                            <path d="M680 420 H780" fill="none"></path>
+                            <path d="M860 430 H940"></path>
                         </g>
-                        <g data-edge="EC2-Gunicorn" class="deployment-link" data-source="EC2 App" data-target="EC2 App">
-                            <path d="M900 380 V400" stroke="rgba(148, 163, 184, 0.6)" stroke-dasharray="4 6"></path>
+
+                        <g data-edge="EC2-Postgres" class="deployment-link" data-source="EC2 App" data-target="PostgreSQL">
+                            <path d="M1220 500 H1320 V370 H1335"></path>
+                            <text x="1338" y="332" class="link-label">Tráfico interno VPC</text>
                         </g>
-                        <g data-edge="Gunicorn-Django" class="deployment-link" data-source="EC2 App" data-target="EC2 App">
-                            <path d="M900 440 V460" stroke="rgba(148, 163, 184, 0.6)" stroke-dasharray="4 6"></path>
+
+                        <g data-edge="EC2-media" class="deployment-link" data-source="EC2 App" data-target="/media">
+                            <path d="M1050 510 V540"></path>
                         </g>
-                        <g data-edge="Django-PostgreSQL" class="deployment-link" data-source="EC2 App" data-target="PostgreSQL">
-                            <path d="M1020 460 H1100 V360 H1120" fill="none"></path>
-                            <text x="1100" y="348" class="entity-attr">Tráfico interno VPC</text>
+
+                        <g data-edge="EC2-logs" class="deployment-link" data-source="EC2 App" data-target="Logs">
+                            <path d="M1190 510 V540"></path>
                         </g>
-                        <g data-edge="Django-media" class="deployment-link" data-source="EC2 App" data-target="/media">
-                            <path d="M900 480 V520" fill="none"></path>
+
+                        <g data-edge="Postgres-EC2" class="deployment-link" data-source="PostgreSQL" data-target="EC2 App">
+                            <path d="M1585 370 H1620 V560 H1220"></path>
                         </g>
-                        <g data-edge="Django-logs" class="deployment-link" data-source="EC2 App" data-target="Logs">
-                            <path d="M940 480 V520" fill="none"></path>
+
+                        <g data-edge="NAT-Privada" class="deployment-link planned hidden" data-toggle-group="nat" data-source="NAT Gateway" data-target="Subred privada">
+                            <path d="M1155 210 V190 H1280 V220"></path>
+                            <text x="1250" y="198" class="link-label">Salida controlada</text>
                         </g>
-                        <g data-edge="NAT-Subred" class="deployment-link planned hidden" data-toggle-group="nat" data-source="NAT Gateway" data-target="Subred Privada">
-                            <path d="M900 220 V200 H1240 V200" fill="none" stroke-dasharray="10 8"></path>
+
+                        <g data-edge="Privada-NAT" class="deployment-link planned hidden" data-toggle-group="nat" data-source="Subred privada" data-target="NAT Gateway">
+                            <path d="M1280 220 V190 H1155 V210"></path>
                         </g>
-                        <g data-edge="Privada-NAT" class="deployment-link planned hidden" data-toggle-group="nat" data-source="Subred Privada" data-target="NAT Gateway">
-                            <path d="M1240 200 V180 H900 V220" fill="none" stroke-dasharray="10 8"></path>
-                            <text x="1210" y="188" class="entity-attr">Salida controlada</text>
-                        </g>
+
                         <g data-edge="Django-S3" class="deployment-link planned hidden" data-toggle-group="s3" data-source="EC2 App" data-target="S3">
-                            <path d="M1020 520 H1080" fill="none" stroke-dasharray="8 12" marker-end="url(#arrow-dashed)"></path>
+                            <path d="M1220 560 H1320"></path>
                         </g>
-                        <g data-edge="WAF-Nginx" class="deployment-link planned hidden" data-toggle-group="waf" data-source="WAF/ALB" data-target="EC2 App">
-                            <path d="M740 500 H780" fill="none" stroke-dasharray="8 8"></path>
-                        </g>
-                        <g data-edge="Internet-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Internet" data-target="WAF/ALB">
-                            <path d="M560 420 H640" fill="none" stroke-dasharray="8 8"></path>
-                        </g>
+
                         <g data-edge="Internet-IGW" class="deployment-link planned hidden" data-toggle-group="igw" data-source="Internet" data-target="IGW">
-                            <path d="M520 320 V270" fill="none" stroke-dasharray="8 8"></path>
+                            <path d="M520 320 L600 260"></path>
                         </g>
+
                         <g data-edge="IGW-Entrada" class="deployment-link planned hidden" data-toggle-group="igw" data-source="IGW" data-target="Entrada VPC">
-                            <path d="M580 270 H560" fill="none" stroke-dasharray="8 8"></path>
+                            <path d="M690 260 L720 340"></path>
+                        </g>
+
+                        <g data-edge="Internet-WAF" class="deployment-link planned hidden" data-toggle-group="waf" data-source="Internet" data-target="WAF/ALB">
+                            <path d="M600 445 H860"></path>
                         </g>
                     </svg>
                     <div class="legend">
                         <span class="public">Subred pública · EC2 · Nginx/Gunicorn</span>
                         <span class="private">Subred privada · PostgreSQL</span>
-                        <span class="security">TLS · Seguridad perimetral</span>
+                        <span class="security">TLS · Seguridad</span>
                         <span class="data">/media · Logs</span>
                     </div>
                 </div>
                 <aside class="side-panel" data-side-panel>
                     <h3 id="deployment-node-title">Cliente</h3>
-                    <div class="tab-switcher">
-                        <button class="active" data-tab="explanation">Explicación</button>
-                        <button data-tab="relations">Relaciones</button>
-                    </div>
                     <div class="side-panel-content" id="deployment-panel-content"></div>
                 </aside>
             </div>
-        </div>
+        </section>
         <!-- VISTA CASOS DE USO -->
-        <div class="panel" id="usecases" data-view="usecases">
+        <section class="panel" id="usecases" data-view="usecases">
             <div class="panel-header">
                 <h2>Casos de Uso</h2>
                 <div class="panel-actions">
@@ -815,171 +749,150 @@
             </div>
             <div class="panel-body">
                 <div class="usecase-layout">
-                    <div class="flex flex-col gap-4">
-                        <div class="usecase-selector">
-                            <button class="active" data-actor-filter="todos">Todos</button>
-                            <button data-actor-filter="solicitante">Solicitante</button>
-                            <button data-actor-filter="tecnico">Técnico</button>
-                            <button data-actor-filter="administrador">Administrador</button>
-                        </div>
-                        <div class="usecase-diagram">
-                            <svg id="usecase-svg" viewBox="0 0 960 620" aria-labelledby="usecaseTitle usecaseDesc" role="img">
-                                <title id="usecaseTitle">Casos de uso del sistema de tickets</title>
-                                <desc id="usecaseDesc">Actores solicitante, técnico y administrador conectados a funcionalidades clave.</desc>
-                                <defs>
-                                    <marker id="include-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="strokeWidth">
-                                        <polygon points="0 0, 9 4.5, 0 9" fill="rgba(250, 204, 21, 0.85)"></polygon>
-                                    </marker>
-                                    <marker id="extend-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="strokeWidth">
-                                        <polygon points="0 0, 9 4.5, 0 9" fill="rgba(248, 113, 113, 0.85)"></polygon>
-                                    </marker>
-                                </defs>
-                                <g data-node="Sistema" data-kind="system">
-                                    <rect x="240" y="60" width="520" height="500" rx="24" fill="rgba(30, 64, 175, 0.22)" stroke="rgba(129, 140, 248, 0.7)" stroke-width="2.4"></rect>
-                                    <text x="500" y="100" text-anchor="middle" class="entity-header">Sistema de Tickets</text>
-                                </g>
-
-                                <g class="actor" data-node="Solicitante" data-kind="actor">
-                                    <circle class="actor-hitzone" cx="120" cy="210" r="60"></circle>
-                                    <circle cx="120" cy="170" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                    <line x1="120" y1="188" x2="120" y2="240" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="90" y1="210" x2="150" y2="210" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="120" y1="240" x2="98" y2="288" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="120" y1="240" x2="142" y2="288" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <text x="120" y="318" text-anchor="middle" class="entity-attr">Solicitante</text>
-                                </g>
-
-                                <g class="actor" data-node="Técnico" data-kind="actor">
-                                    <circle class="actor-hitzone" cx="120" cy="420" r="60"></circle>
-                                    <circle cx="120" cy="380" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                    <line x1="120" y1="398" x2="120" y2="450" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="90" y1="418" x2="150" y2="418" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="120" y1="450" x2="98" y2="498" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="120" y1="450" x2="142" y2="498" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <text x="120" y="528" text-anchor="middle" class="entity-attr">Técnico</text>
-                                </g>
-
-                                <g class="actor" data-node="Administrador" data-kind="actor">
-                                    <circle class="actor-hitzone" cx="840" cy="320" r="60"></circle>
-                                    <circle cx="840" cy="280" r="18" fill="none" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></circle>
-                                    <line x1="840" y1="298" x2="840" y2="350" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="810" y1="318" x2="870" y2="318" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="840" y1="350" x2="818" y2="398" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <line x1="840" y1="350" x2="862" y2="398" stroke="rgba(196, 181, 253, 0.9)" stroke-width="3"></line>
-                                    <text x="840" y="428" text-anchor="middle" class="entity-attr">Administrador</text>
-                                </g>
-
-                                <g data-node="Iniciar/Cerrar sesión" class="usecase-group">
-                                    <ellipse id="uc-login" class="usecase" cx="500" cy="150" rx="110" ry="36"></ellipse>
-                                    <text class="usecase-label" data-usecase="Iniciar/Cerrar sesión" x="500" y="156" text-anchor="middle">Iniciar/Cerrar sesión</text>
-                                </g>
-                                <g data-node="Validar permisos por rol" class="usecase-group">
-                                    <ellipse id="uc-permisos" class="usecase" cx="500" cy="210" rx="120" ry="36"></ellipse>
-                                    <text class="usecase-label" data-usecase="Validar permisos por rol" x="500" y="216" text-anchor="middle">Validar permisos por rol</text>
-                                </g>
-                                <g data-node="FAQ autoservicio" class="usecase-group">
-                                    <ellipse id="uc-faq" class="usecase" cx="360" cy="260" rx="110" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="FAQ autoservicio" x="360" y="266" text-anchor="middle">FAQ autoservicio</text>
-                                </g>
-                                <g data-node="Ver y filtrar tickets" class="usecase-group">
-                                    <ellipse id="uc-ver" class="usecase" cx="640" cy="260" rx="120" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Ver y filtrar tickets" x="640" y="266" text-anchor="middle">Ver y filtrar tickets</text>
-                                </g>
-                                <g data-node="Crear ticket" class="usecase-group">
-                                    <ellipse id="uc-crear" class="usecase" cx="360" cy="320" rx="110" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Crear ticket" x="360" y="326" text-anchor="middle">Crear ticket</text>
-                                </g>
-                                <g data-node="Adjuntar y comentar" class="usecase-group">
-                                    <ellipse id="uc-adjuntar" class="usecase" cx="640" cy="320" rx="120" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Adjuntar y comentar" x="640" y="326" text-anchor="middle">Adjuntar y comentar</text>
-                                </g>
-                                <g data-node="Cambiar estado" class="usecase-group">
-                                    <ellipse id="uc-estado" class="usecase" cx="360" cy="380" rx="110" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Cambiar estado" x="360" y="386" text-anchor="middle">Cambiar estado</text>
-                                </g>
-                                <g data-node="Asignar/Reasignar" class="usecase-group">
-                                    <ellipse id="uc-asignar" class="usecase" cx="640" cy="380" rx="120" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Asignar/Reasignar" x="640" y="386" text-anchor="middle">Asignar/Reasignar</text>
-                                </g>
-                                <g data-node="Dashboard KPI" class="usecase-group">
-                                    <ellipse id="uc-kpi" class="usecase" cx="360" cy="440" rx="110" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Dashboard KPI" x="360" y="446" text-anchor="middle">Dashboard KPI</text>
-                                </g>
-                                <g data-node="Exportar PDF/Excel" class="usecase-group">
-                                    <ellipse id="uc-exportar" class="usecase" cx="640" cy="440" rx="120" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Exportar PDF/Excel" x="640" y="446" text-anchor="middle">Exportar PDF/Excel</text>
-                                </g>
-                                <g data-node="Gestionar catálogos" class="usecase-group">
-                                    <ellipse id="uc-catalogos" class="usecase" cx="360" cy="500" rx="120" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Gestionar catálogos" x="360" y="506" text-anchor="middle">Gestionar catálogos</text>
-                                </g>
-                                <g data-node="Auditoría" class="usecase-group">
-                                    <ellipse id="uc-auditoria" class="usecase" cx="640" cy="500" rx="110" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Auditoría" x="640" y="506" text-anchor="middle">Auditoría</text>
-                                </g>
-
-                                <path class="actor-connector" data-source="Solicitante" data-target="Iniciar/Cerrar sesión" d="M220 210 H380 V150 H390"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio" d="M220 210 H260 V260 H250"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets" d="M220 210 H260 V260 H280"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket" d="M220 210 H260 V320 H250"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Adjuntar y comentar" d="M220 210 H260 V320 H520"></path>
-
-                                <path class="actor-connector" data-source="Técnico" data-target="Iniciar/Cerrar sesión" d="M220 420 H260 V150 H390"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets" d="M220 420 H260 V260 H280"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Adjuntar y comentar" d="M220 420 H260 V320 H520"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado" d="M220 420 H260 V380 H250"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar" d="M220 420 H260 V380 H520"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI" d="M220 420 H260 V440 H250"></path>
-
-                                <path class="actor-connector" data-source="Administrador" data-target="Iniciar/Cerrar sesión" d="M780 320 H680 V150 H610"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets" d="M780 320 H760 V260 H720"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar" d="M780 320 H760 V380 H720"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI" d="M780 320 H760 V440 H720"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos" d="M780 320 H760 V500 H720"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel" d="M780 320 H760 V440 H720"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Auditoría" d="M780 320 H760 V500 H720"></path>
-
-                                <path class="relation-line include" data-source="Crear ticket" data-target="Auditoría" d="M360 334 V470"></path>
-                                <text class="relation-label" x="372" y="422">incluye Auditoría</text>
-
-                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Auditoría" d="M640 334 V470"></path>
-                                <text class="relation-label" x="652" y="422">incluye Auditoría</text>
-
-                                <path class="relation-line include" data-source="Cambiar estado" data-target="Auditoría" d="M360 394 V470"></path>
-                                <text class="relation-label" x="372" y="452">incluye Auditoría</text>
-
-                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Auditoría" d="M640 394 V470"></path>
-                                <text class="relation-label" x="652" y="452">incluye Auditoría</text>
-
-                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Ver y filtrar tickets" d="M640 454 V266"></path>
-                                <text class="relation-label" x="656" y="360">incluye Ver y filtrar</text>
-
-                                <path class="relation-line include" data-source="Crear ticket" data-target="Validar permisos por rol" d="M360 334 H320 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Validar permisos por rol" d="M640 320 H700 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Cambiar estado" data-target="Validar permisos por rol" d="M360 380 H320 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Validar permisos por rol" d="M640 380 H700 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Dashboard KPI" data-target="Validar permisos por rol" d="M360 440 H320 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Validar permisos por rol" d="M640 440 H700 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Gestionar catálogos" data-target="Validar permisos por rol" d="M360 500 H320 V200 H500 V246"></path>
-                                <path class="relation-line include" data-source="Auditoría" data-target="Validar permisos por rol" d="M640 500 H700 V200 H500 V246"></path>
-                                <text class="relation-label" x="520" y="220">validación previa por rol</text>
-                                <text class="note">FAQ autoservicio excluye la creación de ticket cuando resuelve el problema del solicitante.</text>
-                            </svg>
-                        </div>
+                    <div class="usecase-selector">
+                        <button class="active" data-actor-filter="todos">Todos</button>
+                        <button data-actor-filter="solicitante">Solicitante</button>
+                        <button data-actor-filter="tecnico">Técnico</button>
+                        <button data-actor-filter="administrador">Administrador</button>
                     </div>
-                    <aside class="side-panel" data-side-panel>
-                        <h3 id="usecase-node-title">Solicitante</h3>
-                        <div class="tab-switcher">
-                            <button class="active" data-tab="explanation">Explicación</button>
-                            <button data-tab="relations">Relaciones</button>
-                        </div>
-                        <div class="side-panel-content" id="usecase-panel-content"></div>
-                    </aside>
+                    <svg id="usecase-svg" viewBox="0 0 1120 760" role="img" aria-labelledby="usecaseTitle usecaseDesc">
+                        <title id="usecaseTitle">Casos de uso del sistema de tickets</title>
+                        <desc id="usecaseDesc">Actor solicitante, técnico y administrador interactuando con el sistema de tickets y sus funcionalidades clave.</desc>
+                        <defs>
+                            <marker id="usecase-arrow" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto" markerUnits="strokeWidth">
+                                <polygon points="0 0, 10 5, 0 10" fill="#1e40af"></polygon>
+                            </marker>
+                            <marker id="relation-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
+                                <polygon points="0 0, 8 4, 0 8" fill="#059669"></polygon>
+                            </marker>
+                        </defs>
+
+                        <g data-node="Sistema" data-kind="system">
+                            <rect class="system-rect" x="320" y="80" width="480" height="560" rx="24"></rect>
+                            <text x="560" y="120" text-anchor="middle" class="entity-header">Sistema de Tickets</text>
+                        </g>
+
+                        <g class="actor" data-node="Solicitante" data-kind="actor">
+                            <circle cx="140" cy="200" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                            <line x1="140" y1="218" x2="140" y2="270" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="110" y1="230" x2="170" y2="230" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="140" y1="270" x2="118" y2="310" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="140" y1="270" x2="162" y2="310" stroke="#2563eb" stroke-width="3"></line>
+                            <text x="140" y="340" text-anchor="middle" class="entity-header">Solicitante</text>
+                        </g>
+
+                        <g class="actor" data-node="Técnico" data-kind="actor">
+                            <circle cx="140" cy="500" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                            <line x1="140" y1="518" x2="140" y2="570" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="110" y1="530" x2="170" y2="530" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="140" y1="570" x2="118" y2="610" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="140" y1="570" x2="162" y2="610" stroke="#2563eb" stroke-width="3"></line>
+                            <text x="140" y="640" text-anchor="middle" class="entity-header">Técnico</text>
+                        </g>
+
+                        <g class="actor" data-node="Administrador" data-kind="actor">
+                            <circle cx="980" cy="320" r="18" stroke="#2563eb" stroke-width="3" fill="none"></circle>
+                            <line x1="980" y1="338" x2="980" y2="390" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="950" y1="350" x2="1010" y2="350" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="980" y1="390" x2="958" y2="430" stroke="#2563eb" stroke-width="3"></line>
+                            <line x1="980" y1="390" x2="1002" y2="430" stroke="#2563eb" stroke-width="3"></line>
+                            <text x="980" y="470" text-anchor="middle" class="entity-header">Administrador</text>
+                        </g>
+
+                        <g data-node="Iniciar/Cerrar sesión" class="usecase-group">
+                            <ellipse class="usecase" cx="560" cy="160" rx="130" ry="36"></ellipse>
+                            <text class="usecase-label" data-usecase="Iniciar/Cerrar sesión" x="560" y="166" text-anchor="middle">Iniciar/Cerrar sesión</text>
+                        </g>
+                        <g data-node="Validar permisos por rol" class="usecase-group">
+                            <ellipse class="usecase" cx="560" cy="210" rx="140" ry="36"></ellipse>
+                            <text class="usecase-label" data-usecase="Validar permisos por rol" x="560" y="216" text-anchor="middle">Validar permisos por rol</text>
+                        </g>
+                        <g data-node="FAQ autoservicio" class="usecase-group">
+                            <ellipse class="usecase" cx="420" cy="260" rx="120" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="FAQ autoservicio" x="420" y="266" text-anchor="middle">FAQ autoservicio</text>
+                        </g>
+                        <g data-node="Ver y filtrar tickets" class="usecase-group">
+                            <ellipse class="usecase" cx="700" cy="260" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Ver y filtrar tickets" x="700" y="266" text-anchor="middle">Ver y filtrar tickets</text>
+                        </g>
+                        <g data-node="Crear ticket" class="usecase-group">
+                            <ellipse class="usecase" cx="420" cy="320" rx="120" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Crear ticket" x="420" y="326" text-anchor="middle">Crear ticket</text>
+                        </g>
+                        <g data-node="Adjuntar y comentar" class="usecase-group">
+                            <ellipse class="usecase" cx="700" cy="320" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Adjuntar y comentar" x="700" y="326" text-anchor="middle">Adjuntar y comentar</text>
+                        </g>
+                        <g data-node="Cambiar estado" class="usecase-group">
+                            <ellipse class="usecase" cx="420" cy="380" rx="120" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Cambiar estado" x="420" y="386" text-anchor="middle">Cambiar estado</text>
+                        </g>
+                        <g data-node="Asignar/Reasignar" class="usecase-group">
+                            <ellipse class="usecase" cx="700" cy="380" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Asignar/Reasignar" x="700" y="386" text-anchor="middle">Asignar/Reasignar</text>
+                        </g>
+                        <g data-node="Dashboard KPI" class="usecase-group">
+                            <ellipse class="usecase" cx="420" cy="440" rx="120" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Dashboard KPI" x="420" y="446" text-anchor="middle">Dashboard KPI</text>
+                        </g>
+                        <g data-node="Exportar PDF/Excel" class="usecase-group">
+                            <ellipse class="usecase" cx="700" cy="440" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Exportar PDF/Excel" x="700" y="446" text-anchor="middle">Exportar PDF/Excel</text>
+                        </g>
+                        <g data-node="Gestionar catálogos" class="usecase-group">
+                            <ellipse class="usecase" cx="420" cy="500" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Gestionar catálogos" x="420" y="506" text-anchor="middle">Gestionar catálogos</text>
+                        </g>
+                        <g data-node="Auditoría" class="usecase-group">
+                            <ellipse class="usecase" cx="700" cy="500" rx="140" ry="34"></ellipse>
+                            <text class="usecase-label" data-usecase="Auditoría" x="700" y="506" text-anchor="middle">Auditoría</text>
+                        </g>
+                        <path class="actor-connector" data-source="Solicitante" data-target="Iniciar/Cerrar sesión" d="M240 230 H360 V160 H430"></path>
+                        <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio" d="M240 230 H300 V260 H300"></path>
+                        <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets" d="M240 230 H300 V260 H560"></path>
+                        <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket" d="M240 230 H300 V320 H300"></path>
+                        <path class="actor-connector" data-source="Solicitante" data-target="Adjuntar y comentar" d="M240 230 H300 V320 H560"></path>
+
+                        <path class="actor-connector" data-source="Técnico" data-target="Iniciar/Cerrar sesión" d="M240 530 H300 V160 H430"></path>
+                        <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets" d="M240 530 H300 V260 H560"></path>
+                        <path class="actor-connector" data-source="Técnico" data-target="Adjuntar y comentar" d="M240 530 H300 V320 H560"></path>
+                        <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado" d="M240 530 H300 V380 H300"></path>
+                        <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar" d="M240 530 H300 V380 H560"></path>
+                        <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI" d="M240 530 H300 V440 H300"></path>
+
+                        <path class="actor-connector" data-source="Administrador" data-target="Iniciar/Cerrar sesión" d="M880 350 H780 V160 H690"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets" d="M880 350 H820 V260 H780"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar" d="M880 350 H820 V380 H780"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI" d="M880 350 H820 V440 H780"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos" d="M880 350 H820 V500 H780"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel" d="M880 350 H820 V440 H780"></path>
+                        <path class="actor-connector" data-source="Administrador" data-target="Auditoría" d="M880 350 H820 V500 H780"></path>
+
+                        <path class="relation-line include" data-source="Crear ticket" data-target="Auditoría" d="M420 354 V470 H700"></path>
+                        <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Auditoría" d="M700 354 V470"></path>
+                        <path class="relation-line include" data-source="Cambiar estado" data-target="Auditoría" d="M420 414 V470 H700"></path>
+                        <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Auditoría" d="M700 414 V470"></path>
+                        <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Ver y filtrar tickets" d="M700 474 V300"></path>
+                        <path class="relation-line include" data-source="Crear ticket" data-target="Validar permisos por rol" d="M420 286 V230 H560"></path>
+                        <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Validar permisos por rol" d="M700 286 V230"></path>
+                        <path class="relation-line include" data-source="Cambiar estado" data-target="Validar permisos por rol" d="M420 346 V230 H560"></path>
+                        <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Validar permisos por rol" d="M700 346 V230"></path>
+                        <path class="relation-line include" data-source="Dashboard KPI" data-target="Validar permisos por rol" d="M420 406 V230 H560"></path>
+                        <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Validar permisos por rol" d="M700 406 V230"></path>
+                        <path class="relation-line include" data-source="Gestionar catálogos" data-target="Validar permisos por rol" d="M420 466 V230 H560"></path>
+                        <path class="relation-line include" data-source="Auditoría" data-target="Validar permisos por rol" d="M700 466 V230"></path>
+
+                        <text x="780" y="620" class="note">FAQ excluye la creación de ticket cuando resuelve la solicitud.</text>
+                    </svg>
                 </div>
+                <aside class="side-panel" data-side-panel>
+                    <h3 id="usecases-node-title">Solicitante</h3>
+                    <div class="side-panel-content" id="usecases-panel-content"></div>
+                </aside>
             </div>
-        </div>
+        </section>
         <!-- VISTA DER -->
-        <div class="panel" id="der" data-view="der">
+        <section class="panel" id="der" data-view="der">
             <div class="panel-header">
                 <h2>Diagrama Entidad-Relación</h2>
                 <div class="panel-actions">
@@ -989,19 +902,19 @@
             </div>
             <div class="panel-body">
                 <div class="der-wrapper">
-                    <svg id="der-svg" viewBox="0 0 1560 1120" aria-labelledby="derTitle derDesc" role="img">
+                    <svg id="der-svg" viewBox="0 0 1680 1180" role="img" aria-labelledby="derTitle derDesc" preserveAspectRatio="xMidYMid meet">
                         <title id="derTitle">Modelo de datos Coyahue Helpdesk</title>
-                        <desc id="derDesc">Entidades Category, Subcategory, Priority, Area, Ticket, comentarios, adjuntos, asignaciones y auditoría.</desc>
+                        <desc id="derDesc">Entidades auth_user, Category, Subcategory, Ticket, Priority, Area y los registros relacionados de comentarios, adjuntos, asignaciones y auditoría.</desc>
                         <defs>
                             <marker id="der-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
-                                <polygon points="0 0, 10 5, 0 10" fill="rgba(129, 140, 248, 0.9)"></polygon>
+                                <polygon points="0 0, 10 5, 0 10" fill="#2563eb"></polygon>
                             </marker>
                         </defs>
 
-                        <g data-node="auth_user" class="entity" transform="translate(80,80)">
-                            <rect width="300" height="220" rx="18"></rect>
-                            <text x="150" y="30" text-anchor="middle" class="entity-header">auth_user</text>
-                            <text x="100" y="70" class="entity-badges">PK</text>
+                        <g data-node="auth_user" class="entity" transform="translate(80,120)">
+                            <rect width="320" height="220"></rect>
+                            <text x="160" y="32" text-anchor="middle" class="entity-header">auth_user</text>
+                            <text x="20" y="70" class="entity-badges">PK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• username</text>
                             <text x="20" y="140" class="entity-attr">• password (hash)</text>
@@ -1009,9 +922,9 @@
                             <text x="20" y="180" class="entity-attr">• is_active · is_staff</text>
                         </g>
 
-                        <g data-node="Category" class="entity" transform="translate(420,80)">
-                            <rect width="280" height="220" rx="18"></rect>
-                            <text x="140" y="30" text-anchor="middle" class="entity-header">Category</text>
+                        <g data-node="Category" class="entity" transform="translate(460,120)">
+                            <rect width="300" height="220"></rect>
+                            <text x="150" y="32" text-anchor="middle" class="entity-header">Category</text>
                             <text x="20" y="70" class="entity-badges">UNIQUE</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• name</text>
@@ -1020,9 +933,9 @@
                             <text x="20" y="180" class="entity-attr">Nota: nombres normalizados en MAYÚSCULAS</text>
                         </g>
 
-                        <g data-node="Subcategory" class="entity" transform="translate(760,80)">
-                            <rect width="300" height="240" rx="18"></rect>
-                            <text x="150" y="30" text-anchor="middle" class="entity-header">Subcategory</text>
+                        <g data-node="Subcategory" class="entity" transform="translate(840,120)">
+                            <rect width="320" height="240"></rect>
+                            <text x="160" y="32" text-anchor="middle" class="entity-header">Subcategory</text>
                             <text x="20" y="70" class="entity-badges">FK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• category_id (FK)</text>
@@ -1032,9 +945,9 @@
                             <text x="20" y="200" class="entity-attr">Nota: unicidad por categoría</text>
                         </g>
 
-                        <g data-node="Ticket" class="entity" transform="translate(760,360)">
-                            <rect width="320" height="360" rx="18"></rect>
-                            <text x="160" y="30" text-anchor="middle" class="entity-header">Ticket</text>
+                        <g data-node="Ticket" class="entity" transform="translate(840,420)">
+                            <rect width="340" height="380"></rect>
+                            <text x="170" y="32" text-anchor="middle" class="entity-header">Ticket</text>
                             <text x="20" y="70" class="entity-badges">UNIQUE · INDEX</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• code (UNIQUE)</text>
@@ -1051,27 +964,27 @@
                             <text x="20" y="340" class="entity-attr">• resolved_at? · closed_at? · cluster_id (INDEX·DEPRECATED)</text>
                         </g>
 
-                        <g data-node="Priority" class="entity" transform="translate(1120,80)">
-                            <rect width="260" height="220" rx="18"></rect>
-                            <text x="130" y="30" text-anchor="middle" class="entity-header">Priority</text>
+                        <g data-node="Priority" class="entity" transform="translate(1240,120)">
+                            <rect width="280" height="220"></rect>
+                            <text x="140" y="32" text-anchor="middle" class="entity-header">Priority</text>
                             <text x="20" y="70" class="entity-badges">UNIQUE</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• name</text>
                             <text x="20" y="140" class="entity-attr">• sla_hours</text>
                         </g>
 
-                        <g data-node="Area" class="entity" transform="translate(1120,360)">
-                            <rect width="260" height="240" rx="18"></rect>
-                            <text x="130" y="30" text-anchor="middle" class="entity-header">Area</text>
+                        <g data-node="Area" class="entity" transform="translate(1240,420)">
+                            <rect width="280" height="260"></rect>
+                            <text x="140" y="32" text-anchor="middle" class="entity-header">Area</text>
                             <text x="20" y="70" class="entity-badges">UNIQUE</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• name</text>
                             <text x="20" y="140" class="entity-attr">• is_active</text>
                         </g>
 
-                        <g data-node="TicketComment" class="entity" transform="translate(400,760)">
-                            <rect width="280" height="240" rx="18"></rect>
-                            <text x="140" y="30" text-anchor="middle" class="entity-header">TicketComment</text>
+                        <g data-node="TicketComment" class="entity" transform="translate(360,820)">
+                            <rect width="300" height="240"></rect>
+                            <text x="150" y="32" text-anchor="middle" class="entity-header">TicketComment</text>
                             <text x="20" y="70" class="entity-badges">FK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• ticket_id (FK)</text>
@@ -1081,9 +994,9 @@
                             <text x="20" y="200" class="entity-attr">• created_at</text>
                         </g>
 
-                        <g data-node="TicketAttachment" class="entity" transform="translate(720,760)">
-                            <rect width="280" height="240" rx="18"></rect>
-                            <text x="140" y="30" text-anchor="middle" class="entity-header">TicketAttachment</text>
+                        <g data-node="TicketAttachment" class="entity" transform="translate(720,820)">
+                            <rect width="300" height="240"></rect>
+                            <text x="150" y="32" text-anchor="middle" class="entity-header">TicketAttachment</text>
                             <text x="20" y="70" class="entity-badges">FK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• ticket_id (FK)</text>
@@ -1093,9 +1006,9 @@
                             <text x="20" y="200" class="entity-attr">• uploaded_at</text>
                         </g>
 
-                        <g data-node="TicketAssignment" class="entity" transform="translate(1040,760)">
-                            <rect width="300" height="240" rx="18"></rect>
-                            <text x="150" y="30" text-anchor="middle" class="entity-header">TicketAssignment</text>
+                        <g data-node="TicketAssignment" class="entity" transform="translate(1080,820)">
+                            <rect width="320" height="240"></rect>
+                            <text x="160" y="32" text-anchor="middle" class="entity-header">TicketAssignment</text>
                             <text x="20" y="70" class="entity-badges">FK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• ticket_id (FK)</text>
@@ -1105,9 +1018,9 @@
                             <text x="20" y="200" class="entity-attr">• created_at</text>
                         </g>
 
-                        <g data-node="AuditLog" class="entity" transform="translate(1360,760)">
-                            <rect width="300" height="260" rx="18"></rect>
-                            <text x="150" y="30" text-anchor="middle" class="entity-header">AuditLog</text>
+                        <g data-node="AuditLog" class="entity" transform="translate(1440,820)">
+                            <rect width="320" height="260"></rect>
+                            <text x="160" y="32" text-anchor="middle" class="entity-header">AuditLog</text>
                             <text x="20" y="70" class="entity-badges">FK</text>
                             <text x="20" y="100" class="entity-attr">• id (PK)</text>
                             <text x="20" y="120" class="entity-attr">• ticket_id (FK)</text>
@@ -1116,86 +1029,80 @@
                             <text x="20" y="180" class="entity-attr">• meta (JSON)</text>
                             <text x="20" y="200" class="entity-attr">• created_at</text>
                         </g>
+                        <path class="relationship-line" data-edge="user-ticket" data-source="auth_user" data-target="Ticket" d="M400 220 H840"></path>
+                        <text x="420" y="208" class="cardinality">1..N</text>
+                        <text x="420" y="232" class="relationship-label">requester (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-ticket" data-source="auth_user" data-target="Ticket" d="M380 180 H420"></path>
-                        <text x="392" y="166" class="cardinality">1..N</text>
-                        <text x="392" y="192" class="relationship-label">requester (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-assigned" data-source="auth_user" data-target="Ticket" d="M400 260 H420 V520 H820"></path>
+                        <text x="430" y="350" class="cardinality">1..N</text>
+                        <text x="430" y="374" class="relationship-label">assigned_to (SET_NULL)</text>
 
-                        <path class="relationship-line" data-edge="user-assigned" data-source="auth_user" data-target="Ticket" d="M380 220 H780 V440 H760"></path>
-                        <text x="650" y="430" class="cardinality">1..N</text>
-                        <text x="650" y="454" class="relationship-label">assigned_to (SET_NULL)</text>
+                        <path class="relationship-line" data-edge="category-subcategory" data-source="Category" data-target="Subcategory" d="M760 200 H840"></path>
+                        <text x="780" y="188" class="cardinality">1..N</text>
+                        <text x="780" y="214" class="relationship-label">category (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="category-subcategory" data-source="Category" data-target="Subcategory" d="M700 200 H760"></path>
-                        <text x="712" y="186" class="cardinality">1..N</text>
-                        <text x="712" y="212" class="relationship-label">category (CASCADE)</text>
+                        <path class="relationship-line" data-edge="category-ticket" data-source="Category" data-target="Ticket" d="M760 240 H820 V500 H840"></path>
+                        <text x="790" y="320" class="cardinality">1..N</text>
+                        <text x="790" y="344" class="relationship-label">category (PROTECT)</text>
 
-                        <path class="relationship-line" data-edge="category-ticket" data-source="Category" data-target="Ticket" d="M700 240 H760"></path>
-                        <text x="712" y="226" class="cardinality">1..N</text>
-                        <text x="712" y="252" class="relationship-label">category (PROTECT)</text>
+                        <path class="relationship-line" data-edge="subcategory-ticket" data-source="Subcategory" data-target="Ticket" d="M1000 360 V420"></path>
+                        <text x="1012" y="388" class="cardinality">1..N</text>
+                        <text x="1020" y="410" class="relationship-label">subcategory (PROTECT, opcional)</text>
 
-                        <path class="relationship-line" data-edge="subcategory-ticket" data-source="Subcategory" data-target="Ticket" d="M920 320 V360"></path>
-                        <text x="930" y="338" class="cardinality">1..N</text>
-                        <text x="936" y="354" class="relationship-label">subcategory (PROTECT, opcional)</text>
+                        <path class="relationship-line" data-edge="priority-ticket" data-source="Priority" data-target="Ticket" d="M1240 220 H1210 V520 H1180"></path>
+                        <text x="1218" y="420" class="cardinality">1..N</text>
+                        <text x="1210" y="444" class="relationship-label">priority (PROTECT)</text>
 
-                        <path class="relationship-line" data-edge="priority-ticket" data-source="Priority" data-target="Ticket" d="M1120 200 H1080 V420 H1080"></path>
-                        <text x="1100" y="328" class="cardinality">1..N</text>
-                        <text x="1100" y="352" class="relationship-label">priority (PROTECT)</text>
+                        <path class="relationship-line" data-edge="area-ticket" data-source="Area" data-target="Ticket" d="M1240 520 H1180"></path>
+                        <text x="1210" y="508" class="cardinality">1..N</text>
+                        <text x="1204" y="532" class="relationship-label">area (PROTECT, opcional)</text>
 
-                        <path class="relationship-line" data-edge="area-ticket" data-source="Area" data-target="Ticket" d="M1240 420 H1080"></path>
-                        <text x="1160" y="406" class="cardinality">1..N</text>
-                        <text x="1156" y="432" class="relationship-label">area (PROTECT, opcional)</text>
+                        <path class="relationship-line" data-edge="ticket-comment" data-source="Ticket" data-target="TicketComment" d="M1010 800 V820"></path>
+                        <text x="1020" y="812" class="cardinality">1..N</text>
+                        <text x="1026" y="836" class="relationship-label">comentarios (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="ticket-comment" data-source="Ticket" data-target="TicketComment" d="M900 520 V760"></path>
-                        <text x="912" y="650" class="cardinality">1..N</text>
-                        <text x="918" y="674" class="relationship-label">comentarios (CASCADE)</text>
+                        <path class="relationship-line" data-edge="ticket-attachment" data-source="Ticket" data-target="TicketAttachment" d="M1070 800 V820"></path>
+                        <text x="1080" y="812" class="cardinality">1..N</text>
+                        <text x="1086" y="836" class="relationship-label">adjuntos (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="ticket-attachment" data-source="Ticket" data-target="TicketAttachment" d="M960 520 V760"></path>
-                        <text x="972" y="650" class="cardinality">1..N</text>
-                        <text x="978" y="674" class="relationship-label">adjuntos (CASCADE)</text>
+                        <path class="relationship-line" data-edge="ticket-assignment" data-source="Ticket" data-target="TicketAssignment" d="M1130 800 V820"></path>
+                        <text x="1140" y="812" class="cardinality">1..N</text>
+                        <text x="1146" y="836" class="relationship-label">asignaciones (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="ticket-assignment" data-source="Ticket" data-target="TicketAssignment" d="M1040 520 V760"></path>
-                        <text x="1052" y="650" class="cardinality">1..N</text>
-                        <text x="1060" y="674" class="relationship-label">asignaciones (CASCADE)</text>
+                        <path class="relationship-line" data-edge="ticket-audit" data-source="Ticket" data-target="AuditLog" d="M1190 800 V820"></path>
+                        <text x="1200" y="812" class="cardinality">1..N</text>
+                        <text x="1206" y="836" class="relationship-label">auditoría (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="ticket-audit" data-source="Ticket" data-target="AuditLog" d="M1200 520 V760"></path>
-                        <text x="1212" y="650" class="cardinality">1..N</text>
-                        <text x="1220" y="674" class="relationship-label">auditoría (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-comment" data-source="auth_user" data-target="TicketComment" d="M240 340 V780 H360 V820"></path>
+                        <text x="220" y="600" class="cardinality">1..N</text>
+                        <text x="226" y="624" class="relationship-label">author (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-comment" data-source="auth_user" data-target="TicketComment" d="M220 300 V760"></path>
-                        <text x="200" y="520" class="cardinality">1..N</text>
-                        <text x="206" y="544" class="relationship-label">author (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-attachment" data-source="auth_user" data-target="TicketAttachment" d="M260 360 V780 H720 V820"></path>
+                        <text x="300" y="760" class="cardinality">1..N</text>
+                        <text x="306" y="784" class="relationship-label">uploaded_by (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-attachment" data-source="auth_user" data-target="TicketAttachment" d="M220 320 V760 H720"></path>
-                        <text x="340" y="710" class="cardinality">1..N</text>
-                        <text x="346" y="734" class="relationship-label">uploaded_by (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-assignment-from" data-source="auth_user" data-target="TicketAssignment" d="M400 360 H420 V780 H1080 V820"></path>
+                        <text x="470" y="760" class="cardinality">1..N</text>
+                        <text x="476" y="784" class="relationship-label">from_user (SET_NULL)</text>
 
-                        <path class="relationship-line" data-edge="user-assignment-from" data-source="auth_user" data-target="TicketAssignment" d="M380 360 H1040"></path>
-                        <text x="720" y="346" class="cardinality">1..N</text>
-                        <text x="720" y="372" class="relationship-label">from_user (SET_NULL)</text>
+                        <path class="relationship-line" data-edge="user-assignment-to" data-source="auth_user" data-target="TicketAssignment" d="M400 400 H440 V780 H1220 V820"></path>
+                        <text x="520" y="760" class="cardinality">1..N</text>
+                        <text x="526" y="784" class="relationship-label">to_user (CASCADE)</text>
 
-                        <path class="relationship-line" data-edge="user-assignment-to" data-source="auth_user" data-target="TicketAssignment" d="M380 400 H1040"></path>
-                        <text x="720" y="386" class="cardinality">1..N</text>
-                        <text x="720" y="412" class="relationship-label">to_user (CASCADE)</text>
+                        <path class="relationship-line" data-edge="user-audit" data-source="auth_user" data-target="AuditLog" d="M400 440 H440 V780 H1440 V820"></path>
+                        <text x="620" y="760" class="cardinality">1..N</text>
+                        <text x="626" y="784" class="relationship-label">actor (SET_NULL)</text>
 
-                        <path class="relationship-line" data-edge="user-audit" data-source="auth_user" data-target="AuditLog" d="M380 440 H1360"></path>
-                        <text x="760" y="426" class="cardinality">1..N</text>
-                        <text x="760" y="452" class="relationship-label">actor (SET_NULL)</text>
-
-                        <text x="1320" y="1040" class="der-note">Ticket.code es único para identificar casos. created_at está indexado para reportes y ticket.cluster_id se mantiene por compatibilidad histórica (deprecated).</text>
+                        <text x="1120" y="1080" class="der-note">Ticket.code es único; created_at está indexado para reportes y ticket.cluster_id permanece por compatibilidad (deprecated).</text>
                     </svg>
                 </div>
                 <aside class="side-panel" data-side-panel>
                     <h3 id="der-node-title">auth_user</h3>
-                    <div class="tab-switcher">
-                        <button class="active" data-tab="explanation">Explicación</button>
-                        <button data-tab="relations">Relaciones</button>
-                    </div>
                     <div class="side-panel-content" id="der-panel-content"></div>
                 </aside>
             </div>
-        </div>
+        </section>
     </div>
-
     <script>
         const panels = document.getElementById('panels');
         const diagramButtons = document.querySelectorAll('.diagram-button');
@@ -1204,41 +1111,42 @@
 
         let currentPanel = null;
 
-        diagramButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const panelId = btn.getAttribute('data-panel');
-                const panel = document.getElementById(panelId);
-                panels.classList.add('visible');
-                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-                panel.classList.add('active');
+        diagramButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-panel');
+                const panel = document.getElementById(targetId);
+                if (!panel) return;
                 currentPanel = panel;
-                panel.classList.remove('focus-mode');
-                panel.setAttribute('aria-live', 'polite');
+                panels.classList.add('visible');
+                panel.classList.add('active');
             });
         });
 
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                panels.classList.remove('visible');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
                 if (currentPanel) {
-                    currentPanel.classList.remove('active');
+                    currentPanel.classList.remove('active', 'focus-mode');
+                    currentPanel.querySelectorAll('[data-focus]').forEach(btn => btn.classList.remove('active'));
+                    panels.classList.remove('visible');
                     currentPanel = null;
                 }
             });
         });
 
-        focusButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const panel = btn.closest('.panel');
+        focusButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const panel = button.closest('.panel');
                 panel.classList.toggle('focus-mode');
-                btn.textContent = panel.classList.contains('focus-mode') ? 'Salir de foco' : 'Ampliar diagrama';
+                button.classList.toggle('active');
+                button.textContent = panel.classList.contains('focus-mode') ? 'Salir de foco' : 'Ampliar diagrama';
             });
         });
 
-        document.addEventListener('click', (event) => {
-            if (currentPanel && !currentPanel.contains(event.target) && !event.target.closest('.diagram-button')) {
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && currentPanel) {
+                currentPanel.classList.remove('active', 'focus-mode');
+                currentPanel.querySelectorAll('[data-focus]').forEach(btn => btn.classList.remove('active'));
                 panels.classList.remove('visible');
-                currentPanel.classList.remove('active');
                 currentPanel = null;
             }
         });
@@ -1248,30 +1156,13 @@
             const sidePanel = panel.querySelector('[data-side-panel]');
             const titleEl = sidePanel.querySelector('h3');
             const contentEl = sidePanel.querySelector('.side-panel-content');
-            const tabButtons = sidePanel.querySelectorAll('.tab-switcher button');
             let currentNode = Object.keys(data)[0];
-            let currentTab = 'explanation';
 
             function render() {
                 const nodeData = data[currentNode];
                 titleEl.textContent = currentNode;
-                const tabData = nodeData[currentTab];
-                if (currentTab === 'relations') {
-                    const rows = tabData.map(row => `<tr><td>${row.destino}</td><td>${row.cardinalidad}</td><td>${row.campo}</td><td>${row.on_delete}</td><td>${row.opcional}</td></tr>`).join('');
-                    contentEl.innerHTML = `<table><thead><tr><th>Destino</th><th>Card.</th><th>Campo FK</th><th>on_delete</th><th>Opcional</th></tr></thead><tbody>${rows || '<tr><td colspan="5">Sin relaciones directas</td></tr>'}</tbody></table>`;
-                } else {
-                    contentEl.innerHTML = `<p>${tabData}</p>`;
-                }
+                contentEl.innerHTML = `<p>${nodeData.explanation}</p>`;
             }
-
-            tabButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentTab = btn.getAttribute('data-tab');
-                    render();
-                });
-            });
 
             panel.querySelectorAll('[data-node]').forEach(node => {
                 node.addEventListener('click', (event) => {
@@ -1292,100 +1183,60 @@
             });
 
             render();
-            return { panel, contentEl, titleEl, data };
+            return { panel, data };
         }
 
         const deploymentData = {
-            'Cliente': {
-                explanation: 'Dispositivo del usuario final que accede por navegador con TLS y autenticación delegada.',
-                relations: [
-                    { destino: 'Internet', cardinalidad: '1→1', campo: 'HTTPS', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Internet': {
-                explanation: 'Capa pública que enruta el tráfico hacia la VPC.',
-                relations: [
-                    { destino: 'Entrada VPC', cardinalidad: '1→1', campo: 'Tráfico HTTPS', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Entrada VPC': {
-                explanation: 'Punto de entrada a la red privada con reglas de seguridad y balance básico.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1→1', campo: 'SG Público', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'AWS VPC': {
-                explanation: 'Contenedor de red AWS donde residen las subredes pública y privada.',
-                relations: [
-                    { destino: 'Subred Pública', cardinalidad: '1→N', campo: '10.0.1.0/24', on_delete: '-', opcional: 'No' },
-                    { destino: 'Subred Privada', cardinalidad: '1→N', campo: '10.0.2.0/24', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Subred Pública': {
-                explanation: 'Red que aloja la instancia EC2 con Nginx, Gunicorn y Django.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1→1', campo: 'Interfaces ENI', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Subred Privada': {
-                explanation: 'Red sin exposición pública que contiene la base de datos.',
-                relations: [
-                    { destino: 'PostgreSQL', cardinalidad: '1→1', campo: 'SG Privado', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'EC2 App': {
-                explanation: 'Servidor EC2 que ejecuta Nginx (terminación HTTPS), Gunicorn y la aplicación Django/DRF.',
-                relations: [
-                    { destino: 'PostgreSQL', cardinalidad: '1→1', campo: 'Driver PostgreSQL', on_delete: '-', opcional: 'No' },
-                    { destino: '/media', cardinalidad: '1→1', campo: 'Sistema de archivos', on_delete: '-', opcional: 'No' },
-                    { destino: 'Logs', cardinalidad: '1→1', campo: 'Fluent/logrotate', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            '/media': {
-                explanation: 'Directorio local de adjuntos dentro de la instancia.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1←1', campo: 'Montaje local', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Logs': {
-                explanation: 'Carpeta de registros de la aplicación y servidor.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1←1', campo: 'Salida estándar / archivos', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'PostgreSQL': {
-                explanation: 'Base de datos gestionada dentro de la subred privada, puerto 5432.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1←1', campo: 'Conexión SSL interno', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'IGW': {
-                explanation: 'Gateway público pendiente de aprovisionar para enrutar tráfico desde Internet.',
-                relations: [
-                    { destino: 'Entrada VPC', cardinalidad: '1→1', campo: 'Tabla de rutas', on_delete: '-', opcional: 'Sí' }
-                ]
-            },
-            'NAT Gateway': {
-                explanation: 'Servicio administrado para que la subred privada salga a Internet sin exponer la BD.',
-                relations: [
-                    { destino: 'Subred Privada', cardinalidad: '1→N', campo: 'Rutas de salida', on_delete: '-', opcional: 'Sí' }
-                ]
-            },
-            'S3': {
-                explanation: 'Bucket planificado para almacenar adjuntos mediante django-storages.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '↔', campo: 'API REST', on_delete: '-', opcional: 'Sí' }
-                ]
-            },
-            'WAF/ALB': {
-                explanation: 'Protección de borde y balanceo que se agregará delante de Nginx.',
-                relations: [
-                    { destino: 'EC2 App', cardinalidad: '1→N', campo: 'Target Group', on_delete: '-', opcional: 'Sí' }
-                ]
-            }
+            'Cliente': { explanation: 'Dispositivo del usuario final que accede por navegador protegido (HTTPS) y autentica contra el backend.' },
+            'Internet': { explanation: 'Capa pública que enruta el tráfico HTTPS hacia la VPC privada.' },
+            'IGW': { explanation: 'Internet Gateway pendiente de agregar para exponer la subred pública mediante la tabla de rutas.' },
+            'Entrada VPC': { explanation: 'Security Group que autoriza el tráfico HTTPS entrante y lo entrega a la instancia EC2.' },
+            'AWS VPC': { explanation: 'Red virtual de AWS que contiene subred pública para la aplicación y privada para la base de datos.' },
+            'Subred pública': { explanation: 'Segmento accesible donde vive la instancia EC2 con Nginx, Gunicorn y Django.' },
+            'Subred privada': { explanation: 'Segmento aislado sin exposición directa; aloja PostgreSQL con reglas estrictas.' },
+            'NAT Gateway': { explanation: 'Servicio administrado pendiente para permitir salidas controladas desde la subred privada.' },
+            'EC2 App': { explanation: 'Servidor EC2 que ejecuta la pila Nginx (terminación HTTPS), Gunicorn y la aplicación Django/DRF.' },
+            'WAF/ALB': { explanation: 'WAF/ALB planificado para añadir protección de borde y balanceo antes de Nginx.' },
+            '/media': { explanation: 'Directorio local para archivos adjuntos del sistema de tickets.' },
+            'Logs': { explanation: 'Carpeta de registros de aplicación y servidor para auditoría operativa.' },
+            'S3': { explanation: 'Bucket planificado para migrar adjuntos mediante django-storages.' },
+            'PostgreSQL': { explanation: 'Base de datos PostgreSQL en subred privada; expone el puerto 5432 solo dentro de la VPC.' }
         };
 
-        const deploymentPanel = setupSidePanel('deployment', deploymentData);
+        const usecaseData = {
+            'Solicitante': { explanation: 'Usuario final que genera solicitudes, consulta el estado y comparte información del ticket.' },
+            'Técnico': { explanation: 'Agente que resuelve tickets, ajusta estados, añade comentarios y analiza métricas operativas.' },
+            'Administrador': { explanation: 'Perfil que supervisa la operación, administra catálogos y emite reportes y auditorías.' },
+            'Iniciar/Cerrar sesión': { explanation: 'Flujo de autenticación y cierre de sesión para todos los perfiles.' },
+            'Validar permisos por rol': { explanation: 'Control de autorización que condiciona las acciones según el rol del usuario.' },
+            'FAQ autoservicio': { explanation: 'Consulta de respuestas rápidas para intentar resolver sin crear ticket.' },
+            'Ver y filtrar tickets': { explanation: 'Visualización y filtrado por estado, prioridad o área de los tickets.' },
+            'Crear ticket': { explanation: 'Registro de una nueva solicitud con categoría, prioridad y descripción.' },
+            'Adjuntar y comentar': { explanation: 'Adjunta archivos y deja comentarios internos o públicos en el ticket.' },
+            'Cambiar estado': { explanation: 'Transición del estado del ticket según la evolución del caso.' },
+            'Asignar/Reasignar': { explanation: 'Entrega el ticket a otro técnico o equipo responsable.' },
+            'Dashboard KPI': { explanation: 'Visualiza indicadores SLA, tiempos de atención y carga operativa.' },
+            'Exportar PDF/Excel': { explanation: 'Genera reportes descargables en base a los filtros activos.' },
+            'Gestionar catálogos': { explanation: 'Administra categorías, subcategorías, prioridades y áreas disponibles.' },
+            'Auditoría': { explanation: 'Registra cada cambio relevante del ticket para trazabilidad completa.' }
+        };
+
+        const derData = {
+            'auth_user': { explanation: 'Usuarios autenticados con flags de staff. Referenciados por tickets, comentarios, adjuntos, asignaciones y auditoría.' },
+            'Category': { explanation: 'Clasificación principal del ticket. El nombre es único y se normaliza en MAYÚSCULAS.' },
+            'Subcategory': { explanation: 'Detalle específico ligado a una categoría. Mantiene unicidad por categoría.' },
+            'Ticket': { explanation: 'Entidad central del helpdesk con código único, campos indexados y múltiples referencias opcionales.' },
+            'Priority': { explanation: 'Define niveles de urgencia con nombre único y horas de SLA.' },
+            'Area': { explanation: 'Área o equipo responsable, con nombre único y flag de actividad.' },
+            'TicketComment': { explanation: 'Historial de comentarios y notas internas asociados a un ticket.' },
+            'TicketAttachment': { explanation: 'Archivos que acompañan un ticket, incluyen tipo de contenido y tamaño.' },
+            'TicketAssignment': { explanation: 'Bitácora de asignaciones con origen, destino y motivo.' },
+            'AuditLog': { explanation: 'Registro detallado de acciones sobre tickets, incluyendo metadatos y actor opcional.' }
+        };
+
+        setupSidePanel('deployment', deploymentData);
+        setupSidePanel('usecases', usecaseData);
+        setupSidePanel('der', derData);
 
         const toggleInputs = document.querySelectorAll('[data-toggle]');
         toggleInputs.forEach(input => {
@@ -1393,11 +1244,14 @@
                 const target = input.getAttribute('data-toggle');
                 document.querySelectorAll(`[data-toggle-group="${target}"]`).forEach(group => {
                     group.classList.toggle('hidden', !input.checked);
+                    if (input.checked) {
+                        group.classList.add('active-planned');
+                    } else {
+                        group.classList.remove('active-planned');
+                    }
                 });
             });
         });
-
-
 
         function buildAdjacency(panel, adjacency) {
             const nodes = panel.querySelectorAll('[data-node]');
@@ -1411,9 +1265,7 @@
 
             function applyHighlight(name) {
                 clearHighlight();
-                if (!name) {
-                    return;
-                }
+                if (!name) return;
                 const neighbors = adjacency[name] || [];
                 nodes.forEach(n => n.classList.add('dimmed'));
                 edges.forEach(e => e.classList.add('dimmed'));
@@ -1443,17 +1295,35 @@
                     clearHighlight();
                     panel.dispatchEvent(new CustomEvent('nodeCleared'));
                 }
-            });
+                const neighbors = adjacency[name] || [];
+                nodes.forEach(n => n.classList.add('dimmed'));
+                edges.forEach(e => e.classList.add('dimmed'));
+                panel.querySelectorAll(`[data-node="${name}"]`).forEach(n => {
+                    n.classList.remove('dimmed');
+                    n.classList.add('active');
+                });
+                neighbors.forEach(neighbor => {
+                    panel.querySelectorAll(`[data-node="${neighbor}"]`).forEach(n => {
+                        n.classList.remove('dimmed');
+                        n.classList.add('active');
+                    });
+                    panel.querySelectorAll(`[data-source="${name}"][data-target="${neighbor}"]`).forEach(edge => {
+                        edge.classList.remove('dimmed');
+                        edge.classList.add('active');
+                    });
+                    panel.querySelectorAll(`[data-source="${neighbor}"][data-target="${name}"]`).forEach(edge => {
+                        edge.classList.remove('dimmed');
+                        edge.classList.add('active');
+                    });
+                });
+            }
 
             nodes.forEach(node => {
                 const nodeName = node.getAttribute('data-node');
                 node.addEventListener('mouseenter', () => {
-                    if (selected) {
-                        return;
-                    }
+                    if (selected) return;
                     applyHighlight(nodeName);
                 });
-
                 node.addEventListener('mouseleave', () => {
                     if (selected) {
                         applyHighlight(selected);
@@ -1461,7 +1331,6 @@
                         clearHighlight();
                     }
                 });
-
                 node.addEventListener('click', () => {
                     if (selected === nodeName) {
                         selected = null;
@@ -1479,119 +1348,19 @@
         buildAdjacency(document.getElementById('deployment'), {
             'Cliente': ['Internet'],
             'Internet': ['Cliente', 'Entrada VPC', 'IGW', 'WAF/ALB'],
-            'Entrada VPC': ['Internet', 'EC2 App', 'IGW'],
-            'AWS VPC': ['Subred Pública', 'Subred Privada'],
-            'Subred Pública': ['EC2 App', 'AWS VPC'],
-            'Subred Privada': ['PostgreSQL', 'AWS VPC', 'NAT Gateway'],
-            'EC2 App': ['Entrada VPC', 'PostgreSQL', '/media', 'Logs', 'S3', 'WAF/ALB'],
+            'IGW': ['Entrada VPC', 'Internet'],
+            'Entrada VPC': ['Internet', 'EC2 App', 'WAF/ALB'],
+            'AWS VPC': ['Subred pública', 'Subred privada'],
+            'Subred pública': ['EC2 App', 'AWS VPC', 'NAT Gateway'],
+            'Subred privada': ['PostgreSQL', 'AWS VPC', 'NAT Gateway'],
+            'NAT Gateway': ['Subred privada'],
+            'EC2 App': ['Entrada VPC', 'PostgreSQL', '/media', 'Logs', 'S3'],
+            'WAF/ALB': ['Internet', 'Entrada VPC', 'EC2 App'],
             '/media': ['EC2 App'],
             'Logs': ['EC2 App'],
-            'PostgreSQL': ['EC2 App', 'Subred Privada'],
-            'IGW': ['Entrada VPC', 'Internet'],
-            'NAT Gateway': ['Subred Privada'],
             'S3': ['EC2 App'],
-            'WAF/ALB': ['Internet', 'EC2 App']
+            'PostgreSQL': ['EC2 App', 'Subred privada']
         });
-
-        const usecaseData = {
-            'Solicitante': {
-                explanation: 'Usuario que reporta incidentes o solicitudes. Opera desde el portal.',
-                relations: [
-                    { destino: 'Iniciar/Cerrar sesión', cardinalidad: 'Interactúa', campo: 'Formulario login', on_delete: '-', opcional: 'No' },
-                    { destino: 'Crear ticket', cardinalidad: 'Dispara', campo: 'Formulario', on_delete: '-', opcional: 'No' },
-                    { destino: 'FAQ autoservicio', cardinalidad: 'Consulta', campo: 'Base FAQ', on_delete: '-', opcional: 'Sí' }
-                ]
-            },
-            'Técnico': {
-                explanation: 'Personal de soporte que atiende tickets y gestiona estados.',
-                relations: [
-                    { destino: 'Cambiar estado', cardinalidad: 'Ejecuta', campo: 'Workflow ticket', on_delete: '-', opcional: 'No' },
-                    { destino: 'Asignar/Reasignar', cardinalidad: 'Ejecuta', campo: 'Transferencias', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Administrador': {
-                explanation: 'Rol con privilegios para supervisar métricas y catálogos.',
-                relations: [
-                    { destino: 'Gestionar catálogos', cardinalidad: 'Administra', campo: 'CRUD catálogos', on_delete: '-', opcional: 'No' },
-                    { destino: 'Auditoría', cardinalidad: 'Consulta', campo: 'Bitácora', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Iniciar/Cerrar sesión': {
-                explanation: 'Proceso de autenticación para todos los roles.',
-                relations: [
-                    { destino: 'Validar permisos por rol', cardinalidad: 'include', campo: 'Validación rol', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Validar permisos por rol': {
-                explanation: 'Servicio central que determina acceso a cada acción.',
-                relations: [
-                    { destino: 'Todos los casos operativos', cardinalidad: 'include', campo: 'Reglas RBAC', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'FAQ autoservicio': {
-                explanation: 'Búsqueda y lectura de guías para resolver sin crear ticket.',
-                relations: [
-                    { destino: 'Crear ticket', cardinalidad: 'exclude', campo: 'Cuando resuelve', on_delete: '-', opcional: 'Sí' }
-                ]
-            },
-            'Ver y filtrar tickets': {
-                explanation: 'Listado con filtros por estado, prioridad, área y asignación.',
-                relations: [
-                    { destino: 'Exportar PDF/Excel', cardinalidad: 'include', campo: 'Datos filtrados', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Crear ticket': {
-                explanation: 'Registro de un ticket nuevo con categoría, prioridad y adjuntos.',
-                relations: [
-                    { destino: 'Auditoría', cardinalidad: 'include', campo: 'Registro evento', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Adjuntar y comentar': {
-                explanation: 'Agrega comentarios y archivos con seguimiento de visibilidad.',
-                relations: [
-                    { destino: 'Auditoría', cardinalidad: 'include', campo: 'Historial', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Cambiar estado': {
-                explanation: 'Actualiza workflow del ticket a In Progress, Resolved o Closed.',
-                relations: [
-                    { destino: 'Auditoría', cardinalidad: 'include', campo: 'Traza de estado', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Asignar/Reasignar': {
-                explanation: 'Entrega el ticket a otro técnico o equipo.',
-                relations: [
-                    { destino: 'Auditoría', cardinalidad: 'include', campo: 'Bitácora de asignación', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Dashboard KPI': {
-                explanation: 'Panel de métricas SLA y carga operativa.',
-                relations: [
-                    { destino: 'Validar permisos por rol', cardinalidad: 'include', campo: 'Restricción admin/técnico', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Exportar PDF/Excel': {
-                explanation: 'Generación de reportes descargables a partir de filtros.',
-                relations: [
-                    { destino: 'Ver y filtrar tickets', cardinalidad: 'include', campo: 'Dataset filtrado', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Gestionar catálogos': {
-                explanation: 'ABM de categorías, subcategorías, prioridades y áreas.',
-                relations: [
-                    { destino: 'Validar permisos por rol', cardinalidad: 'include', campo: 'Restricción administrador', on_delete: '-', opcional: 'No' }
-                ]
-            },
-            'Auditoría': {
-                explanation: 'Bitácora con cada cambio relevante del ticket.',
-                relations: [
-                    { destino: 'Crear ticket', cardinalidad: 'include', campo: 'Registro', on_delete: '-', opcional: 'No' },
-                    { destino: 'Adjuntar y comentar', cardinalidad: 'include', campo: 'Registro', on_delete: '-', opcional: 'No' }
-                ]
-            }
-        };
-
-        const usecasePanel = setupSidePanel('usecases', usecaseData);
 
         buildAdjacency(document.getElementById('usecases'), {
             'Solicitante': ['Iniciar/Cerrar sesión', 'FAQ autoservicio', 'Ver y filtrar tickets', 'Crear ticket', 'Adjuntar y comentar'],
@@ -1611,6 +1380,19 @@
             'Auditoría': ['Administrador', 'Crear ticket', 'Adjuntar y comentar', 'Cambiar estado', 'Asignar/Reasignar']
         });
 
+        buildAdjacency(document.getElementById('der'), {
+            'auth_user': ['Ticket', 'TicketComment', 'TicketAttachment', 'TicketAssignment', 'AuditLog'],
+            'Category': ['Subcategory', 'Ticket'],
+            'Subcategory': ['Category', 'Ticket'],
+            'Ticket': ['auth_user', 'Category', 'Subcategory', 'Priority', 'Area', 'TicketComment', 'TicketAttachment', 'TicketAssignment', 'AuditLog'],
+            'Priority': ['Ticket'],
+            'Area': ['Ticket'],
+            'TicketComment': ['Ticket', 'auth_user'],
+            'TicketAttachment': ['Ticket', 'auth_user'],
+            'TicketAssignment': ['Ticket', 'auth_user'],
+            'AuditLog': ['Ticket', 'auth_user']
+        });
+
         const actorFilters = document.querySelectorAll('[data-actor-filter]');
         actorFilters.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1622,12 +1404,14 @@
                 const usecases = panel.querySelectorAll('.usecase');
                 const labels = panel.querySelectorAll('.usecase-label');
                 const connectors = panel.querySelectorAll('.actor-connector');
+                const relationLines = panel.querySelectorAll('.relation-line');
 
                 if (filter === 'todos') {
                     actors.forEach(a => a.classList.remove('dimmed'));
-                    usecases.forEach(u => u.classList.remove('dimmed'));
-                    labels.forEach(l => l.classList.remove('dimmed'));
-                    connectors.forEach(c => c.classList.remove('dimmed'));
+                    usecases.forEach(u => u.classList.remove('dimmed', 'usecase-faded'));
+                    labels.forEach(l => l.classList.remove('dimmed', 'usecase-faded'));
+                    connectors.forEach(c => c.classList.remove('dimmed', 'active', 'usecase-faded'));
+                    relationLines.forEach(r => r.classList.remove('dimmed', 'active', 'usecase-faded'));
                     return;
                 }
 
@@ -1635,118 +1419,50 @@
                     const name = actor.getAttribute('data-node');
                     const isActive = name.toLowerCase() === filter;
                     actor.classList.toggle('dimmed', !isActive);
+                    actor.classList.toggle('active', isActive);
+                });
+
+                usecases.forEach(u => {
+                    u.classList.add('usecase-faded');
+                    u.classList.remove('dimmed');
+                });
+                labels.forEach(l => {
+                    l.classList.add('usecase-faded');
+                    l.classList.remove('dimmed');
+                });
+                connectors.forEach(c => {
+                    c.classList.add('usecase-faded');
+                    c.classList.remove('dimmed', 'active');
+                });
+                relationLines.forEach(r => {
+                    r.classList.add('usecase-faded');
+                    r.classList.remove('dimmed', 'active');
                 });
 
                 const activeActor = Array.from(actors).find(actor => actor.getAttribute('data-node').toLowerCase() === filter);
                 const activeName = activeActor ? activeActor.getAttribute('data-node') : null;
 
-                usecases.forEach(u => u.classList.add('dimmed'));
-                labels.forEach(l => l.classList.add('dimmed'));
-                connectors.forEach(c => c.classList.add('dimmed'));
-
                 connectors.forEach(connector => {
                     if (connector.getAttribute('data-source') === activeName) {
-                        connector.classList.remove('dimmed');
+                        connector.classList.remove('usecase-faded');
+                        connector.classList.add('active');
                         const target = connector.getAttribute('data-target');
-                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('dimmed'));
-                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('dimmed'));
+                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
+                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
+                    }
+                });
+
+                relationLines.forEach(line => {
+                    const source = line.getAttribute('data-source');
+                    const target = line.getAttribute('data-target');
+                    if (source && document.querySelector(`[data-node="${source}"] .usecase:not(.usecase-faded)`)) {
+                        line.classList.remove('usecase-faded');
+                        line.classList.add('active');
+                        document.querySelectorAll(`[data-node="${target}"] .usecase`).forEach(el => el.classList.remove('usecase-faded'));
+                        document.querySelectorAll(`[data-usecase="${target}"]`).forEach(el => el.classList.remove('usecase-faded'));
                     }
                 });
             });
-        });
-
-        const derData = {
-            'auth_user': {
-                explanation: 'Usuarios autenticados del sistema. Incluye flags de personal interno.',
-                relations: [
-                    { destino: 'Ticket.requester', cardinalidad: '1..N', campo: 'requester_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'Ticket.assigned_to', cardinalidad: '1..N', campo: 'assigned_to_id', on_delete: 'SET_NULL', opcional: 'Sí' },
-                    { destino: 'TicketComment.author', cardinalidad: '1..N', campo: 'author_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'TicketAttachment.uploaded_by', cardinalidad: '1..N', campo: 'uploaded_by_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'TicketAssignment.from_user', cardinalidad: '1..N', campo: 'from_user_id', on_delete: 'SET_NULL', opcional: 'Sí' },
-                    { destino: 'TicketAssignment.to_user', cardinalidad: '1..N', campo: 'to_user_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'AuditLog.actor', cardinalidad: '1..N', campo: 'actor_id', on_delete: 'SET_NULL', opcional: 'Sí' }
-                ]
-            },
-            'Category': {
-                explanation: 'Clasificación principal del ticket, nombre único.',
-                relations: [
-                    { destino: 'Subcategory', cardinalidad: '1..N', campo: 'category_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'Ticket', cardinalidad: '1..N', campo: 'category_id', on_delete: 'PROTECT', opcional: 'No' }
-                ]
-            },
-            'Subcategory': {
-                explanation: 'Detalle específico dentro de una categoría.',
-                relations: [
-                    { destino: 'Category', cardinalidad: 'N..1', campo: 'category_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'Ticket', cardinalidad: '1..N', campo: 'subcategory_id', on_delete: 'PROTECT', opcional: 'Sí' }
-                ]
-            },
-            'Priority': {
-                explanation: 'Nivel de prioridad asociado a SLA en horas.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: '1..N', campo: 'priority_id', on_delete: 'PROTECT', opcional: 'No' }
-                ]
-            },
-            'Area': {
-                explanation: 'Unidad responsable del ticket. Nombre único.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: '1..N', campo: 'area_id', on_delete: 'PROTECT', opcional: 'Sí' }
-                ]
-            },
-            'Ticket': {
-                explanation: 'Entidad central del helpdesk con código único e índices para reportes.',
-                relations: [
-                    { destino: 'TicketComment', cardinalidad: '1..N', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'TicketAttachment', cardinalidad: '1..N', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'TicketAssignment', cardinalidad: '1..N', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'AuditLog', cardinalidad: '1..N', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' }
-                ]
-            },
-            'TicketComment': {
-                explanation: 'Comentarios del ticket, internos o visibles.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: 'N..1', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'auth_user', cardinalidad: 'N..1', campo: 'author_id', on_delete: 'CASCADE', opcional: 'No' }
-                ]
-            },
-            'TicketAttachment': {
-                explanation: 'Archivos adjuntos asociados a un ticket.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: 'N..1', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'auth_user', cardinalidad: 'N..1', campo: 'uploaded_by_id', on_delete: 'CASCADE', opcional: 'No' }
-                ]
-            },
-            'TicketAssignment': {
-                explanation: 'Historial de asignaciones entre agentes.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: 'N..1', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'auth_user', cardinalidad: 'N..1', campo: 'from_user_id', on_delete: 'SET_NULL', opcional: 'Sí' },
-                    { destino: 'auth_user', cardinalidad: 'N..1', campo: 'to_user_id', on_delete: 'CASCADE', opcional: 'No' }
-                ]
-            },
-            'AuditLog': {
-                explanation: 'Eventos auditables del ticket con metadatos JSON.',
-                relations: [
-                    { destino: 'Ticket', cardinalidad: 'N..1', campo: 'ticket_id', on_delete: 'CASCADE', opcional: 'No' },
-                    { destino: 'auth_user', cardinalidad: 'N..1', campo: 'actor_id', on_delete: 'SET_NULL', opcional: 'Sí' }
-                ]
-            }
-        };
-
-        const derPanel = setupSidePanel('der', derData);
-
-        buildAdjacency(document.getElementById('der'), {
-            'auth_user': ['Ticket', 'TicketComment', 'TicketAttachment', 'TicketAssignment', 'AuditLog'],
-            'Category': ['Subcategory', 'Ticket'],
-            'Subcategory': ['Category', 'Ticket'],
-            'Priority': ['Ticket'],
-            'Area': ['Ticket'],
-            'Ticket': ['auth_user', 'Category', 'Subcategory', 'Priority', 'Area', 'TicketComment', 'TicketAttachment', 'TicketAssignment', 'AuditLog'],
-            'TicketComment': ['Ticket', 'auth_user'],
-            'TicketAttachment': ['Ticket', 'auth_user'],
-            'TicketAssignment': ['Ticket', 'auth_user'],
-            'AuditLog': ['Ticket', 'auth_user']
         });
     </script>
 </body>
