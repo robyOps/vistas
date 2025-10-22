@@ -1116,6 +1116,12 @@
                 const targetId = button.getAttribute('data-panel');
                 const panel = document.getElementById(targetId);
                 if (!panel) return;
+
+                if (currentPanel && currentPanel !== panel) {
+                    currentPanel.classList.remove('active', 'focus-mode');
+                    currentPanel.querySelectorAll('[data-focus]').forEach(btn => btn.classList.remove('active'));
+                }
+
                 currentPanel = panel;
                 panels.classList.add('visible');
                 panel.classList.add('active');
@@ -1290,33 +1296,12 @@
             }
 
             panel.addEventListener('click', (event) => {
-                if (!event.target.closest('[data-node]')) {
+                if (!event.target.closest('[data-node]') && selected) {
                     selected = null;
                     clearHighlight();
                     panel.dispatchEvent(new CustomEvent('nodeCleared'));
                 }
-                const neighbors = adjacency[name] || [];
-                nodes.forEach(n => n.classList.add('dimmed'));
-                edges.forEach(e => e.classList.add('dimmed'));
-                panel.querySelectorAll(`[data-node="${name}"]`).forEach(n => {
-                    n.classList.remove('dimmed');
-                    n.classList.add('active');
-                });
-                neighbors.forEach(neighbor => {
-                    panel.querySelectorAll(`[data-node="${neighbor}"]`).forEach(n => {
-                        n.classList.remove('dimmed');
-                        n.classList.add('active');
-                    });
-                    panel.querySelectorAll(`[data-source="${name}"][data-target="${neighbor}"]`).forEach(edge => {
-                        edge.classList.remove('dimmed');
-                        edge.classList.add('active');
-                    });
-                    panel.querySelectorAll(`[data-source="${neighbor}"][data-target="${name}"]`).forEach(edge => {
-                        edge.classList.remove('dimmed');
-                        edge.classList.add('active');
-                    });
-                });
-            }
+            });
 
             nodes.forEach(node => {
                 const nodeName = node.getAttribute('data-node');
