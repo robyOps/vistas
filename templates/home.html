@@ -474,6 +474,13 @@
             font-weight: 600;
         }
 
+        .entity-badges {
+            font-size: 11px;
+            fill: rgba(248, 250, 252, 0.85);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
         .relationship-line {
             stroke: #1d4ed8;
             stroke-width: 2.6;
@@ -493,10 +500,14 @@
             font-weight: 600;
         }
 
+        .cardinality,
         .relationship-label {
             fill: #334155;
             font-size: 13px;
         }
+
+        .entity.dimmed { opacity: 0.4; }
+        .entity.active { filter: drop-shadow(0 0 20px rgba(129, 140, 248, 0.75)); }
 
         .der-note {
             fill: #475569;
@@ -515,6 +526,8 @@
             }
             .side-panel {
                 order: -1;
+                height: 240px;
+                overflow-y: auto;
             }
         }
     </style>
@@ -557,6 +570,9 @@
                             </marker>
                             <marker id="deployment-arrow-muted" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="strokeWidth">
                                 <polygon points="0 0, 12 6, 0 12" fill="#9ca3af"></polygon>
+                            </marker>
+                            <marker id="arrow-dashed" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+                                <polygon points="0 0, 10 5, 0 10" fill="rgba(148, 163, 184, 0.7)"></polygon>
                             </marker>
                         </defs>
                         <g data-node="Cliente" class="deployment-node">
@@ -1279,7 +1295,28 @@
                     clearHighlight();
                     panel.dispatchEvent(new CustomEvent('nodeCleared'));
                 }
-            });
+                const neighbors = adjacency[name] || [];
+                nodes.forEach(n => n.classList.add('dimmed'));
+                edges.forEach(e => e.classList.add('dimmed'));
+                panel.querySelectorAll(`[data-node="${name}"]`).forEach(n => {
+                    n.classList.remove('dimmed');
+                    n.classList.add('active');
+                });
+                neighbors.forEach(neighbor => {
+                    panel.querySelectorAll(`[data-node="${neighbor}"]`).forEach(n => {
+                        n.classList.remove('dimmed');
+                        n.classList.add('active');
+                    });
+                    panel.querySelectorAll(`[data-source="${name}"][data-target="${neighbor}"]`).forEach(edge => {
+                        edge.classList.remove('dimmed');
+                        edge.classList.add('active');
+                    });
+                    panel.querySelectorAll(`[data-source="${neighbor}"][data-target="${name}"]`).forEach(edge => {
+                        edge.classList.remove('dimmed');
+                        edge.classList.add('active');
+                    });
+                });
+            }
 
             nodes.forEach(node => {
                 const nodeName = node.getAttribute('data-node');
