@@ -129,9 +129,9 @@
         }
 
         .panel {
-            width: min(1200px, 94vw);
-            height: min(880px, 92vh);
-            border-radius: 30px;
+            width: min(1600px, calc(100vw - 64px));
+            height: min(1080px, calc(100vh - 64px));
+            border-radius: 28px;
             border: 1px solid rgba(148, 163, 184, 0.35);
             background: linear-gradient(160deg, rgba(15, 23, 42, 0.94), rgba(17, 24, 39, 0.88));
             box-shadow: 0 45px 100px rgba(15, 23, 42, 0.65);
@@ -210,8 +210,8 @@
             width: 100%;
             height: 100%;
             background: rgba(15, 23, 42, 0.45);
-            border: 1px solid rgba(96, 165, 250, 0.28);
-            border-radius: 24px;
+            border: 1px solid rgba(96, 165, 250, 0.32);
+            border-radius: 26px;
         }
 
         .legend {
@@ -344,6 +344,16 @@
             transition: opacity 0.35s ease;
         }
 
+        .usecase.hidden,
+        .usecase-label.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .usecase.hidden {
+            pointer-events: none;
+        }
+
         .connector {
             stroke: rgba(226, 232, 240, 0.4);
             stroke-width: 2.4;
@@ -467,47 +477,47 @@
         }
 
         .entity {
-            fill: rgba(15, 118, 110, 0.18);
-            stroke: rgba(45, 212, 191, 0.7);
-            stroke-width: 2.2;
-            rx: 20;
-            ry: 20;
+            fill: rgba(59, 130, 246, 0.16);
+            stroke: rgba(129, 140, 248, 0.78);
+            stroke-width: 2.6;
+            rx: 24;
+            ry: 24;
         }
 
         .entity-header {
-            fill: rgba(16, 185, 129, 0.92);
+            fill: rgba(224, 231, 255, 0.95);
             font-size: 16px;
             font-weight: 600;
         }
 
         .entity-attr {
-            fill: rgba(209, 250, 229, 0.88);
+            fill: rgba(191, 219, 254, 0.9);
             font-size: 13px;
         }
 
         .relationship-line {
-            stroke: rgba(16, 185, 129, 0.75);
-            stroke-width: 2.4;
+            stroke: rgba(129, 140, 248, 0.85);
+            stroke-width: 2.8;
             fill: none;
             marker-end: url(#der-arrow);
         }
 
         .cardinality {
-            fill: rgba(167, 243, 208, 0.85);
+            fill: rgba(224, 231, 255, 0.9);
             font-size: 12px;
         }
 
         .relationship-label {
-            fill: rgba(110, 231, 183, 0.9);
+            fill: rgba(165, 180, 252, 0.95);
             font-size: 12px;
         }
 
         .der-note {
-            border-radius: 20px;
-            border: 1px solid rgba(45, 212, 191, 0.4);
-            background: rgba(6, 78, 59, 0.4);
-            padding: 1.4rem 1.6rem;
-            color: rgba(209, 250, 229, 0.88);
+            border-radius: 22px;
+            border: 1px solid rgba(129, 140, 248, 0.45);
+            background: rgba(30, 64, 175, 0.35);
+            padding: 1.6rem 1.8rem;
+            color: rgba(226, 232, 240, 0.9);
             line-height: 1.6;
         }
 
@@ -560,7 +570,7 @@
             </div>
             <div class="panel-body">
                 <div class="diagram-wrapper">
-                    <svg id="deployment-svg" viewBox="0 0 1200 720" aria-labelledby="deploymentTitle deploymentDesc" role="img">
+                    <svg id="deployment-svg" viewBox="0 0 1400 840" aria-labelledby="deploymentTitle deploymentDesc" role="img">
                         <title id="deploymentTitle">Diagrama de despliegue de Coyahue Helpdesk</title>
                         <desc id="deploymentDesc">Componentes físicos, subredes y flujos de red.</desc>
                         <defs>
@@ -568,55 +578,54 @@
                                 <polygon points="0 0, 10 5, 0 10" fill="rgba(96, 165, 250, 0.9)"></polygon>
                             </marker>
                         </defs>
+                        <rect x="80" y="320" width="200" height="200" rx="22" class="deployment-node"></rect>
+                        <text x="180" y="368" text-anchor="middle" class="deployment-text">Cliente</text>
+                        <text x="180" y="400" text-anchor="middle" class="deployment-detail">Navegador web</text>
+                        <text x="180" y="424" text-anchor="middle" class="deployment-detail">TLS · OIDC</text>
 
-                        <rect x="60" y="260" width="170" height="170" rx="18" class="deployment-node"></rect>
-                        <text x="145" y="302" text-anchor="middle" class="deployment-text">Cliente</text>
-                        <text x="145" y="332" text-anchor="middle" class="deployment-detail">Navegador web</text>
-                        <text x="145" y="352" text-anchor="middle" class="deployment-detail">HTTPS :443</text>
+                        <circle cx="340" cy="420" r="90" fill="rgba(30, 64, 175, 0.28)" stroke="rgba(96, 165, 250, 0.55)" stroke-width="2.4"></circle>
+                        <text x="340" y="396" text-anchor="middle" class="deployment-text">Internet</text>
+                        <text x="340" y="428" text-anchor="middle" class="deployment-detail">Gateway público</text>
+                        <text x="340" y="448" text-anchor="middle" class="deployment-detail">WAF + CDN opcional</text>
 
-                        <circle cx="320" cy="345" r="70" fill="rgba(30, 64, 175, 0.28)" stroke="rgba(96, 165, 250, 0.55)" stroke-width="2.2"></circle>
-                        <text x="320" y="325" text-anchor="middle" class="deployment-text">Internet</text>
-                        <text x="320" y="353" text-anchor="middle" class="deployment-detail">Gateway público</text>
-                        <text x="320" y="373" text-anchor="middle" class="deployment-detail">Rutas seguras</text>
+                        <rect x="440" y="120" width="880" height="560" rx="28" fill="rgba(15, 118, 110, 0.12)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2.6"></rect>
+                        <text x="1280" y="150" text-anchor="end" class="deployment-text">AWS VPC privada</text>
+                        <text x="1280" y="176" text-anchor="end" class="deployment-detail">CIDR 10.0.0.0/16 · SG segmentados</text>
 
-                        <rect x="420" y="100" width="720" height="520" rx="26" fill="rgba(15, 118, 110, 0.12)" stroke="rgba(45, 212, 191, 0.5)" stroke-width="2.4"></rect>
-                        <text x="1080" y="130" text-anchor="end" class="deployment-text">AWS VPC privada</text>
-                        <text x="1080" y="154" text-anchor="end" class="deployment-detail">CIDR 10.0.0.0/16 · SG segmentados</text>
+                        <rect x="480" y="180" width="360" height="460" rx="24" class="deployment-subnet"></rect>
+                        <text x="660" y="220" text-anchor="middle" class="deployment-text">Subred Pública</text>
+                        <text x="660" y="244" text-anchor="middle" class="deployment-detail">10.0.1.0/24</text>
 
-                        <rect x="455" y="150" width="330" height="430" rx="22" class="deployment-subnet"></rect>
-                        <text x="620" y="188" text-anchor="middle" class="deployment-text">Subred Pública</text>
-                        <text x="620" y="210" text-anchor="middle" class="deployment-detail">10.0.1.0/24</text>
+                        <rect x="880" y="180" width="360" height="460" rx="24" class="deployment-subnet"></rect>
+                        <text x="1060" y="220" text-anchor="middle" class="deployment-text">Subred Privada</text>
+                        <text x="1060" y="244" text-anchor="middle" class="deployment-detail">10.0.2.0/24</text>
 
-                        <rect x="820" y="150" width="280" height="430" rx="22" class="deployment-subnet"></rect>
-                        <text x="960" y="188" text-anchor="middle" class="deployment-text">Subred Privada</text>
-                        <text x="960" y="210" text-anchor="middle" class="deployment-detail">10.0.2.0/24</text>
+                        <rect x="520" y="260" width="280" height="140" rx="20" class="deployment-node"></rect>
+                        <text x="660" y="298" text-anchor="middle" class="deployment-text">EC2 App + Nginx</text>
+                        <text x="660" y="324" text-anchor="middle" class="deployment-detail">Terminación TLS · AutoScaling 2x</text>
+                        <text x="660" y="346" text-anchor="middle" class="deployment-detail">Gunicorn / Django</text>
 
-                        <rect x="500" y="250" width="240" height="120" rx="18" class="deployment-node"></rect>
-                        <text x="620" y="280" text-anchor="middle" class="deployment-text">EC2 App + Nginx</text>
-                        <text x="620" y="306" text-anchor="middle" class="deployment-detail">Terminación TLS</text>
-                        <text x="620" y="326" text-anchor="middle" class="deployment-detail">Gunicorn / Django</text>
+                        <rect x="520" y="460" width="280" height="140" rx="20" class="deployment-node"></rect>
+                        <text x="660" y="498" text-anchor="middle" class="deployment-text">Servicios de Aplicación</text>
+                        <text x="660" y="524" text-anchor="middle" class="deployment-detail">Django REST + Celery</text>
+                        <text x="660" y="546" text-anchor="middle" class="deployment-detail">Logs + /media EFS</text>
 
-                        <rect x="500" y="420" width="240" height="120" rx="18" class="deployment-node"></rect>
-                        <text x="620" y="450" text-anchor="middle" class="deployment-text">Servicios de Aplicación</text>
-                        <text x="620" y="476" text-anchor="middle" class="deployment-detail">Django REST Framework</text>
-                        <text x="620" y="496" text-anchor="middle" class="deployment-detail">Logs + /media local</text>
+                        <rect x="920" y="260" width="240" height="140" rx="20" class="deployment-node"></rect>
+                        <text x="1040" y="298" text-anchor="middle" class="deployment-text">PostgreSQL</text>
+                        <text x="1040" y="324" text-anchor="middle" class="deployment-detail">Puerto 5432</text>
+                        <text x="1040" y="346" text-anchor="middle" class="deployment-detail">Multi-AZ + SG DB</text>
 
-                        <rect x="860" y="250" width="200" height="120" rx="18" class="deployment-node"></rect>
-                        <text x="960" y="280" text-anchor="middle" class="deployment-text">PostgreSQL</text>
-                        <text x="960" y="306" text-anchor="middle" class="deployment-detail">Puerto 5432</text>
-                        <text x="960" y="326" text-anchor="middle" class="deployment-detail">Security Group DB</text>
+                        <rect x="920" y="460" width="240" height="140" rx="20" class="deployment-node"></rect>
+                        <text x="1040" y="498" text-anchor="middle" class="deployment-text">Servicios Opcionales</text>
+                        <text x="1040" y="524" text-anchor="middle" class="deployment-detail">NAT · S3 · Secrets Manager</text>
+                        <text x="1040" y="546" text-anchor="middle" class="deployment-detail">CloudWatch Logs</text>
 
-                        <rect x="860" y="420" width="200" height="120" rx="18" class="deployment-node"></rect>
-                        <text x="960" y="450" text-anchor="middle" class="deployment-text">Servicios Opcionales</text>
-                        <text x="960" y="476" text-anchor="middle" class="deployment-detail">NAT · S3</text>
-                        <text x="960" y="496" text-anchor="middle" class="deployment-detail">CloudWatch Logs</text>
-
-                        <line x1="230" y1="345" x2="250" y2="345" class="link emphasized" marker-end="url(#arrow-head)"></line>
-                        <line x1="390" y1="345" x2="455" y2="320" class="link emphasized" marker-end="url(#arrow-head)"></line>
-                        <line x1="620" y1="370" x2="620" y2="420" class="link emphasized" marker-end="url(#arrow-head)"></line>
-                        <line x1="740" y1="460" x2="860" y2="460" class="link emphasized" marker-end="url(#arrow-head)"></line>
-                        <line x1="740" y1="310" x2="860" y2="310" class="link emphasized" marker-end="url(#arrow-head)"></line>
-                        <line x1="960" y1="370" x2="960" y2="420" class="link"></line>
+                        <line x1="280" y1="420" x2="300" y2="420" class="link emphasized" marker-end="url(#arrow-head)"></line>
+                        <line x1="430" y1="420" x2="480" y2="300" class="link emphasized" marker-end="url(#arrow-head)"></line>
+                        <line x1="700" y1="400" x2="700" y2="460" class="link emphasized" marker-end="url(#arrow-head)"></line>
+                        <line x1="800" y1="520" x2="920" y2="520" class="link emphasized" marker-end="url(#arrow-head)"></line>
+                        <line x1="800" y1="320" x2="920" y2="320" class="link emphasized" marker-end="url(#arrow-head)"></line>
+                        <line x1="1040" y1="400" x2="1040" y2="460" class="link"></line>
                     </svg>
                     <div class="legend">
                         <span class="public">Subred pública · EC2 App · Nginx/Gunicorn</span>
@@ -772,135 +781,214 @@
             </div>
             <div class="panel-body">
                 <div class="der-wrapper">
-                    <svg id="der-svg" viewBox="0 0 1200 760" aria-labelledby="derTitle derDesc" role="img">
+                    <svg id="der-svg" viewBox="0 0 1500 1120" aria-labelledby="derTitle derDesc" role="img">
                         <title id="derTitle">DER Coyahue Helpdesk</title>
-                        <desc id="derDesc">Entidades principales con cardinalidades clave.</desc>
+                        <desc id="derDesc">Entidades de soporte, catálogos, tickets y automatizaciones SLA.</desc>
                         <defs>
                             <marker id="der-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
-                                <polygon points="0 0, 10 5, 0 10" fill="rgba(16, 185, 129, 0.9)"></polygon>
+                                <polygon points="0 0, 10 5, 0 10" fill="rgba(129, 140, 248, 0.9)"></polygon>
                             </marker>
                         </defs>
 
-                        <rect x="120" y="80" width="220" height="160" class="entity"></rect>
+                        <rect x="100" y="80" width="260" height="190" class="entity"></rect>
                         <text x="230" y="120" text-anchor="middle" class="entity-header">auth_user</text>
-                        <text x="140" y="150" class="entity-attr">• id (PK)</text>
-                        <text x="140" y="170" class="entity-attr">• username, email, password</text>
-                        <text x="140" y="190" class="entity-attr">• is_active, is_staff, is_superuser</text>
-                        <text x="140" y="210" class="entity-attr">• date_joined, last_login</text>
+                        <text x="120" y="150" class="entity-attr">• id (PK)</text>
+                        <text x="120" y="170" class="entity-attr">• username, email, password</text>
+                        <text x="120" y="190" class="entity-attr">• is_active, is_staff, is_superuser</text>
+                        <text x="120" y="210" class="entity-attr">• date_joined, last_login</text>
 
-                        <rect x="420" y="80" width="220" height="160" class="entity"></rect>
-                        <text x="530" y="120" text-anchor="middle" class="entity-header">Category</text>
-                        <text x="440" y="150" class="entity-attr">• id (PK)</text>
-                        <text x="440" y="170" class="entity-attr">• name (UNIQUE)</text>
-                        <text x="440" y="190" class="entity-attr">• description</text>
-                        <text x="440" y="210" class="entity-attr">• is_active</text>
+                        <rect x="100" y="320" width="280" height="210" class="entity"></rect>
+                        <text x="240" y="360" text-anchor="middle" class="entity-header">SupportProfile</text>
+                        <text x="120" y="390" class="entity-attr">• id (PK)</text>
+                        <text x="120" y="410" class="entity-attr">• user_id (FK)</text>
+                        <text x="120" y="430" class="entity-attr">• area_id (FK)</text>
+                        <text x="120" y="450" class="entity-attr">• role, skillset_json</text>
+                        <text x="120" y="470" class="entity-attr">• is_on_call</text>
 
-                        <rect x="720" y="80" width="220" height="180" class="entity"></rect>
-                        <text x="830" y="120" text-anchor="middle" class="entity-header">Subcategory</text>
-                        <text x="740" y="150" class="entity-attr">• id (PK)</text>
-                        <text x="740" y="170" class="entity-attr">• category_id (FK)</text>
-                        <text x="740" y="190" class="entity-attr">• name</text>
-                        <text x="740" y="210" class="entity-attr">• description</text>
-                        <text x="740" y="230" class="entity-attr">• is_active</text>
+                        <rect x="100" y="580" width="240" height="180" class="entity"></rect>
+                        <text x="220" y="620" text-anchor="middle" class="entity-header">Area</text>
+                        <text x="120" y="650" class="entity-attr">• id (PK)</text>
+                        <text x="120" y="670" class="entity-attr">• name</text>
+                        <text x="120" y="690" class="entity-attr">• description</text>
+                        <text x="120" y="710" class="entity-attr">• is_active</text>
 
-                        <rect x="1020" y="80" width="220" height="180" class="entity"></rect>
-                        <text x="1130" y="120" text-anchor="middle" class="entity-header">Priority</text>
-                        <text x="1040" y="150" class="entity-attr">• id (PK)</text>
-                        <text x="1040" y="170" class="entity-attr">• name</text>
-                        <text x="1040" y="190" class="entity-attr">• sla_hours</text>
-                        <text x="1040" y="210" class="entity-attr">• color</text>
+                        <rect x="100" y="820" width="280" height="200" class="entity"></rect>
+                        <text x="240" y="860" text-anchor="middle" class="entity-header">KnowledgeBaseArticle</text>
+                        <text x="120" y="890" class="entity-attr">• id (PK)</text>
+                        <text x="120" y="910" class="entity-attr">• title</text>
+                        <text x="120" y="930" class="entity-attr">• body</text>
+                        <text x="120" y="950" class="entity-attr">• category_id (FK)</text>
+                        <text x="120" y="970" class="entity-attr">• author_id (FK)</text>
+                        <text x="120" y="990" class="entity-attr">• published_at</text>
 
-                        <rect x="120" y="300" width="220" height="200" class="entity"></rect>
-                        <text x="230" y="340" text-anchor="middle" class="entity-header">Area</text>
-                        <text x="140" y="370" class="entity-attr">• id (PK)</text>
-                        <text x="140" y="390" class="entity-attr">• name</text>
-                        <text x="140" y="410" class="entity-attr">• description</text>
-                        <text x="140" y="430" class="entity-attr">• is_active</text>
+                        <rect x="440" y="80" width="240" height="180" class="entity"></rect>
+                        <text x="560" y="120" text-anchor="middle" class="entity-header">Category</text>
+                        <text x="460" y="150" class="entity-attr">• id (PK)</text>
+                        <text x="460" y="170" class="entity-attr">• name (UNIQUE)</text>
+                        <text x="460" y="190" class="entity-attr">• description</text>
+                        <text x="460" y="210" class="entity-attr">• is_active</text>
 
-                        <rect x="420" y="300" width="280" height="240" class="entity"></rect>
-                        <text x="560" y="340" text-anchor="middle" class="entity-header">Ticket</text>
-                        <text x="440" y="370" class="entity-attr">• id (PK)</text>
-                        <text x="440" y="390" class="entity-attr">• title, description</text>
-                        <text x="440" y="410" class="entity-attr">• category_id, subcategory_id</text>
-                        <text x="440" y="430" class="entity-attr">• priority_id, area_id</text>
-                        <text x="440" y="450" class="entity-attr">• requester_id, assigned_to_id</text>
-                        <text x="440" y="470" class="entity-attr">• status, type, sla_state</text>
-                        <text x="440" y="490" class="entity-attr">• created_at, updated_at</text>
+                        <rect x="780" y="80" width="260" height="200" class="entity"></rect>
+                        <text x="910" y="120" text-anchor="middle" class="entity-header">Subcategory</text>
+                        <text x="800" y="150" class="entity-attr">• id (PK)</text>
+                        <text x="800" y="170" class="entity-attr">• category_id (FK)</text>
+                        <text x="800" y="190" class="entity-attr">• name</text>
+                        <text x="800" y="210" class="entity-attr">• description</text>
+                        <text x="800" y="230" class="entity-attr">• is_active</text>
 
-                        <rect x="760" y="320" width="240" height="180" class="entity"></rect>
-                        <text x="880" y="360" text-anchor="middle" class="entity-header">TicketComment</text>
-                        <text x="780" y="390" class="entity-attr">• id (PK)</text>
-                        <text x="780" y="410" class="entity-attr">• ticket_id (FK)</text>
-                        <text x="780" y="430" class="entity-attr">• author_id (FK)</text>
-                        <text x="780" y="450" class="entity-attr">• body, is_internal</text>
-                        <text x="780" y="470" class="entity-attr">• created_at</text>
+                        <rect x="1100" y="80" width="220" height="180" class="entity"></rect>
+                        <text x="1210" y="120" text-anchor="middle" class="entity-header">Priority</text>
+                        <text x="1120" y="150" class="entity-attr">• id (PK)</text>
+                        <text x="1120" y="170" class="entity-attr">• name</text>
+                        <text x="1120" y="190" class="entity-attr">• color</text>
+                        <text x="1120" y="210" class="entity-attr">• level (LOW|MED|HIGH)</text>
 
-                        <rect x="1020" y="320" width="220" height="180" class="entity"></rect>
-                        <text x="1130" y="360" text-anchor="middle" class="entity-header">TicketAttachment</text>
-                        <text x="1040" y="390" class="entity-attr">• id (PK)</text>
-                        <text x="1040" y="410" class="entity-attr">• ticket_id (FK)</text>
-                        <text x="1040" y="430" class="entity-attr">• author_id (FK)</text>
-                        <text x="1040" y="450" class="entity-attr">• file, created_at</text>
+                        <rect x="1100" y="320" width="280" height="210" class="entity"></rect>
+                        <text x="1240" y="360" text-anchor="middle" class="entity-header">ServiceLevelAgreement</text>
+                        <text x="1120" y="390" class="entity-attr">• id (PK)</text>
+                        <text x="1120" y="410" class="entity-attr">• name</text>
+                        <text x="1120" y="430" class="entity-attr">• response_minutes</text>
+                        <text x="1120" y="450" class="entity-attr">• resolution_minutes</text>
+                        <text x="1120" y="470" class="entity-attr">• escalation_policy</text>
 
-                        <rect x="120" y="540" width="240" height="180" class="entity"></rect>
-                        <text x="240" y="580" text-anchor="middle" class="entity-header">TicketAssignment</text>
-                        <text x="140" y="610" class="entity-attr">• id (PK)</text>
-                        <text x="140" y="630" class="entity-attr">• ticket_id (FK)</text>
-                        <text x="140" y="650" class="entity-attr">• assignee_id (FK)</text>
-                        <text x="140" y="670" class="entity-attr">• assigned_at</text>
+                        <rect x="540" y="560" width="360" height="240" class="entity"></rect>
+                        <text x="720" y="600" text-anchor="middle" class="entity-header">Ticket</text>
+                        <text x="560" y="630" class="entity-attr">• id (PK)</text>
+                        <text x="560" y="650" class="entity-attr">• title, description</text>
+                        <text x="560" y="670" class="entity-attr">• requester_id (FK)</text>
+                        <text x="560" y="690" class="entity-attr">• assigned_to_id (FK)</text>
+                        <text x="560" y="710" class="entity-attr">• category_id, subcategory_id</text>
+                        <text x="560" y="730" class="entity-attr">• priority_id, area_id, sla_id</text>
+                        <text x="560" y="750" class="entity-attr">• status, type, sla_state</text>
+                        <text x="560" y="770" class="entity-attr">• created_at, updated_at</text>
 
-                        <rect x="420" y="560" width="280" height="180" class="entity"></rect>
-                        <text x="560" y="600" text-anchor="middle" class="entity-header">AuditLog</text>
-                        <text x="440" y="630" class="entity-attr">• id (PK)</text>
-                        <text x="440" y="650" class="entity-attr">• ticket_id (FK)</text>
-                        <text x="440" y="670" class="entity-attr">• actor_id (FK)</text>
-                        <text x="440" y="690" class="entity-attr">• action, metadata</text>
-                        <text x="440" y="710" class="entity-attr">• created_at</text>
+                        <rect x="960" y="360" width="260" height="200" class="entity"></rect>
+                        <text x="1090" y="400" text-anchor="middle" class="entity-header">TicketAssignment</text>
+                        <text x="980" y="430" class="entity-attr">• id (PK)</text>
+                        <text x="980" y="450" class="entity-attr">• ticket_id (FK)</text>
+                        <text x="980" y="470" class="entity-attr">• assignee_id (FK)</text>
+                        <text x="980" y="490" class="entity-attr">• assigned_at</text>
+                        <text x="980" y="510" class="entity-attr">• reassignment_reason</text>
 
-                        <line x1="340" y1="160" x2="420" y2="160" class="relationship-line"></line>
-                        <text x="360" y="150" class="cardinality">1</text>
-                        <text x="400" y="150" class="cardinality">N</text>
-                        <text x="360" y="170" class="relationship-label">Solicita</text>
+                        <rect x="960" y="600" width="260" height="200" class="entity"></rect>
+                        <text x="1090" y="640" text-anchor="middle" class="entity-header">TicketStatusHistory</text>
+                        <text x="980" y="670" class="entity-attr">• id (PK)</text>
+                        <text x="980" y="690" class="entity-attr">• ticket_id (FK)</text>
+                        <text x="980" y="710" class="entity-attr">• from_status, to_status</text>
+                        <text x="980" y="730" class="entity-attr">• changed_by_id (FK)</text>
+                        <text x="980" y="750" class="entity-attr">• changed_at</text>
 
-                        <line x1="340" y1="200" x2="420" y2="340" class="relationship-line"></line>
-                        <text x="360" y="270" class="cardinality">1</text>
-                        <text x="420" y="300" class="cardinality">N</text>
-                        <text x="360" y="290" class="relationship-label">Asignado</text>
+                        <rect x="540" y="840" width="260" height="200" class="entity"></rect>
+                        <text x="670" y="880" text-anchor="middle" class="entity-header">TicketComment</text>
+                        <text x="560" y="910" class="entity-attr">• id (PK)</text>
+                        <text x="560" y="930" class="entity-attr">• ticket_id (FK)</text>
+                        <text x="560" y="950" class="entity-attr">• author_id (FK)</text>
+                        <text x="560" y="970" class="entity-attr">• body, is_internal</text>
+                        <text x="560" y="990" class="entity-attr">• created_at</text>
 
-                        <line x1="640" y1="160" x2="720" y2="160" class="relationship-line"></line>
-                        <text x="660" y="150" class="cardinality">1</text>
-                        <text x="700" y="150" class="cardinality">N</text>
+                        <rect x="820" y="840" width="260" height="200" class="entity"></rect>
+                        <text x="950" y="880" text-anchor="middle" class="entity-header">TicketAttachment</text>
+                        <text x="840" y="910" class="entity-attr">• id (PK)</text>
+                        <text x="840" y="930" class="entity-attr">• ticket_id (FK)</text>
+                        <text x="840" y="950" class="entity-attr">• author_id (FK)</text>
+                        <text x="840" y="970" class="entity-attr">• file_path</text>
+                        <text x="840" y="990" class="entity-attr">• created_at</text>
 
-                        <line x1="830" y1="260" x2="560" y2="300" class="relationship-line"></line>
-                        <text x="720" y="270" class="cardinality">1</text>
-                        <text x="600" y="300" class="cardinality">N</text>
+                        <rect x="1120" y="840" width="260" height="200" class="entity"></rect>
+                        <text x="1250" y="880" text-anchor="middle" class="entity-header">Notification</text>
+                        <text x="1140" y="910" class="entity-attr">• id (PK)</text>
+                        <text x="1140" y="930" class="entity-attr">• ticket_id (FK)</text>
+                        <text x="1140" y="950" class="entity-attr">• recipient_id (FK)</text>
+                        <text x="1140" y="970" class="entity-attr">• channel (email, web)</text>
+                        <text x="1140" y="990" class="entity-attr">• delivered_at, read_at</text>
 
-                        <line x1="960" y1="260" x2="560" y2="320" class="relationship-line"></line>
-                        <text x="880" y="270" class="cardinality">1</text>
-                        <text x="640" y="320" class="cardinality">N</text>
+                        <path class="relationship-line" d="M230 270 L230 320"></path>
+                        <text x="212" y="298" class="cardinality">1</text>
+                        <text x="246" y="308" class="cardinality">0..1</text>
+                        <text x="252" y="286" class="relationship-label">Perfil</text>
 
-                        <line x1="340" y1="400" x2="420" y2="420" class="relationship-line"></line>
-                        <text x="360" y="390" class="cardinality">1</text>
-                        <text x="400" y="390" class="cardinality">N</text>
+                        <path class="relationship-line" d="M220 580 L220 530"></path>
+                        <text x="200" y="560" class="cardinality">1</text>
+                        <text x="240" y="548" class="cardinality">N</text>
+                        <text x="250" y="556" class="relationship-label">Organiza</text>
 
-                        <line x1="700" y1="420" x2="760" y2="410" class="relationship-line"></line>
-                        <text x="720" y="400" class="cardinality">1</text>
-                        <text x="770" y="400" class="cardinality">N</text>
+                        <path class="relationship-line" d="M100 170 L60 170 L60 540 L540 540 L540 560"></path>
+                        <text x="92" y="154" class="cardinality">1</text>
+                        <text x="548" y="526" class="cardinality">N</text>
+                        <text x="84" y="212" class="relationship-label">Solicita</text>
 
-                        <line x1="700" y1="460" x2="1020" y2="410" class="relationship-line"></line>
-                        <text x="820" y="430" class="cardinality">1</text>
-                        <text x="980" y="420" class="cardinality">N</text>
+                        <path class="relationship-line" d="M380 425 L380 520 L540 520 L540 560"></path>
+                        <text x="392" y="450" class="cardinality">0..N</text>
+                        <text x="548" y="500" class="cardinality">1</text>
+                        <text x="430" y="508" class="relationship-label">Gestiona</text>
 
-                        <line x1="560" y1="520" x2="560" y2="560" class="relationship-line"></line>
-                        <text x="540" y="540" class="cardinality">1</text>
-                        <text x="580" y="540" class="cardinality">N</text>
+                        <path class="relationship-line" d="M340 670 L520 670"></path>
+                        <text x="332" y="656" class="cardinality">1</text>
+                        <text x="520" y="656" class="cardinality">N</text>
+                        <text x="420" y="650" class="relationship-label">Pertenece</text>
 
-                        <line x1="340" y1="620" x2="420" y2="640" class="relationship-line"></line>
-                        <text x="360" y="610" class="cardinality">1</text>
-                        <text x="400" y="610" class="cardinality">N</text>
+                        <path class="relationship-line" d="M560 260 L560 560"></path>
+                        <text x="548" y="300" class="cardinality">1</text>
+                        <text x="548" y="540" class="cardinality">N</text>
+                        <text x="520" y="360" class="relationship-label">Clasifica</text>
+
+                        <path class="relationship-line" d="M680 260 L780 260"></path>
+                        <text x="662" y="250" class="cardinality">1</text>
+                        <text x="784" y="250" class="cardinality">N</text>
+                        <text x="720" y="240" class="relationship-label">Agrupa</text>
+
+                        <path class="relationship-line" d="M910 280 L910 560"></path>
+                        <text x="922" y="320" class="cardinality">1</text>
+                        <text x="922" y="540" class="cardinality">N</text>
+                        <text x="940" y="420" class="relationship-label">Detalla</text>
+
+                        <path class="relationship-line" d="M1210 260 L1210 320"></path>
+                        <text x="1198" y="250" class="cardinality">1</text>
+                        <text x="1228" y="304" class="cardinality">1</text>
+                        <text x="1238" y="278" class="relationship-label">Define SLA</text>
+
+                        <path class="relationship-line" d="M1240 530 L1240 640 L900 640"></path>
+                        <text x="1252" y="580" class="cardinality">1</text>
+                        <text x="908" y="628" class="cardinality">N</text>
+                        <text x="1148" y="628" class="relationship-label">Controla</text>
+
+                        <path class="relationship-line" d="M960 460 L900 460 L900 560"></path>
+                        <text x="972" y="450" class="cardinality">N</text>
+                        <text x="908" y="520" class="cardinality">1</text>
+                        <text x="930" y="500" class="relationship-label">Historial</text>
+
+                        <path class="relationship-line" d="M380 410 L380 500 L940 500 L940 440"></path>
+                        <text x="392" y="470" class="cardinality">1</text>
+                        <text x="952" y="460" class="cardinality">N</text>
+                        <text x="700" y="488" class="relationship-label">Asignado a</text>
+
+                        <path class="relationship-line" d="M900 680 L960 680"></path>
+                        <text x="900" y="666" class="cardinality">1</text>
+                        <text x="972" y="666" class="cardinality">N</text>
+                        <text x="932" y="660" class="relationship-label">Estados</text>
+
+                        <path class="relationship-line" d="M700 800 L700 840"></path>
+                        <text x="688" y="818" class="cardinality">1</text>
+                        <text x="708" y="860" class="cardinality">N</text>
+                        <text x="718" y="828" class="relationship-label">Comentarios</text>
+
+                        <path class="relationship-line" d="M820 800 L820 840"></path>
+                        <text x="808" y="818" class="cardinality">1</text>
+                        <text x="828" y="858" class="cardinality">N</text>
+                        <text x="838" y="828" class="relationship-label">Adjuntos</text>
+
+                        <path class="relationship-line" d="M900 780 L1120 780 L1120 840"></path>
+                        <text x="908" y="768" class="cardinality">1</text>
+                        <text x="1132" y="820" class="cardinality">N</text>
+                        <text x="1010" y="772" class="relationship-label">Notifica</text>
+
+                        <path class="relationship-line" d="M380 920 L440 920 L440 260"></path>
+                        <text x="360" y="900" class="cardinality">N</text>
+                        <text x="448" y="280" class="cardinality">1</text>
+                        <text x="452" y="540" class="relationship-label">Relacionado</text>
                     </svg>
                     <div class="der-note">
-                        Category y Subcategory normalizan el catálogo; Ticket vincula usuarios solicitantes y asignados además de prioridad, área y subcategoría. Comentarios, adjuntos, asignaciones y auditoría dependen del ticket y registran actor, fechas y visibilidad interna. SLA se deriva de Priority.sla_hours y genera eventos en AuditLog.
+                        SupportProfile extiende los usuarios con roles operativos y disponibilidad por Área; Category y Subcategory estructuran el catálogo mientras Priority enlaza con un ServiceLevelAgreement parametrizable que gobierna los tiempos del Ticket. Las asignaciones, historial de estado, comentarios, adjuntos y notificaciones dependen del Ticket y conservan trazabilidad de actores. El conocimiento publicado vincula soluciones con las categorías para reforzar el autoservicio.
                     </div>
                 </div>
             </div>
@@ -1046,8 +1134,8 @@
 
         function clearDiagramHighlights() {
             actorGroups.forEach(actor => actor.classList.remove('active'));
-            usecaseShapes.forEach(shape => shape.classList.remove('active'));
-            usecaseLabels.forEach(label => label.classList.remove('active'));
+            usecaseShapes.forEach(shape => shape.classList.remove('active', 'hidden'));
+            usecaseLabels.forEach(label => label.classList.remove('active', 'hidden'));
             connectors.forEach(line => line.classList.remove('active'));
         }
 
@@ -1085,14 +1173,21 @@
             const data = actorData[actorKey];
             if (!data) return;
 
-            data.usecases.forEach(id => {
-                const node = document.getElementById(id);
-                if (node) {
-                    node.classList.add('active');
+            usecaseShapes.forEach(shape => {
+                if (data.usecases.includes(shape.id)) {
+                    shape.classList.remove('hidden');
+                    shape.classList.add('active');
+                } else {
+                    shape.classList.add('hidden');
                 }
-                const label = document.querySelector(`.usecase-label[data-usecase="${id}"]`);
-                if (label) {
+            });
+
+            usecaseLabels.forEach(label => {
+                if (data.usecases.includes(label.dataset.usecase)) {
+                    label.classList.remove('hidden');
                     label.classList.add('active');
+                } else {
+                    label.classList.add('hidden');
                 }
             });
 
