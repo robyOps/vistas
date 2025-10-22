@@ -31,7 +31,7 @@
         }
 
         .aurora {
-            position: absolute;
+            position: fixed;
             inset: -30vh -30vw;
             background: conic-gradient(from 90deg, rgba(255, 0, 122, 0.35), rgba(0, 255, 242, 0.45), rgba(255, 255, 0, 0.35), rgba(255, 0, 122, 0.35));
             filter: blur(120px);
@@ -60,18 +60,10 @@
 
         h1 {
             font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
             text-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
-        }
-
-        p {
-            margin: 0 auto 2.5rem;
-            max-width: 520px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: rgba(226, 232, 240, 0.8);
         }
 
         .buttons {
@@ -80,7 +72,7 @@
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         }
 
-        .buttons a {
+        .diagram-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -95,9 +87,11 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
-        .buttons a::before {
+        .diagram-button::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -107,12 +101,12 @@
             transition: opacity 0.3s ease;
         }
 
-        .buttons a:hover {
+        .diagram-button:hover {
             transform: translateY(-6px) scale(1.02);
             box-shadow: 0 24px 50px rgba(244, 114, 182, 0.55);
         }
 
-        .buttons a:hover::before {
+        .diagram-button:hover::before {
             opacity: 0.4;
         }
 
@@ -131,13 +125,409 @@
             50% { opacity: 1; filter: blur(10px); }
         }
 
+        .panels {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(8, 15, 35, 0.72);
+            backdrop-filter: blur(14px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 5;
+        }
+
+        .panels.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .panel {
+            width: min(92vw, 1100px);
+            max-height: 86vh;
+            overflow: hidden;
+            border-radius: 28px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.92), rgba(17, 24, 39, 0.85));
+            box-shadow: 0 45px 80px rgba(15, 23, 42, 0.65);
+            transform: translateY(40px) scale(0.98);
+            opacity: 0;
+            transition: transform 0.45s cubic-bezier(.16,.84,.44,1), opacity 0.45s ease;
+            display: none;
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.08em;
+        }
+
+        .panel-body {
+            padding: 2rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .panel-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel-body::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.4);
+            border-radius: 999px;
+        }
+
+        .back-button {
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            color: rgba(226, 232, 240, 0.9);
+            padding: 0.65rem 1.5rem;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: #fff;
+        }
+
+        .diagram-grid {
+            display: grid;
+            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        .node-card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            border-radius: 18px;
+            padding: 1.25rem 1.35rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .node-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .node-card h3 {
+            margin: 0 0 0.8rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #38bdf8;
+        }
+
+        .node-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.95rem;
+            color: rgba(226, 232, 240, 0.8);
+        }
+
+        .node-card ul li {
+            padding: 0.25rem 0;
+        }
+
+        .connections {
+            margin-top: 2.5rem;
+            display: grid;
+            gap: 1.6rem;
+        }
+
+        .connections section {
+            background: rgba(15, 118, 110, 0.15);
+            border-radius: 18px;
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            padding: 1.4rem 1.6rem;
+            position: relative;
+        }
+
+        .connections h4 {
+            margin: 0 0 0.9rem;
+            letter-spacing: 0.08em;
+            font-size: 1rem;
+            color: #5eead4;
+        }
+
+        .connections ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: rgba(226, 232, 240, 0.88);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.45);
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #bfdbfe;
+        }
+
+        .optional-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            margin-top: 1rem;
+        }
+
+        .optional-grid .node-card {
+            border-color: rgba(129, 140, 248, 0.45);
+        }
+
+        .usecase-layout {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: minmax(220px, 280px) 1fr;
+        }
+
+        .actor-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .actor-card {
+            background: rgba(49, 46, 129, 0.4);
+            border: 1px solid rgba(167, 139, 250, 0.4);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .actor-card:hover, .actor-card.active {
+            transform: translateX(6px);
+            box-shadow: 0 12px 30px rgba(129, 140, 248, 0.35);
+        }
+
+        .actor-card span {
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #c4b5fd;
+        }
+
+        .usecase-detail {
+            background: rgba(30, 64, 175, 0.28);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 22px;
+            padding: 1.6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .usecase-detail h3 {
+            margin-top: 0;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        .usecase-list {
+            display: grid;
+            gap: 0.9rem;
+            margin: 1.2rem 0 1.6rem;
+        }
+
+        .usecase-list li {
+            list-style: none;
+            background: rgba(15, 23, 42, 0.55);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .usecase-list li::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #f472b6, #22d3ee);
+            flex-shrink: 0;
+        }
+
+        .relationships {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .relationships section {
+            background: rgba(15, 118, 110, 0.15);
+            border-radius: 16px;
+            border: 1px solid rgba(45, 212, 191, 0.35);
+            padding: 1.1rem 1.3rem;
+        }
+
+        .relationships h4 {
+            margin: 0 0 0.6rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #5eead4;
+        }
+
+        .relationships ul {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .der-grid {
+            display: grid;
+            gap: 1.6rem;
+        }
+
+        .entity-group {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .entity-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(45, 212, 191, 0.35);
+            border-radius: 18px;
+            padding: 1.2rem 1.3rem;
+            position: relative;
+        }
+
+        .entity-card h3 {
+            margin: 0 0 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #34d399;
+        }
+
+        .entity-card ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: rgba(226, 232, 240, 0.82);
+        }
+
+        .entity-card ul li {
+            padding: 0.25rem 0;
+        }
+
+        .relationship-map {
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.32);
+            border-radius: 20px;
+            padding: 1.4rem 1.6rem;
+        }
+
+        .relationship-map h3 {
+            margin-top: 0;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #bfdbfe;
+        }
+
+        .relationship-map ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: rgba(226, 232, 240, 0.85);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.4rem;
+        }
+
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(226, 232, 240, 0.75);
+        }
+
+        .legend span::before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        .legend .fk::before { background: #34d399; }
+        .legend .protect::before { background: #f59e0b; }
+        .legend .cascade::before { background: #22d3ee; }
+        .legend .setnull::before { background: #f472b6; }
+
+        .panel-note {
+            font-size: 0.9rem;
+            color: rgba(226, 232, 240, 0.75);
+            margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        .panel-footer {
+            padding: 1.4rem 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1024px) {
+            .usecase-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 3rem 2rem;
             }
 
-            h1 {
-                letter-spacing: 0.08em;
+            .panel-body {
+                padding: 1.5rem;
+            }
+
+            .panel-header, .panel-footer {
+                padding: 1.2rem 1.5rem;
             }
         }
     </style>
@@ -147,12 +537,489 @@
     <div class="container">
         <div class="neon-ring"></div>
         <h1>Coyahue Helpdesk</h1>
-        <p>Bienvenido a la plataforma de soporte de Coyahue. Explora nuestras herramientas para desplegar soluciones, descubrir casos de uso innovadores y revisar el diagrama DER que impulsa nuestra operación.</p>
         <div class="buttons">
-            <a href="#">Vista de Despliegue</a>
-            <a href="#">Casos de Uso</a>
-            <a href="#">DER</a>
+            <button class="diagram-button" data-panel="deployment">Vista de Despliegue</button>
+            <button class="diagram-button" data-panel="usecases">Casos de Uso</button>
+            <button class="diagram-button" data-panel="der">DER</button>
         </div>
     </div>
+
+    <div class="panels" id="panels">
+        <div class="panel" id="deployment">
+            <div class="panel-header">
+                <h2>Arquitectura de Despliegue (Físico)</h2>
+                <button class="back-button" data-close>Volver</button>
+            </div>
+            <div class="panel-body">
+                <div class="diagram-grid">
+                    <div class="node-card">
+                        <h3>Cliente</h3>
+                        <ul>
+                            <li>Navegador web</li>
+                            <li>Tráfico HTTPS :443</li>
+                            <li><span class="badge">Usuarios finales</span></li>
+                        </ul>
+                    </div>
+                    <div class="node-card">
+                        <h3>Internet</h3>
+                        <ul>
+                            <li>Enrutado global</li>
+                            <li>Gateway → VPC pública</li>
+                            <li>Protocolo seguro TLS</li>
+                        </ul>
+                    </div>
+                    <div class="node-card">
+                        <h3>AWS VPC</h3>
+                        <ul>
+                            <li>Dominio privado de red</li>
+                            <li>Subred pública &amp; privada</li>
+                            <li>Security Groups dedicados</li>
+                        </ul>
+                    </div>
+                    <div class="node-card">
+                        <h3>Subred Pública</h3>
+                        <ul>
+                            <li>EC2 App</li>
+                            <li>Nginx (terminación TLS)</li>
+                            <li>Gunicorn → socket Unix / 127.0.0.1:8000</li>
+                            <li>Django + DRF</li>
+                            <li>/media en FS local</li>
+                            <li>Logs de aplicación</li>
+                        </ul>
+                    </div>
+                    <div class="node-card">
+                        <h3>Subred Privada</h3>
+                        <ul>
+                            <li>PostgreSQL :5432</li>
+                            <li>Sin salida directa (solo SG App)</li>
+                            <li>Opcional NAT para egreso</li>
+                        </ul>
+                    </div>
+                    <div class="node-card">
+                        <h3>Seguridad &amp; Red</h3>
+                        <ul>
+                            <li>SG App: inbound 443, outbound 5432</li>
+                            <li>SG DB: inbound 5432 desde SG App</li>
+                            <li>Rutas: Pública → IGW, Privada sin salida</li>
+                            <li>TLS en Nginx, tráfico interno plano</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="connections">
+                    <section>
+                        <h4>Flujos Principales</h4>
+                        <ul>
+                            <li>Cliente → Internet → Internet Gateway → Nginx :443</li>
+                            <li>Nginx → Gunicorn (upstream local)</li>
+                            <li>Gunicorn → Django (proceso interno)</li>
+                            <li>Django ↔ PostgreSQL (TCP 5432 dentro de la VPC)</li>
+                            <li>Django → /media (lectura/escritura local)</li>
+                            <li>Django → Logs (escritura local)</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Autenticación &amp; Autorización</h4>
+                        <ul>
+                            <li>Web: Sesiones Django (login tradicional)</li>
+                            <li>API: DRF con permisos por rol</li>
+                            <li>No se evidencia JWT; control por grupos</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Extensiones Sugeridas</h4>
+                        <div class="optional-grid">
+                            <div class="node-card">
+                                <h3>WAF / ALB</h3>
+                                <ul>
+                                    <li>Protección L7</li>
+                                    <li>Balanceo antes de Nginx</li>
+                                </ul>
+                            </div>
+                            <div class="node-card">
+                                <h3>NAT Gateway</h3>
+                                <ul>
+                                    <li>Egreso seguro subred privada</li>
+                                    <li>Parcheo y dependencias</li>
+                                </ul>
+                            </div>
+                            <div class="node-card">
+                                <h3>S3</h3>
+                                <ul>
+                                    <li>Estáticos / adjuntos</li>
+                                    <li>Durabilidad + CDN</li>
+                                </ul>
+                            </div>
+                            <div class="node-card">
+                                <h3>CloudWatch</h3>
+                                <ul>
+                                    <li>Logs centralizados</li>
+                                    <li>Métricas &amp; alertas SLA</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="back-button" data-close>Volver</button>
+            </div>
+        </div>
+
+        <div class="panel" id="usecases">
+            <div class="panel-header">
+                <h2>Casos de Uso del Sistema de Tickets</h2>
+                <button class="back-button" data-close>Volver</button>
+            </div>
+            <div class="panel-body">
+                <div class="usecase-layout">
+                    <div class="actor-column">
+                        <h3>Actores</h3>
+                        <div class="actor-list">
+                            <div class="actor-card" data-actor="solicitante">
+                                <span>Actor</span>
+                                <strong>Solicitante</strong>
+                                <small>Usuarios finales que levantan tickets</small>
+                            </div>
+                            <div class="actor-card" data-actor="tecnico">
+                                <span>Actor</span>
+                                <strong>Técnico</strong>
+                                <small>Soporte operativo / atención incidente</small>
+                            </div>
+                            <div class="actor-card" data-actor="administrador">
+                                <span>Actor</span>
+                                <strong>Administrador</strong>
+                                <small>Gestión, reporting y catálogos</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="usecase-detail" id="usecase-detail">
+                        <div id="actor-selection">
+                            <h3>Selecciona un actor</h3>
+                            <p>Haz clic en un actor para desplegar sus casos de uso específicos y las reglas de negocio asociadas.</p>
+                        </div>
+                        <div id="actor-cases" class="hidden">
+                            <div class="actor-cases-header">
+                                <h3 id="actor-name"></h3>
+                                <button class="back-button" id="back-to-actors">Volver a actores</button>
+                            </div>
+                            <ul class="usecase-list" id="usecase-list"></ul>
+                            <div class="relationships">
+                                <section>
+                                    <h4>Relaciones entre casos</h4>
+                                    <ul id="case-relationships"></ul>
+                                </section>
+                                <section>
+                                    <h4>Reglas &amp; Negocio</h4>
+                                    <ul id="business-rules"></ul>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-note">
+                    Validar permisos por rol es un caso reusable (include) exigido por todos los casos operativos. Auditoría registra cada acción clave, y FAQ autoservicio ofrece una alternativa excluyente a la creación del ticket cuando resuelve la consulta.
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="back-button" data-close>Volver</button>
+            </div>
+        </div>
+
+        <div class="panel" id="der">
+            <div class="panel-header">
+                <h2>Diagrama Entidad-Relación</h2>
+                <button class="back-button" data-close>Volver</button>
+            </div>
+            <div class="panel-body">
+                <div class="der-grid">
+                    <div class="entity-group">
+                        <div class="entity-card">
+                            <h3>auth_user</h3>
+                            <ul>
+                                <li>id (PK)</li>
+                                <li>username, email, password hash</li>
+                                <li>is_active, is_staff, is_superuser</li>
+                                <li>timestamps</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>Category</h3>
+                            <ul>
+                                <li>id (PK)</li>
+                                <li>name (UNIQUE, mayúsculas)</li>
+                                <li>description</li>
+                                <li>is_active</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>Subcategory</h3>
+                            <ul>
+                                <li>id (PK)</li>
+                                <li>category FK → Category (CASCADE)</li>
+                                <li>name, description</li>
+                                <li>is_active</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>Priority</h3>
+                            <ul>
+                                <li>id (PK)</li>
+                                <li>name (UNIQUE)</li>
+                                <li>sla_hours (default 72)</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>Area</h3>
+                            <ul>
+                                <li>id (PK)</li>
+                                <li>name (UNIQUE)</li>
+                                <li>is_active (si aplica)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="entity-group">
+                        <div class="entity-card">
+                            <h3>Ticket</h3>
+                            <ul>
+                                <li>id (PK), code (UNIQUE)</li>
+                                <li>title, description</li>
+                                <li>kind: REQUEST | INCIDENT</li>
+                                <li>status: OPEN → IN_PROGRESS → RESOLVED → CLOSED</li>
+                                <li>FK requester → auth_user (CASCADE)</li>
+                                <li>FK assigned_to → auth_user (SET_NULL)</li>
+                                <li>FK category → Category (PROTECT)</li>
+                                <li>FK subcategory → Subcategory (PROTECT, opcional)</li>
+                                <li>FK priority → Priority (PROTECT)</li>
+                                <li>FK area → Area (PROTECT, opcional)</li>
+                                <li>created_at (index), updated_at</li>
+                                <li>resolved_at, closed_at</li>
+                                <li>cluster_id (deprecated, index)</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>TicketComment</h3>
+                            <ul>
+                                <li>ticket FK → Ticket (CASCADE)</li>
+                                <li>author FK → auth_user (CASCADE)</li>
+                                <li>body, is_internal</li>
+                                <li>created_at</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>TicketAttachment</h3>
+                            <ul>
+                                <li>ticket FK → Ticket (CASCADE)</li>
+                                <li>uploaded_by FK → auth_user (CASCADE)</li>
+                                <li>file (attachments/%Y/%m/)</li>
+                                <li>content_type, size</li>
+                                <li>uploaded_at</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>TicketAssignment</h3>
+                            <ul>
+                                <li>ticket FK → Ticket (CASCADE)</li>
+                                <li>from_user FK → auth_user (SET_NULL)</li>
+                                <li>to_user FK → auth_user (CASCADE)</li>
+                                <li>reason</li>
+                                <li>created_at</li>
+                            </ul>
+                        </div>
+                        <div class="entity-card">
+                            <h3>AuditLog</h3>
+                            <ul>
+                                <li>ticket FK → Ticket (CASCADE)</li>
+                                <li>actor FK → auth_user (SET_NULL)</li>
+                                <li>action: CREATE | ASSIGN | UPDATE | STATUS | COMMENT | ATTACH | SLA_WARN | SLA_BREACH</li>
+                                <li>meta JSON, created_at</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="relationship-map">
+                        <h3>Relaciones &amp; Cardinalidades</h3>
+                        <ul>
+                            <li>Category 1 — N Subcategory (CASCADE)</li>
+                            <li>Category 1 — N Ticket (PROTECT)</li>
+                            <li>Subcategory 1 — N Ticket (PROTECT)</li>
+                            <li>Priority 1 — N Ticket (PROTECT)</li>
+                            <li>Area 1 — N Ticket (PROTECT)</li>
+                            <li>User 1 — N Ticket (requester, CASCADE)</li>
+                            <li>User 1 — N Ticket (assigned_to, SET_NULL)</li>
+                            <li>Ticket 1 — N TicketComment / TicketAttachment / TicketAssignment / AuditLog (CASCADE)</li>
+                            <li>User 1 — N TicketComment / Attachment / Assignment / AuditLog (según regla)</li>
+                            <li>Coherencia categoría-subcategoría garantizada por validación de dominio</li>
+                            <li>SLA: Priority.sla_hours activa eventos SLA_WARN / SLA_BREACH</li>
+                            <li>Visibilidad: TicketComment.is_internal controla comentarios internos</li>
+                        </ul>
+                        <div class="legend">
+                            <span class="fk">FK</span>
+                            <span class="protect">PROTECT</span>
+                            <span class="cascade">CASCADE</span>
+                            <span class="setnull">SET_NULL</span>
+                        </div>
+                    </div>
+                    <div class="panel-note">
+                        Mapas de casos → entidades: Crear ticket → Ticket + AuditLog(action=CREATE); Adjuntar → TicketAttachment + AuditLog(action=ATTACH); Comentar → TicketComment + AuditLog(action=COMMENT); Cambiar estado → Ticket.status + AuditLog(action=STATUS); Asignar/Reasignar → TicketAssignment + AuditLog(action=ASSIGN); Dashboard KPI → agregaciones Ticket; Gestión de catálogos → Category/Subcategory/Priority/Area; Exportar → filtros de Ver y filtrar.
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="back-button" data-close>Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const panelOverlay = document.getElementById('panels');
+        const diagramButtons = document.querySelectorAll('.diagram-button');
+        const panels = document.querySelectorAll('.panel');
+        const closeButtons = document.querySelectorAll('[data-close]');
+
+        diagramButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const panelId = btn.dataset.panel;
+                const targetPanel = document.getElementById(panelId);
+
+                panels.forEach(panel => panel.classList.remove('active'));
+                panelOverlay.classList.add('visible');
+                requestAnimationFrame(() => {
+                    targetPanel.classList.add('active');
+                    targetPanel.querySelector('.panel-body').scrollTop = 0;
+                });
+            });
+        });
+
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                panels.forEach(panel => panel.classList.remove('active'));
+                panelOverlay.classList.remove('visible');
+            });
+        });
+
+        panelOverlay.addEventListener('click', event => {
+            if (event.target === panelOverlay) {
+                panels.forEach(panel => panel.classList.remove('active'));
+                panelOverlay.classList.remove('visible');
+            }
+        });
+
+        const actorCards = document.querySelectorAll('.actor-card');
+        const actorSelection = document.getElementById('actor-selection');
+        const actorCases = document.getElementById('actor-cases');
+        const actorName = document.getElementById('actor-name');
+        const usecaseList = document.getElementById('usecase-list');
+        const caseRelationships = document.getElementById('case-relationships');
+        const businessRules = document.getElementById('business-rules');
+        const backToActors = document.getElementById('back-to-actors');
+
+        const actorData = {
+            solicitante: {
+                label: 'Solicitante',
+                cases: [
+                    'Iniciar sesión / Cerrar sesión',
+                    'FAQ autoservicio',
+                    'Ver y filtrar tickets',
+                    'Crear ticket',
+                    'Adjuntar y comentar'
+                ],
+                relationships: [
+                    'FAQ autoservicio ⊣⊢ Crear ticket (exclude: resuelve la consulta sin ticket)',
+                    'Crear ticket → Auditoría (include)',
+                    'Adjuntar y comentar → Auditoría (include)',
+                    'Ver y filtrar → Validar permisos por rol (include)'                    
+                ],
+                rules: [
+                    'Tipos de ticket: REQUEST | INCIDENT definidos en la creación',
+                    'Estado inicial OPEN, siguiendo flujo OPEN → IN_PROGRESS → RESOLVED → CLOSED',
+                    'Adjuntos almacenados en /media con trazabilidad en AuditLog(action=ATTACH)'                ]
+            },
+            tecnico: {
+                label: 'Técnico',
+                cases: [
+                    'Iniciar sesión / Cerrar sesión',
+                    'Ver y filtrar tickets',
+                    'Adjuntar y comentar',
+                    'Cambiar estado',
+                    'Asignar / Reasignar',
+                    'Dashboard KPI'
+                ],
+                relationships: [
+                    'Cambiar estado → Auditoría (include)',
+                    'Asignar / Reasignar → Auditoría (include)',
+                    'Dashboard KPI → Validar permisos por rol (include)',
+                    'Adjuntar y comentar ↔ Crear ticket (extend si se adjunta al crear)'
+                ],
+                rules: [
+                    'Permisos otorgados via grupos de Django (rol técnico)',
+                    'SLA controlado por Priority.sla_hours; genera SLA_WARN / SLA_BREACH',
+                    'Asignaciones guardan histórico en TicketAssignment y reflejan assigned_to'
+                ]
+            },
+            administrador: {
+                label: 'Administrador',
+                cases: [
+                    'Iniciar sesión / Cerrar sesión',
+                    'Ver y filtrar tickets',
+                    'Asignar / Reasignar',
+                    'Dashboard KPI',
+                    'Gestionar catálogos',
+                    'Exportar PDF/Excel',
+                    'Auditoría'
+                ],
+                relationships: [
+                    'Exportar PDF/Excel → Ver y filtrar (include sobre resultados filtrados)',
+                    'Gestionar catálogos → Validar permisos por rol (include)',
+                    'Auditoría ↔ Todos los casos críticos (include reutilizable)',
+                    'Validar permisos por rol controla acceso administrativo'
+                ],
+                rules: [
+                    'Gestión de catálogos sobre Category, Subcategory, Priority, Area (normalización en mayúsculas)',
+                    'Auditoría centraliza eventos CREATE/ASSIGN/STATUS/COMMENT/ATTACH/SLA',
+                    'Exportar mantiene coherencia con filtros activos del dashboard'
+                ]
+            }
+        };
+
+        actorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                actorCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+
+                const actorKey = card.dataset.actor;
+                const data = actorData[actorKey];
+
+                actorSelection.classList.add('hidden');
+                actorCases.classList.remove('hidden');
+                actorName.textContent = data.label;
+
+                usecaseList.innerHTML = '';
+                data.cases.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    usecaseList.appendChild(li);
+                });
+
+                caseRelationships.innerHTML = '';
+                data.relationships.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    caseRelationships.appendChild(li);
+                });
+
+                businessRules.innerHTML = '';
+                data.rules.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    businessRules.appendChild(li);
+                });
+            });
+        });
+
+        backToActors.addEventListener('click', () => {
+            actorCards.forEach(c => c.classList.remove('active'));
+            actorCases.classList.add('hidden');
+            actorSelection.classList.remove('hidden');
+        });
+    </script>
 </body>
 </html>
