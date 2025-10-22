@@ -548,7 +548,7 @@
 </head>
 <body>
     <section class="hero">
-        <h1>Diagrama del Helpdesk</h1>
+        <h1>Coyahue Helpdesk</h1>
         <div class="buttons">
             <button class="diagram-button" data-panel="deployment">Vista de Despliegue</button>
             <button class="diagram-button" data-panel="usecases">Casos de Uso</button>
@@ -800,21 +800,13 @@
                         <g class="system-elements">
                             <g data-node="Sistema" data-kind="system">
                                 <rect class="system-rect" x="220" y="140" width="760" height="420" rx="28"></rect>
-                                <text x="600" y="180" text-anchor="middle" class="entity-header">Sistema de Tickets</text>
+                                <text x="600" y="180" text-anchor="middle" class="entity-header">Casos</text>
                             </g>
 
                             <g class="usecases-layer">
                                 <g data-node="FAQ autoservicio" class="usecase-group">
                                     <ellipse class="usecase" cx="360" cy="220" rx="120" ry="34"></ellipse>
                                     <text class="usecase-label" data-usecase="FAQ autoservicio" x="360" y="226" text-anchor="middle">FAQ autoservicio</text>
-                                </g>
-                                <g data-node="Iniciar/Cerrar sesión" class="usecase-group">
-                                    <ellipse class="usecase" cx="520" cy="220" rx="128" ry="34"></ellipse>
-                                    <text class="usecase-label" data-usecase="Iniciar/Cerrar sesión" x="520" y="226" text-anchor="middle">Iniciar/Cerrar sesión</text>
-                                </g>
-                                <g data-node="Validar permisos por rol" class="usecase-group">
-                                    <ellipse class="usecase" cx="700" cy="220" rx="140" ry="36"></ellipse>
-                                    <text class="usecase-label" data-usecase="Validar permisos por rol" x="700" y="226" text-anchor="middle">Validar permisos por rol</text>
                                 </g>
                                 <g data-node="Crear ticket" class="usecase-group">
                                     <ellipse class="usecase" cx="360" cy="300" rx="120" ry="34"></ellipse>
@@ -856,42 +848,22 @@
 
                             <g class="connectors-layer">
                                 <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio" d="M360 560 V220"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Iniciar/Cerrar sesión" d="M360 560 V240 H520"></path>
                                 <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket" d="M360 560 V300"></path>
                                 <path class="actor-connector" data-source="Solicitante" data-target="Adjuntar y comentar" d="M360 560 V320 H520"></path>
                                 <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets" d="M360 560 V340 H700"></path>
 
-                                <path class="actor-connector" data-source="Técnico" data-target="Iniciar/Cerrar sesión" d="M520 560 V220"></path>
                                 <path class="actor-connector" data-source="Técnico" data-target="Adjuntar y comentar" d="M520 560 V320"></path>
                                 <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado" d="M520 560 V380"></path>
                                 <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar" d="M520 560 V380 H700"></path>
                                 <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets" d="M520 560 V340 H700"></path>
                                 <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI" d="M520 560 V400 H860"></path>
 
-                                <path class="actor-connector" data-source="Administrador" data-target="Iniciar/Cerrar sesión" d="M820 560 V240 H520"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Validar permisos por rol" d="M820 560 V220 H700"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets" d="M820 560 V340 H700"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar" d="M820 560 V380 H700"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI" d="M820 560 V400 H860"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel" d="M820 560 V460 H700"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos" d="M820 560 V460 H860"></path>
                                 <path class="actor-connector" data-source="Administrador" data-target="Auditoría" d="M820 560 V520 H860"></path>
-                            </g>
-
-                            <g class="relations-layer">
-                                <path class="relation-line include" data-source="Crear ticket" data-target="Auditoría" d="M360 334 V520 H860"></path>
-                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Auditoría" d="M520 334 V520 H860"></path>
-                                <path class="relation-line include" data-source="Cambiar estado" data-target="Auditoría" d="M520 414 V520 H860"></path>
-                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Auditoría" d="M700 414 V520 H860"></path>
-                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Ver y filtrar tickets" d="M700 494 V300"></path>
-                                <path class="relation-line include" data-source="Crear ticket" data-target="Validar permisos por rol" d="M360 334 V220 H700"></path>
-                                <path class="relation-line include" data-source="Adjuntar y comentar" data-target="Validar permisos por rol" d="M520 334 V220 H700"></path>
-                                <path class="relation-line include" data-source="Cambiar estado" data-target="Validar permisos por rol" d="M520 414 V220 H700"></path>
-                                <path class="relation-line include" data-source="Asignar/Reasignar" data-target="Validar permisos por rol" d="M700 414 V220"></path>
-                                <path class="relation-line include" data-source="Dashboard KPI" data-target="Validar permisos por rol" d="M860 414 V220 H700"></path>
-                                <path class="relation-line include" data-source="Exportar PDF/Excel" data-target="Validar permisos por rol" d="M700 494 V220"></path>
-                                <path class="relation-line include" data-source="Gestionar catálogos" data-target="Validar permisos por rol" d="M860 494 V220 H700"></path>
-                                <path class="relation-line include" data-source="Auditoría" data-target="Validar permisos por rol" d="M860 554 V220 H700"></path>
                             </g>
 
                             <text x="280" y="600" class="note">FAQ excluye la creación de ticket cuando resuelve la solicitud.</text>
