@@ -1,0 +1,63 @@
+{
+  "entities": [
+    { "id": "User", "group": "hub", "attrs": ["id PK"] },
+    { "id": "Ticket", "group": "hub", "attrs": ["id PK", "requester_id FK", "assigned_to_id FK", "category_id FK", "subcategory_id FK", "priority_id FK", "area_id FK"] },
+    { "id": "Category", "group": "catalog", "attrs": ["id PK", "name"] },
+    { "id": "Subcategory", "group": "catalog", "attrs": ["id PK", "category_id FK", "name"] },
+    { "id": "Priority", "group": "catalog", "attrs": ["id PK", "name"] },
+    { "id": "Area", "group": "catalog", "attrs": ["id PK", "name"] },
+
+    { "id": "TicketComment", "group": "tickets", "attrs": ["id PK", "ticket_id FK", "author_id FK"] },
+    { "id": "TicketAttachment", "group": "tickets", "attrs": ["id PK", "ticket_id FK", "uploaded_by_id FK"] },
+    { "id": "TicketAssignment", "group": "tickets", "attrs": ["id PK", "ticket_id FK", "from_user_id FK", "to_user_id FK"] },
+    { "id": "TicketLabel", "group": "tickets", "attrs": ["id PK", "ticket_id FK"] },
+    { "id": "TicketLabelSuggestion", "group": "tickets", "attrs": ["id PK", "ticket_id FK"] },
+    { "id": "AuditLog", "group": "tickets", "attrs": ["id PK", "ticket_id FK", "actor_id FK"] },
+    { "id": "EventLog", "group": "tickets", "attrs": ["id PK", "audit_log_id FK"] },
+    { "id": "FAQ", "group": "tickets", "attrs": ["id PK", "category_id FK", "subcategory_id FK", "created_by_id FK", "updated_by_id FK"] },
+    { "id": "AutoAssignRule", "group": "tickets", "attrs": ["id PK", "category_id FK", "area_id FK", "tech_id FK"] },
+    { "id": "Notification", "group": "tickets", "attrs": ["id PK", "user_id FK"] },
+
+    { "id": "UserGroups", "group": "rbac", "attrs": ["id PK", "user_id FK", "group_id FK"] },
+    { "id": "Group", "group": "rbac", "attrs": ["id PK", "name"] },
+    { "id": "GroupPermissions", "group": "rbac", "attrs": ["id PK", "group_id FK", "permission_id FK"] },
+    { "id": "Permission", "group": "rbac", "attrs": ["id PK", "codename", "content_type_id FK"] },
+    { "id": "ContentType", "group": "rbac", "attrs": ["id PK", "app_label", "model"] }
+  ],
+  "relations": [
+    { "from": "Category", "to": "Subcategory", "label": "category", "type": "1-N" },
+    { "from": "Category", "to": "Ticket", "label": "category", "type": "1-N" },
+    { "from": "Subcategory", "to": "Ticket", "label": "subcategory", "type": "1-N" },
+    { "from": "Priority", "to": "Ticket", "label": "priority", "type": "1-N" },
+    { "from": "Area", "to": "Ticket", "label": "area", "type": "1-N" },
+
+    { "from": "User", "to": "Ticket", "label": "requester", "type": "1-N" },
+    { "from": "User", "to": "Ticket", "label": "assigned_to", "type": "1-N" },
+    { "from": "Ticket", "to": "TicketComment", "label": "comments", "type": "1-N" },
+    { "from": "User", "to": "TicketComment", "label": "author", "type": "1-N" },
+    { "from": "Ticket", "to": "TicketAttachment", "label": "attachments", "type": "1-N" },
+    { "from": "User", "to": "TicketAttachment", "label": "uploaded_by", "type": "1-N" },
+    { "from": "Ticket", "to": "TicketAssignment", "label": "assignments", "type": "1-N" },
+    { "from": "User", "to": "TicketAssignment", "label": "from_user", "type": "1-N" },
+    { "from": "User", "to": "TicketAssignment", "label": "to_user", "type": "1-N" },
+    { "from": "Ticket", "to": "TicketLabel", "label": "labels", "type": "1-N" },
+    { "from": "Ticket", "to": "TicketLabelSuggestion", "label": "label_suggestions", "type": "1-N" },
+    { "from": "Ticket", "to": "AuditLog", "label": "audits", "type": "1-N" },
+    { "from": "User", "to": "AuditLog", "label": "actor", "type": "1-N" },
+    { "from": "AuditLog", "to": "EventLog", "label": "events", "type": "1-N" },
+    { "from": "Category", "to": "FAQ", "label": "category", "type": "1-N" },
+    { "from": "Subcategory", "to": "FAQ", "label": "subcategory", "type": "1-N" },
+    { "from": "User", "to": "FAQ", "label": "created_by", "type": "1-N" },
+    { "from": "User", "to": "FAQ", "label": "updated_by", "type": "1-N" },
+    { "from": "Category", "to": "AutoAssignRule", "label": "category", "type": "1-N" },
+    { "from": "Area", "to": "AutoAssignRule", "label": "area", "type": "1-N" },
+    { "from": "User", "to": "AutoAssignRule", "label": "tech", "type": "1-N" },
+    { "from": "User", "to": "Notification", "label": "user", "type": "1-N" },
+
+    { "from": "User", "to": "UserGroups", "label": "memberships", "type": "1-N" },
+    { "from": "Group", "to": "UserGroups", "label": "users", "type": "1-N" },
+    { "from": "Group", "to": "GroupPermissions", "label": "permissions", "type": "1-N" },
+    { "from": "Permission", "to": "GroupPermissions", "label": "grants", "type": "1-N" },
+    { "from": "ContentType", "to": "Permission", "label": "applies_to", "type": "1-N" }
+  ]
+}
