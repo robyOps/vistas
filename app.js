@@ -229,6 +229,27 @@ function buildMermaid(subset, options = {}) {
     return attrs;
   };
 
+  const formatAttribute = (attr) => {
+    const tokens = attr.trim().split(/\s+/).filter(Boolean);
+    if (tokens.length === 0) {
+      return "string value";
+    }
+
+    const qualifiers = tokens.filter((token) => /^(?:PK|FK)$/i.test(token));
+    const baseTokens = tokens.filter((token) => !/^(?:PK|FK)$/i.test(token));
+
+    if (baseTokens.length === 0) {
+      // If we only received qualifiers, fallback to a default name.
+      baseTokens.push("value");
+    }
+
+    const name = baseTokens.pop();
+    const typeToken = baseTokens.length > 0 ? baseTokens.join(" ") : inferType(name);
+    const suffix = qualifiers.join(" ");
+
+    return `${typeToken} ${name}${suffix ? ` ${suffix}` : ""}`;
+  };
+
   const sortedEntities = [...subset.entities].sort((a, b) => a.id.localeCompare(b.id));
   for (const entity of sortedEntities) {
     lines.push(`  ${entity.id} {`);
@@ -236,7 +257,7 @@ function buildMermaid(subset, options = {}) {
     if (attributes.length === 0) {
       lines.push("    int id PK");
     } else {
-      attributes.forEach((attr) => lines.push(`    ${attr}`));
+      attributes.forEach((attr) => lines.push(`    ${formatAttribute(attr)}`));
     }
     lines.push("  }");
   }
@@ -260,6 +281,16 @@ function buildMermaid(subset, options = {}) {
   }
 
   return lines.join("\n");
+}
+
+function inferType(attributeName) {
+  if (!attributeName) {
+    return "string";
+  }
+  if (/id$/i.test(attributeName) || attributeName.toLowerCase() === "id") {
+    return "int";
+  }
+  return "string";
 }
 
 function dedupeRelations(relations) {
@@ -313,7 +344,7 @@ function colorize(svgRoot, subset) {
     hub: { fill: "#E0F2FE", stroke: "#0284C7", text: "#0C4A6E", dash: null },
     catalog: { fill: "#ECFCCB", stroke: "#16A34A", text: "#14532D", dash: null },
     tickets: { fill: "#F1F5F9", stroke: "#64748B", text: "#0F172A", dash: null },
-    rbac: { fill: "#FEF3C7", stroke: "#D97706", text: "#7C2D12", dash: "4 3" },
+    rbac: { fill: "#FEF3C7", stroke: "#D97706", text: "#7C2D12", dash: "4,3" },
   };
 
   const entitiesById = new Map(subset.entities.map((entity) => [entity.id, entity]));
