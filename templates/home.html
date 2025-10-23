@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
             color-scheme: light;
@@ -205,7 +206,6 @@
         }
 
         .diagram-wrapper,
-        .usecase-layout,
         .der-wrapper {
             position: relative;
             border: 1px solid rgba(148, 163, 184, 0.35);
@@ -219,7 +219,6 @@
         }
 
         .diagram-wrapper svg,
-        .usecase-layout svg,
         .der-wrapper svg {
             width: 100%;
             height: auto;
@@ -329,192 +328,208 @@
         }
 
 
-        .usecase-diagram[data-state="active"] .actor {
+        .usecase-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+        }
+
+        .usecase-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .actor-filter-btn {
+            transition: all 0.2s ease;
+        }
+
+        .actor-filter-btn.is-active {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #f8fafc;
+            border-color: transparent;
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.25);
+        }
+
+        .info-toggle-btn {
+            transition: all 0.2s ease;
+        }
+
+        .info-toggle-btn.is-active {
+            background: #1d4ed8;
+            color: #f8fafc;
+            border-color: transparent;
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+        }
+
+        .usecase-stage {
+            position: relative;
+            border-radius: 24px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.9) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            padding: 1.25rem;
+            overflow: hidden;
+        }
+
+        .usecase-stage::after {
+            content: "";
+            position: absolute;
+            inset: 1.25rem;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.08) 100%);
             pointer-events: none;
         }
 
-        .usecase-diagram {
+        #usecase-canvas {
             width: 100%;
             height: auto;
+            position: relative;
+            z-index: 1;
         }
 
-        .usecase-back {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.92);
-            padding: 0.55rem 1.35rem;
-            font-weight: 500;
-            letter-spacing: 0.03em;
-            color: #1f2937;
+        .uc-node {
             cursor: pointer;
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            transition: opacity 0.25s ease;
+        }
+
+        .uc-node:focus {
+            outline: none;
+        }
+
+        .uc-node .uc-halo {
+            fill: none;
+            stroke-width: 8;
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-12px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 5;
+            transition: opacity 0.25s ease;
         }
 
-        .usecase-back.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
+        .uc-node.actor-node .uc-halo {
+            stroke: rgba(14, 165, 233, 0.75);
         }
 
-        .actor {
-            cursor: pointer;
-            transform-box: fill-box;
-            transform-origin: center;
-            transition: transform 0.6s ease, opacity 0.45s ease, filter 0.45s ease;
+        .uc-node.usecase-node .uc-halo {
+            stroke: rgba(99, 102, 241, 0.85);
         }
 
-        .actor.hidden-actor {
-            opacity: 0;
-            pointer-events: none;
-            filter: blur(0.5px);
+        .uc-node.is-highlighted .uc-halo,
+        .uc-node.is-focused .uc-halo,
+        .uc-node.is-selected .uc-halo {
+            opacity: 0.85;
         }
 
-        .actor.active-actor {
-            filter: drop-shadow(0 0 22px rgba(37, 99, 235, 0.55));
-        }
-
-        .actor-button {
-            fill: rgba(226, 232, 240, 0.85);
-            stroke: rgba(148, 163, 184, 0.65);
-            stroke-width: 2.2;
-            transition: fill 0.3s ease, stroke 0.3s ease;
-        }
-
-        .actor:hover .actor-button,
-        .actor.active-actor .actor-button {
-            fill: rgba(191, 219, 254, 0.95);
-            stroke: #2563eb;
-        }
-
-        .actor text {
+        .uc-label {
             font-size: 16px;
             font-weight: 600;
-            letter-spacing: 0.04em;
-            fill: #1f2937;
+            fill: #0f172a;
         }
 
-        .system-elements {
-            opacity: 0;
-            transform: translateY(40px) scale(0.96);
-            transform-origin: center;
-            transition: opacity 0.55s ease, transform 0.6s ease;
+        .uc-label-sub {
+            font-size: 13px;
+            fill: #475569;
         }
 
-        .usecase-diagram[data-state="active"] .system-elements {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .system-rect {
-            fill: rgba(219, 234, 254, 0.72);
-            stroke: #2563eb;
-            stroke-width: 2.4;
-        }
-
-        .system-title {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            fill: #1d4ed8;
-        }
-
-        .usecase-group,
-        .addon-group {
-            opacity: 0;
-            transform: translateX(80px);
-            pointer-events: none;
-            transition: opacity 0.45s ease, transform 0.45s ease;
-        }
-
-        .usecase-group.visible,
-        .addon-group.visible {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
-
-        .usecase {
-            fill: #f8fafc;
-            stroke: #1d4ed8;
-            stroke-width: 2.2;
-            transition: stroke-width 0.3s ease, fill 0.3s ease;
-        }
-
-        .usecase-group.visible:hover .usecase {
-            fill: #e0e7ff;
-            stroke-width: 2.6;
-        }
-
-        .usecase-label,
-        .addon-label-node {
-            fill: #1f2937;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .addon {
-            fill: rgba(248, 250, 252, 0.95);
-            stroke: rgba(59, 130, 246, 0.65);
-            stroke-width: 1.8;
-            stroke-dasharray: 10 6;
-        }
-
-        .addon-group[data-type="extend"] .addon {
-            stroke: #f97316;
-            stroke-dasharray: 6 6;
-        }
-
-        .addon-group[data-type="extend"] .addon-label-node {
-            fill: #9a3412;
-        }
-
-        .addon-group[data-type="include"] .addon-label-node {
-            fill: #047857;
-        }
-
-        .actor-connector,
-        .addon-connector {
-            stroke: #1d4ed8;
-            stroke-width: 2.6;
+        .uc-edge {
             fill: none;
             stroke-linecap: round;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            marker-end: url(#relation-arrow);
+            stroke-linejoin: round;
+            transition: opacity 0.25s ease, stroke-width 0.2s ease;
         }
 
-        .actor-connector.visible,
-        .addon-connector.visible {
-            opacity: 1;
+        .uc-edge.actor-edge {
+            stroke: #2563eb;
+            stroke-width: 3;
+            marker-end: url(#arrow-actor);
         }
 
-        .addon-connector[data-type="extend"] {
-            stroke: #f97316;
-            stroke-dasharray: 8 6;
+        .uc-edge.include-edge {
+            stroke: #0ea5e9;
+            stroke-width: 3;
+            stroke-dasharray: 10 6;
+            marker-end: url(#arrow-include);
         }
 
-        .addon-connector[data-type="include"] {
-            stroke: #10b981;
+        .uc-edge.exclude-edge {
+            stroke: #dc2626;
+            stroke-width: 3;
+            stroke-dasharray: 6 6;
+            marker-end: url(#arrow-exclude);
         }
 
-        .connector-label {
-            fill: #1f2937;
-            font-size: 13px;
+        .uc-edge.is-highlighted {
+            stroke-width: 3.6;
+        }
+
+        .usecase-legend {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .usecase-legend span::before {
+            content: "";
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        .legend-actor::before { background: rgba(37, 99, 235, 0.6); }
+        .legend-include::before { background: rgba(14, 165, 233, 0.6); }
+        .legend-exclude::before { background: rgba(220, 38, 38, 0.6); }
+
+        .usecase-sidepanel {
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .usecase-sidepanel h3 {
+            font-size: 1.15rem;
             font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            color: #1f2937;
         }
 
-        .connector-label.visible {
-            opacity: 1;
+        .usecase-sidepanel table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .usecase-sidepanel th,
+        .usecase-sidepanel td {
+            text-align: left;
+            font-size: 0.9rem;
+            padding: 0.45rem 0.25rem;
+            color: #1f2937;
+        }
+
+        .usecase-sidepanel tbody tr:nth-child(even) {
+            background: rgba(226, 232, 240, 0.35);
+        }
+
+        .panel.focus-mode[data-view="usecases"] .panel-body {
+            padding: 0;
+        }
+
+        .panel.focus-mode[data-view="usecases"] .panel-header,
+        .panel.focus-mode[data-view="usecases"] .usecase-controls,
+        .panel.focus-mode[data-view="usecases"] .usecase-sidepanel {
+            display: none;
+        }
+
+        .panel.focus-mode[data-view="usecases"] .usecase-stage {
+            border: none;
+            border-radius: 0;
+            padding: 0;
         }
 
         .note {
@@ -808,177 +823,79 @@
                 </div>
             </div>
             <div class="panel-body">
-                <div class="usecase-layout">
-                    <svg id="usecase-svg" class="usecase-diagram" data-state="idle" viewBox="0 0 1200 760" role="img" aria-labelledby="usecaseTitle usecaseDesc">
-                        <title id="usecaseTitle">Casos de uso del sistema de tickets</title>
-                        <desc id="usecaseDesc">Actores solicitante, técnico y administrador interactuando con el sistema de tickets y sus funcionalidades clave.</desc>
-                        <defs>
-                            <marker id="relation-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
-                                <polygon points="0 0, 8 4, 0 8" fill="#059669"></polygon>
-                            </marker>
-                        </defs>
-
-                        <g class="actors-layer">
-                            <g class="actor" data-node="Solicitante" data-idle-x="360" data-idle-y="360" data-active-x="320" data-active-y="420" data-width="140" data-height="180" style="transform: translate(360px, 360px);">
-                                <rect class="actor-button" x="-70" y="-90" width="140" height="180" rx="32"></rect>
-                                <circle cx="0" cy="-48" r="24" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                                <line x1="0" y1="-24" x2="0" y2="40" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="-28" y1="-2" x2="28" y2="-2" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="-26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <text x="0" y="112" text-anchor="middle">Solicitante</text>
-                            </g>
-                            <g class="actor" data-node="Técnico" data-idle-x="600" data-idle-y="360" data-active-x="320" data-active-y="420" data-width="140" data-height="180" style="transform: translate(600px, 360px);">
-                                <rect class="actor-button" x="-70" y="-90" width="140" height="180" rx="32"></rect>
-                                <circle cx="0" cy="-48" r="24" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                                <line x1="0" y1="-24" x2="0" y2="40" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="-28" y1="-2" x2="28" y2="-2" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="-26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <text x="0" y="112" text-anchor="middle">Técnico</text>
-                            </g>
-                            <g class="actor" data-node="Administrador" data-idle-x="840" data-idle-y="360" data-active-x="320" data-active-y="420" data-width="140" data-height="180" style="transform: translate(840px, 360px);">
-                                <rect class="actor-button" x="-70" y="-90" width="140" height="180" rx="32"></rect>
-                                <circle cx="0" cy="-48" r="24" stroke="#2563eb" stroke-width="3" fill="none"></circle>
-                                <line x1="0" y1="-24" x2="0" y2="40" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="-28" y1="-2" x2="28" y2="-2" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="-26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <line x1="0" y1="40" x2="26" y2="88" stroke="#2563eb" stroke-width="3"></line>
-                                <text x="0" y="112" text-anchor="middle">Administrador</text>
-                            </g>
-                        </g>
-
-                        <g class="system-elements">
-                            <rect class="system-rect" x="420" y="120" width="460" height="600" rx="32"></rect>
-                            <text x="650" y="164" text-anchor="middle" class="system-title">Sistema de tickets</text>
-
-                            <g class="usecases-layer">
-                                <g class="usecase-group" data-node="FAQ autoservicio" data-actors="Solicitante" data-x="640" data-y="220" data-rx="150" data-ry="36" transform="translate(640,220)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="150" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">FAQ autoservicio</text>
-                                </g>
-                                <g class="usecase-group" data-node="Crear ticket" data-actors="Solicitante" data-x="640" data-y="280" data-rx="140" data-ry="36" transform="translate(640,280)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="140" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Crear ticket</text>
-                                </g>
-                                <g class="usecase-group" data-node="Ver y filtrar tickets" data-actors="Solicitante Técnico Administrador" data-x="640" data-y="340" data-rx="160" data-ry="36" transform="translate(640,340)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="160" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Ver y filtrar tickets</text>
-                                </g>
-                                <g class="usecase-group" data-node="Cambiar estado" data-actors="Técnico" data-x="640" data-y="400" data-rx="140" data-ry="36" transform="translate(640,400)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="140" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Cambiar estado</text>
-                                </g>
-                                <g class="usecase-group" data-node="Asignar/Reasignar" data-actors="Técnico Administrador" data-x="640" data-y="460" data-rx="160" data-ry="36" transform="translate(640,460)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="160" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Asignar/Reasignar</text>
-                                </g>
-                                <g class="usecase-group" data-node="Dashboard KPI" data-actors="Técnico Administrador" data-x="640" data-y="520" data-rx="140" data-ry="36" transform="translate(640,520)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="140" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Dashboard KPI</text>
-                                </g>
-                                <g class="usecase-group" data-node="Exportar PDF/Excel" data-actors="Administrador" data-x="640" data-y="580" data-rx="160" data-ry="36" transform="translate(640,580)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="160" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Exportar PDF/Excel</text>
-                                </g>
-                                <g class="usecase-group" data-node="Gestionar catálogos" data-actors="Administrador" data-x="640" data-y="640" data-rx="170" data-ry="36" transform="translate(640,640)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="170" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Gestionar catálogos</text>
-                                </g>
-                                <g class="usecase-group" data-node="Auditoría" data-actors="Administrador" data-x="640" data-y="700" data-rx="140" data-ry="36" transform="translate(640,700)">
-                                    <ellipse class="usecase" cx="0" cy="0" rx="140" ry="36"></ellipse>
-                                    <text class="usecase-label" x="0" y="6" text-anchor="middle">Auditoría</text>
-                                </g>
-                            </g>
-
-                            <g class="addons-layer">
-                                <g class="addon-group" data-node="Sugerir solución" data-parent="FAQ autoservicio" data-type="extend" data-x="940" data-y="220" data-rx="120" data-ry="30" transform="translate(940,220)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="120" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Sugerir solución</text>
-                                </g>
-                                <g class="addon-group" data-node="Adjuntar y comentar" data-parent="Crear ticket" data-type="include" data-x="940" data-y="280" data-rx="140" data-ry="30" transform="translate(940,280)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="140" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Adjuntar y comentar</text>
-                                </g>
-                                <g class="addon-group" data-node="Alertas SLA" data-parent="Ver y filtrar tickets" data-type="include" data-x="940" data-y="340" data-rx="120" data-ry="30" transform="translate(940,340)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="120" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Alertas SLA</text>
-                                </g>
-                                <g class="addon-group" data-node="Notificar solicitante" data-parent="Cambiar estado" data-type="include" data-x="940" data-y="400" data-rx="150" data-ry="30" transform="translate(940,400)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="150" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Notificar solicitante</text>
-                                </g>
-                                <g class="addon-group" data-node="Derivar a proveedor" data-parent="Asignar/Reasignar" data-type="extend" data-x="940" data-y="460" data-rx="140" data-ry="30" transform="translate(940,460)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="140" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Derivar a proveedor</text>
-                                </g>
-                                <g class="addon-group" data-node="Alertas de rendimiento" data-parent="Dashboard KPI" data-type="include" data-x="940" data-y="520" data-rx="150" data-ry="30" transform="translate(940,520)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="150" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Alertas de rendimiento</text>
-                                </g>
-                                <g class="addon-group" data-node="Programar informes" data-parent="Exportar PDF/Excel" data-type="extend" data-x="940" data-y="580" data-rx="140" data-ry="30" transform="translate(940,580)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="140" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Programar informes</text>
-                                </g>
-                                <g class="addon-group" data-node="Versionado de ítems" data-parent="Gestionar catálogos" data-type="include" data-x="940" data-y="640" data-rx="150" data-ry="30" transform="translate(940,640)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="150" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Versionado de ítems</text>
-                                </g>
-                                <g class="addon-group" data-node="Alertas compliance" data-parent="Auditoría" data-type="extend" data-x="940" data-y="700" data-rx="130" data-ry="30" transform="translate(940,700)">
-                                    <ellipse class="addon" cx="0" cy="0" rx="130" ry="30"></ellipse>
-                                    <text class="addon-label-node" x="0" y="5" text-anchor="middle">Alertas compliance</text>
-                                </g>
-                            </g>
-
-                            <g class="connectors-layer">
-                                <path class="actor-connector" data-source="Solicitante" data-target="FAQ autoservicio"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Crear ticket"></path>
-                                <path class="actor-connector" data-source="Solicitante" data-target="Ver y filtrar tickets"></path>
-
-                                <path class="actor-connector" data-source="Técnico" data-target="Ver y filtrar tickets"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Cambiar estado"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Asignar/Reasignar"></path>
-                                <path class="actor-connector" data-source="Técnico" data-target="Dashboard KPI"></path>
-
-                                <path class="actor-connector" data-source="Administrador" data-target="Ver y filtrar tickets"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Asignar/Reasignar"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Dashboard KPI"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Exportar PDF/Excel"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Gestionar catálogos"></path>
-                                <path class="actor-connector" data-source="Administrador" data-target="Auditoría"></path>
-                            </g>
-
-                            <g class="addons-connectors-layer">
-                                <path class="addon-connector" data-source="FAQ autoservicio" data-target="Sugerir solución" data-type="extend"></path>
-                                <text class="connector-label" data-source="FAQ autoservicio" data-target="Sugerir solución">extend</text>
-
-                                <path class="addon-connector" data-source="Crear ticket" data-target="Adjuntar y comentar" data-type="include"></path>
-                                <text class="connector-label" data-source="Crear ticket" data-target="Adjuntar y comentar">include</text>
-
-                                <path class="addon-connector" data-source="Ver y filtrar tickets" data-target="Alertas SLA" data-type="include"></path>
-                                <text class="connector-label" data-source="Ver y filtrar tickets" data-target="Alertas SLA">include</text>
-
-                                <path class="addon-connector" data-source="Cambiar estado" data-target="Notificar solicitante" data-type="include"></path>
-                                <text class="connector-label" data-source="Cambiar estado" data-target="Notificar solicitante">include</text>
-
-                                <path class="addon-connector" data-source="Asignar/Reasignar" data-target="Derivar a proveedor" data-type="extend"></path>
-                                <text class="connector-label" data-source="Asignar/Reasignar" data-target="Derivar a proveedor">extend</text>
-
-                                <path class="addon-connector" data-source="Dashboard KPI" data-target="Alertas de rendimiento" data-type="include"></path>
-                                <text class="connector-label" data-source="Dashboard KPI" data-target="Alertas de rendimiento">include</text>
-
-                                <path class="addon-connector" data-source="Exportar PDF/Excel" data-target="Programar informes" data-type="extend"></path>
-                                <text class="connector-label" data-source="Exportar PDF/Excel" data-target="Programar informes">extend</text>
-
-                                <path class="addon-connector" data-source="Gestionar catálogos" data-target="Versionado de ítems" data-type="include"></path>
-                                <text class="connector-label" data-source="Gestionar catálogos" data-target="Versionado de ítems">include</text>
-
-                                <path class="addon-connector" data-source="Auditoría" data-target="Alertas compliance" data-type="extend"></path>
-                                <text class="connector-label" data-source="Auditoría" data-target="Alertas compliance">extend</text>
-                            </g>
-                        </g>
-                    </svg>
-                    <button type="button" class="usecase-back" id="usecase-back">Volver atrás</button>
+                <div class="usecase-shell">
+                    <div class="usecase-controls">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span class="text-sm font-semibold uppercase tracking-wide text-slate-500">Actor</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" class="actor-filter-btn is-active border border-slate-300/80 text-sm font-medium px-4 py-2 rounded-full bg-white/80 text-slate-700" data-actor-filter="Todos">Todos</button>
+                                <button type="button" class="actor-filter-btn border border-slate-300/80 text-sm font-medium px-4 py-2 rounded-full bg-white/80 text-slate-700" data-actor-filter="actor-sol">Solicitante</button>
+                                <button type="button" class="actor-filter-btn border border-slate-300/80 text-sm font-medium px-4 py-2 rounded-full bg-white/80 text-slate-700" data-actor-filter="actor-tec">Técnico</button>
+                                <button type="button" class="actor-filter-btn border border-slate-300/80 text-sm font-medium px-4 py-2 rounded-full bg-white/80 text-slate-700" data-actor-filter="actor-adm">Administrador</button>
+                            </div>
+                        </div>
+                        <div class="usecase-legend">
+                            <span class="legend-actor">Relación actor</span>
+                            <span class="legend-include">include</span>
+                            <span class="legend-exclude">exclude</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col xl:flex-row gap-6 h-full">
+                        <div class="flex-1 flex">
+                            <div class="usecase-stage w-full h-full">
+                                <svg id="usecase-canvas" viewBox="0 0 1200 1000" role="img" aria-labelledby="usecaseTitle usecaseDesc" tabindex="0">
+                                    <title id="usecaseTitle">Casos de uso del sistema de tickets</title>
+                                    <desc id="usecaseDesc">Diagrama interactivo con actores y casos de uso del helpdesk Coyahue.</desc>
+                                    <defs>
+                                        <marker id="arrow-actor" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+                                            <path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"></path>
+                                        </marker>
+                                        <marker id="arrow-include" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+                                            <path d="M0,0 L12,6 L0,12 Z" fill="#0ea5e9"></path>
+                                        </marker>
+                                        <marker id="arrow-exclude" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+                                            <path d="M0,0 L12,6 L0,12 Z" fill="#dc2626"></path>
+                                        </marker>
+                                    </defs>
+                                    <g id="graph">
+                                        <g id="canvas-background">
+                                            <rect x="380" y="80" width="440" height="860" rx="28" ry="28" fill="rgba(219,234,254,0.55)" stroke="#1d4ed8" stroke-width="3"></rect>
+                                            <text x="600" y="110" text-anchor="middle" font-size="20" font-weight="700" fill="#1d4ed8">Sistema de Tickets</text>
+                                        </g>
+                                        <g id="edges"></g>
+                                        <g id="nodes"></g>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <aside class="usecase-sidepanel w-full xl:w-96">
+                            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200/70 bg-slate-50/70">
+                                <div>
+                                    <h3 id="usecase-info-title">Selecciona un nodo</h3>
+                                    <p class="text-sm text-slate-500" id="usecase-info-subtitle">Explora actores y casos para ver detalles.</p>
+                                </div>
+                                <div class="inline-flex overflow-hidden rounded-full border border-slate-300/70 bg-white text-sm font-medium">
+                                    <button type="button" class="info-toggle-btn is-active px-3 py-1.5" data-info-mode="explanation">Explicación</button>
+                                    <button type="button" class="info-toggle-btn px-3 py-1.5" data-info-mode="relations">Relaciones</button>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto px-5 py-4 space-y-4" id="usecase-info-content">
+                                <p class="text-sm leading-relaxed text-slate-600" id="usecase-explanation">Selecciona un actor o caso para ver su propósito dentro del sistema.</p>
+                                <div id="usecase-relations-wrapper" class="hidden">
+                                    <table>
+                                        <thead>
+                                            <tr class="text-xs uppercase tracking-wide text-slate-500">
+                                                <th class="py-2">Destino</th>
+                                                <th class="py-2">Tipo</th>
+                                                <th class="py-2">Dirección</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="usecase-relations-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1360,169 +1277,570 @@
             'AuditLog': ['Ticket', 'auth_user']
         });
 
-        const usecaseSvg = document.getElementById('usecase-svg');
-        const usecaseBackButton = document.getElementById('usecase-back');
-        const usecaseActors = Array.from(usecaseSvg.querySelectorAll('.actor'));
-        const usecaseGroups = Array.from(usecaseSvg.querySelectorAll('.usecase-group'));
-        const usecaseConnectors = Array.from(usecaseSvg.querySelectorAll('.actor-connector'));
-        const addonGroups = Array.from(usecaseSvg.querySelectorAll('.addon-group'));
-        const addonConnectors = Array.from(usecaseSvg.querySelectorAll('.addon-connector'));
-        const connectorLabels = Array.from(usecaseSvg.querySelectorAll('.connector-label'));
 
-        const actorMap = new Map(usecaseActors.map(actor => [actor.dataset.node, actor]));
-        const usecaseMap = new Map(usecaseGroups.map(group => [group.dataset.node, group]));
-        const addonMap = new Map(addonGroups.map(group => [group.dataset.node, group]));
-        const connectorLabelMap = new Map(connectorLabels.map(label => [`${label.dataset.source}->${label.dataset.target}`, label]));
+        const usecaseCanvas = document.getElementById('usecase-canvas');
+        const edgesLayer = usecaseCanvas.querySelector('#edges');
+        const nodesLayer = usecaseCanvas.querySelector('#nodes');
+        const actorFilterButtons = Array.from(document.querySelectorAll('[data-actor-filter]'));
+        const infoToggleButtons = Array.from(document.querySelectorAll('[data-info-mode]'));
+        const infoTitle = document.getElementById('usecase-info-title');
+        const infoSubtitle = document.getElementById('usecase-info-subtitle');
+        const infoExplanation = document.getElementById('usecase-explanation');
+        const relationsWrapper = document.getElementById('usecase-relations-wrapper');
+        const relationsBody = document.getElementById('usecase-relations-body');
 
-        function setActorPosition(actor, x, y, scale = 1) {
-            actor.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        const createSvgElement = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
+
+        const usecaseModel = {
+            nodes: [
+                { id: 'actor-sol', type: 'actor', label: 'Solicitante', x: 80, y: 160, width: 160, height: 60, description: 'Reporta incidencias, consulta la FAQ y sigue el estado de sus tickets.' },
+                { id: 'actor-tec', type: 'actor', label: 'Técnico', x: 80, y: 340, width: 160, height: 60, description: 'Atiende tickets asignados, actualiza estados y mantiene comunicación con solicitantes.' },
+                { id: 'actor-adm', type: 'actor', label: 'Administrador', x: 80, y: 520, width: 160, height: 60, description: 'Administra catálogos, supervisa indicadores y vigila el registro de auditoría.' },
+                { id: 'uc-login', type: 'usecase', label: 'Iniciar/Cerrar sesión', x: 400, y: 120, width: 360, height: 40, description: 'Acceso autenticado al sistema y cierre de sesión seguro.' },
+                { id: 'uc-perms', type: 'usecase', label: 'Validar permisos por rol', x: 400, y: 190, width: 360, height: 40, description: 'Chequea el rol antes de permitir acciones restringidas.' },
+                { id: 'uc-faq', type: 'usecase', label: 'FAQ autoservicio', x: 400, y: 260, width: 360, height: 40, description: 'Consulta respuestas frecuentes para resolver sin crear tickets.' },
+                { id: 'uc-view', type: 'usecase', label: 'Ver y filtrar tickets', x: 400, y: 330, width: 360, height: 40, description: 'Listado de tickets con filtros por estado, prioridad y área.' },
+                { id: 'uc-create', type: 'usecase', label: 'Crear ticket', x: 400, y: 400, width: 360, height: 40, description: 'Alta de tickets con título, tipo, categoría y subcategoría.' },
+                { id: 'uc-attach', type: 'usecase', label: 'Adjuntar y comentar', x: 400, y: 470, width: 360, height: 40, description: 'Agrega archivos y comentarios en el historial del ticket.' },
+                { id: 'uc-status', type: 'usecase', label: 'Cambiar estado', x: 400, y: 540, width: 360, height: 40, description: 'Transiciona entre OPEN, IN_PROGRESS, RESOLVED y CLOSED.' },
+                { id: 'uc-assign', type: 'usecase', label: 'Asignar/Reasignar', x: 400, y: 610, width: 360, height: 40, description: 'Deriva tickets a técnicos, registrando responsable y motivo.' },
+                { id: 'uc-kpi', type: 'usecase', label: 'Dashboard KPI', x: 400, y: 680, width: 360, height: 40, description: 'Panel de métricas operativas y alertas tempranas.' },
+                { id: 'uc-export', type: 'usecase', label: 'Exportar PDF/Excel', x: 400, y: 750, width: 360, height: 40, description: 'Exporta listados según filtros activos a PDF o Excel.' },
+                { id: 'uc-catalog', type: 'usecase', label: 'Gestionar catálogos', x: 400, y: 820, width: 360, height: 40, description: 'Administra categorías, subcategorías, prioridades y áreas.' },
+                { id: 'uc-audit', type: 'usecase', label: 'Auditoría', x: 400, y: 890, width: 360, height: 40, description: 'Registro detallado de todas las acciones realizadas en el sistema.' }
+            ],
+            edges: {
+                actor: [
+                    { from: 'actor-sol', to: 'uc-login' },
+                    { from: 'actor-sol', to: 'uc-faq' },
+                    { from: 'actor-sol', to: 'uc-view' },
+                    { from: 'actor-sol', to: 'uc-create' },
+                    { from: 'actor-sol', to: 'uc-attach' },
+                    { from: 'actor-tec', to: 'uc-login' },
+                    { from: 'actor-tec', to: 'uc-view' },
+                    { from: 'actor-tec', to: 'uc-attach' },
+                    { from: 'actor-tec', to: 'uc-status' },
+                    { from: 'actor-tec', to: 'uc-assign' },
+                    { from: 'actor-tec', to: 'uc-kpi' },
+                    { from: 'actor-adm', to: 'uc-login' },
+                    { from: 'actor-adm', to: 'uc-view' },
+                    { from: 'actor-adm', to: 'uc-assign' },
+                    { from: 'actor-adm', to: 'uc-kpi' },
+                    { from: 'actor-adm', to: 'uc-catalog' },
+                    { from: 'actor-adm', to: 'uc-export' },
+                    { from: 'actor-adm', to: 'uc-audit' }
+                ],
+                include: [
+                    { from: 'uc-create', to: 'uc-audit' },
+                    { from: 'uc-attach', to: 'uc-audit' },
+                    { from: 'uc-status', to: 'uc-audit' },
+                    { from: 'uc-assign', to: 'uc-audit' },
+                    { from: 'uc-export', to: 'uc-view' }
+                ],
+                permission: [
+                    { from: 'uc-view', to: 'uc-perms' },
+                    { from: 'uc-create', to: 'uc-perms' },
+                    { from: 'uc-attach', to: 'uc-perms' },
+                    { from: 'uc-status', to: 'uc-perms' },
+                    { from: 'uc-assign', to: 'uc-perms' },
+                    { from: 'uc-kpi', to: 'uc-perms' },
+                    { from: 'uc-export', to: 'uc-perms' },
+                    { from: 'uc-catalog', to: 'uc-perms' }
+                ],
+                exclude: [
+                    { from: 'uc-faq', to: 'uc-create' }
+                ]
+            }
+        };
+
+        const nodeRegistry = new Map();
+        const edgeRegistry = new Map();
+        const adjacency = new Map();
+        const edgesByNode = new Map();
+        const relations = new Map();
+        const caseActors = new Map();
+
+        const actorEdges = [];
+        const includeEdges = [];
+        const permissionEdges = [];
+        const excludeEdges = [];
+
+        let currentActorFilter = 'Todos';
+        let selectedNodeId = null;
+        let infoMode = 'explanation';
+        let highlightState = null;
+
+        function ensureStructures(id) {
+            if (!adjacency.has(id)) adjacency.set(id, new Set());
+            if (!edgesByNode.has(id)) edgesByNode.set(id, new Set());
+            if (!relations.has(id)) relations.set(id, []);
         }
 
-        function computeActorPath(actor, targetGroup) {
-            const actorX = parseFloat(actor.dataset.activeX);
-            const actorY = parseFloat(actor.dataset.activeY);
-            const halfWidth = parseFloat(actor.dataset.width) / 2;
-            const startX = actorX + halfWidth + 6;
-            const startY = actorY;
-            const targetX = parseFloat(targetGroup.dataset.x) - parseFloat(targetGroup.dataset.rx) - 12;
-            const targetY = parseFloat(targetGroup.dataset.y);
-            const midX = startX + (targetX - startX) * 0.45;
-            return `M ${startX} ${startY} H ${midX} V ${targetY} H ${targetX}`;
+        function buildActorNode(node) {
+            const group = createSvgElement('g');
+            group.setAttribute('id', node.id);
+            group.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+            group.setAttribute('tabindex', '0');
+            group.setAttribute('role', 'button');
+            group.setAttribute('aria-label', `${node.label}. Actor del sistema de tickets.`);
+            group.dataset.type = node.type;
+            group.classList.add('uc-node', 'actor-node');
+
+            const body = createSvgElement('rect');
+            body.setAttribute('width', node.width);
+            body.setAttribute('height', node.height);
+            body.setAttribute('rx', '18');
+            body.setAttribute('ry', '18');
+            body.setAttribute('fill', 'rgba(224,242,254,0.95)');
+            body.setAttribute('stroke', '#0ea5e9');
+            body.setAttribute('stroke-width', '2.6');
+            group.appendChild(body);
+
+            const halo = createSvgElement('rect');
+            halo.setAttribute('x', '-12');
+            halo.setAttribute('y', '-12');
+            halo.setAttribute('width', node.width + 24);
+            halo.setAttribute('height', node.height + 24);
+            halo.setAttribute('rx', '28');
+            halo.setAttribute('ry', '28');
+            halo.setAttribute('class', 'uc-halo');
+            halo.setAttribute('pointer-events', 'none');
+            group.appendChild(halo);
+
+            const icon = createSvgElement('g');
+            icon.setAttribute('transform', 'translate(32,20)');
+            const head = createSvgElement('circle');
+            head.setAttribute('cx', '0');
+            head.setAttribute('cy', '10');
+            head.setAttribute('r', '10');
+            head.setAttribute('fill', '#0ea5e9');
+            icon.appendChild(head);
+            const shoulders = createSvgElement('path');
+            shoulders.setAttribute('d', 'M-18 26 C-12 14 12 14 18 26 V40 H-18 Z');
+            shoulders.setAttribute('fill', '#38bdf8');
+            icon.appendChild(shoulders);
+            group.appendChild(icon);
+
+            const label = createSvgElement('text');
+            label.setAttribute('x', '88');
+            label.setAttribute('y', node.height / 2 + 3);
+            label.setAttribute('class', 'uc-label');
+            label.setAttribute('dominant-baseline', 'middle');
+            label.textContent = node.label;
+            group.appendChild(label);
+
+            return group;
         }
 
-        function computeAddonPath(parentGroup, addonGroup) {
-            const startX = parseFloat(parentGroup.dataset.x) + parseFloat(parentGroup.dataset.rx) + 12;
-            const startY = parseFloat(parentGroup.dataset.y);
-            const targetX = parseFloat(addonGroup.dataset.x) - parseFloat(addonGroup.dataset.rx) - 12;
-            const targetY = parseFloat(addonGroup.dataset.y);
-            return {
-                d: `M ${startX} ${startY} H ${targetX}`,
-                labelX: (startX + targetX) / 2,
-                labelY: targetY - 16
-            };
+        function buildUsecaseNode(node) {
+            const group = createSvgElement('g');
+            group.setAttribute('id', node.id);
+            group.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+            group.setAttribute('tabindex', '0');
+            group.setAttribute('role', 'button');
+            group.setAttribute('aria-label', `${node.label}. Caso de uso del sistema de tickets.`);
+            group.dataset.type = node.type;
+            group.classList.add('uc-node', 'usecase-node');
+
+            const body = createSvgElement('rect');
+            body.setAttribute('width', node.width);
+            body.setAttribute('height', node.height);
+            body.setAttribute('rx', '22');
+            body.setAttribute('ry', '22');
+            body.setAttribute('fill', '#f8fafc');
+            body.setAttribute('stroke', '#6366f1');
+            body.setAttribute('stroke-width', '2.4');
+            group.appendChild(body);
+
+            const halo = createSvgElement('rect');
+            halo.setAttribute('x', '-14');
+            halo.setAttribute('y', '-14');
+            halo.setAttribute('width', node.width + 28);
+            halo.setAttribute('height', node.height + 28);
+            halo.setAttribute('rx', '30');
+            halo.setAttribute('ry', '30');
+            halo.setAttribute('class', 'uc-halo');
+            halo.setAttribute('pointer-events', 'none');
+            group.appendChild(halo);
+
+            const label = createSvgElement('text');
+            label.setAttribute('x', node.width / 2);
+            label.setAttribute('y', node.height / 2 + 3);
+            label.setAttribute('class', 'uc-label');
+            label.setAttribute('text-anchor', 'middle');
+            label.setAttribute('dominant-baseline', 'middle');
+            label.textContent = node.label;
+            group.appendChild(label);
+
+            return group;
         }
 
-        function resetUsecaseDiagram() {
-            usecaseSvg.dataset.state = 'idle';
-            delete usecaseSvg.dataset.activeActor;
-            usecaseBackButton.classList.remove('visible');
-
-            usecaseActors.forEach(actor => {
-                actor.classList.remove('active-actor', 'hidden-actor');
-                const idleX = parseFloat(actor.dataset.idleX);
-                const idleY = parseFloat(actor.dataset.idleY);
-                setActorPosition(actor, idleX, idleY, 1);
-            });
-
-            usecaseGroups.forEach(group => group.classList.remove('visible'));
-            addonGroups.forEach(group => group.classList.remove('visible'));
-            usecaseConnectors.forEach(connector => connector.classList.remove('visible'));
-            addonConnectors.forEach(connector => connector.classList.remove('visible'));
-            connectorLabels.forEach(label => label.classList.remove('visible'));
+        function buildActorEdgePath(fromNode, toNode) {
+            const startX = fromNode.x + fromNode.width;
+            const startY = fromNode.y + fromNode.height / 2;
+            const corridorX = 360;
+            const systemX = 380;
+            const targetX = toNode.x;
+            const targetY = toNode.y + toNode.height / 2;
+            return `M ${startX} ${startY} H ${corridorX} V ${targetY} H ${systemX} H ${targetX}`;
         }
 
-        function activateUsecaseActor(actorName) {
-            const activeActor = actorMap.get(actorName);
-            if (!activeActor) {
-                return;
+        function buildIncludeEdgePath(fromNode, toNode) {
+            const startX = fromNode.x + fromNode.width;
+            const startY = fromNode.y + fromNode.height / 2;
+            const corridorX = 860;
+            const targetX = toNode.x + toNode.width;
+            const targetY = toNode.y + toNode.height / 2;
+            return `M ${startX} ${startY} H ${corridorX} V ${targetY} H ${targetX}`;
+        }
+
+        function buildExcludeEdgePath(fromNode, toNode) {
+            const startX = fromNode.x;
+            const startY = fromNode.y + fromNode.height / 2;
+            const targetX = toNode.x;
+            const targetY = toNode.y + toNode.height / 2;
+            return `M ${startX} ${startY} H 380 H 300 V ${targetY} H 380 H ${targetX}`;
+        }
+
+        function registerEdge(edge, fromNode, toNode) {
+            ensureStructures(edge.from);
+            ensureStructures(edge.to);
+
+            adjacency.get(edge.from).add(edge.to);
+            adjacency.get(edge.to).add(edge.from);
+
+            edgesByNode.get(edge.from).add(edge.id);
+            edgesByNode.get(edge.to).add(edge.id);
+
+            if (edge.type === 'actor') {
+                if (!caseActors.has(edge.to)) {
+                    caseActors.set(edge.to, new Set());
+                }
+                caseActors.get(edge.to).add(edge.from);
+                relations.get(edge.from).push({ target: toNode.label, type: 'caso', direction: '→' });
+                relations.get(edge.to).push({ target: fromNode.label, type: 'actor', direction: '←' });
+            } else if (edge.type === 'include') {
+                relations.get(edge.from).push({ target: toNode.label, type: 'include', direction: '→' });
+                relations.get(edge.to).push({ target: fromNode.label, type: 'include', direction: '←' });
+            } else if (edge.type === 'exclude') {
+                relations.get(edge.from).push({ target: toNode.label, type: 'exclude', direction: '→' });
+                relations.get(edge.to).push({ target: fromNode.label, type: 'exclude', direction: '←' });
             }
 
-            usecaseSvg.dataset.state = 'active';
-            usecaseSvg.dataset.activeActor = actorName;
-            usecaseBackButton.classList.add('visible');
+            const path = createSvgElement('path');
+            path.setAttribute('id', edge.id);
+            path.dataset.type = 'edge';
+            path.dataset.neighbors = `${edge.from},${edge.to}`;
+            path.classList.add('uc-edge');
 
-            usecaseActors.forEach(actor => {
-                const idleX = parseFloat(actor.dataset.idleX);
-                const idleY = parseFloat(actor.dataset.idleY);
-                if (actor === activeActor) {
-                    actor.classList.add('active-actor');
-                    actor.classList.remove('hidden-actor');
-                    setActorPosition(actor, parseFloat(actor.dataset.activeX), parseFloat(actor.dataset.activeY), 1.08);
+            if (edge.type === 'actor') {
+                path.classList.add('actor-edge');
+                path.setAttribute('d', buildActorEdgePath(fromNode, toNode));
+            } else if (edge.type === 'include') {
+                path.classList.add('include-edge');
+                path.setAttribute('d', buildIncludeEdgePath(fromNode, toNode));
+            } else {
+                path.classList.add('exclude-edge');
+                path.setAttribute('d', buildExcludeEdgePath(fromNode, toNode));
+            }
+
+            if (edge.hidden) {
+                path.classList.add('hidden');
+                path.style.opacity = 0;
+            }
+
+            edgesLayer.appendChild(path);
+            edge.element = path;
+            edgeRegistry.set(edge.id, edge);
+        }
+
+        usecaseModel.nodes.forEach(node => {
+            ensureStructures(node.id);
+            const element = node.type === 'actor' ? buildActorNode(node) : buildUsecaseNode(node);
+            nodeRegistry.set(node.id, { data: node, element, baseOpacity: 1 });
+            nodesLayer.appendChild(element);
+        });
+
+        usecaseModel.edges.actor.forEach(edgeData => {
+            const fromNode = nodeRegistry.get(edgeData.from).data;
+            const toNode = nodeRegistry.get(edgeData.to).data;
+            const edge = { id: `e-${edgeData.from}-${edgeData.to}`, from: edgeData.from, to: edgeData.to, type: 'actor', element: null, baseOpacity: 1 };
+            registerEdge(edge, fromNode, toNode);
+            actorEdges.push(edge);
+        });
+
+        usecaseModel.edges.include.forEach(edgeData => {
+            const fromNode = nodeRegistry.get(edgeData.from).data;
+            const toNode = nodeRegistry.get(edgeData.to).data;
+            const edge = { id: `e-${edgeData.from}-${edgeData.to}`, from: edgeData.from, to: edgeData.to, type: 'include', hidden: true, element: null, baseOpacity: 1 };
+            registerEdge(edge, fromNode, toNode);
+            includeEdges.push(edge);
+        });
+
+        usecaseModel.edges.permission.forEach(edgeData => {
+            const fromNode = nodeRegistry.get(edgeData.from).data;
+            const toNode = nodeRegistry.get(edgeData.to).data;
+            const edge = { id: `e-${edgeData.from}-${edgeData.to}`, from: edgeData.from, to: edgeData.to, type: 'include', hidden: true, element: null, baseOpacity: 1 };
+            registerEdge(edge, fromNode, toNode);
+            permissionEdges.push(edge);
+        });
+
+        usecaseModel.edges.exclude.forEach(edgeData => {
+            const fromNode = nodeRegistry.get(edgeData.from).data;
+            const toNode = nodeRegistry.get(edgeData.to).data;
+            const edge = { id: `e-${edgeData.from}-${edgeData.to}`, from: edgeData.from, to: edgeData.to, type: 'exclude', hidden: true, element: null, baseOpacity: 1 };
+            registerEdge(edge, fromNode, toNode);
+            excludeEdges.push(edge);
+        });
+
+        nodeRegistry.forEach((entry, id) => {
+            const neighbors = Array.from(adjacency.get(id) || []);
+            entry.element.dataset.neighbors = neighbors.join(',');
+        });
+
+        function computeHighlightState(nodeId) {
+            if (!nodeId) return null;
+            const nodes = new Set([nodeId]);
+            const edges = new Set();
+            (adjacency.get(nodeId) || new Set()).forEach(neighbor => nodes.add(neighbor));
+            (edgesByNode.get(nodeId) || new Set()).forEach(edgeId => edges.add(edgeId));
+            return { nodes, edges };
+        }
+
+        function applyVisualState() {
+            nodeRegistry.forEach((entry, id) => {
+                const element = entry.element;
+                let opacity = entry.baseOpacity;
+                if (highlightState) {
+                    if (highlightState.nodes.has(id)) {
+                        opacity = 1;
+                        element.classList.add('is-highlighted');
+                    } else {
+                        opacity = 0.4;
+                        element.classList.remove('is-highlighted');
+                    }
                 } else {
-                    actor.classList.remove('active-actor');
-                    actor.classList.add('hidden-actor');
-                    setActorPosition(actor, idleX, idleY, 0.9);
+                    element.classList.remove('is-highlighted');
                 }
+                element.classList.toggle('is-selected', id === selectedNodeId);
+                element.style.opacity = opacity;
             });
 
-            const visibleUsecases = new Set();
-
-            usecaseGroups.forEach(group => {
-                const actors = (group.dataset.actors || '').split(' ').filter(Boolean);
-                const isVisible = actors.includes(actorName);
-                group.classList.toggle('visible', isVisible);
-                if (isVisible) {
-                    visibleUsecases.add(group.dataset.node);
+            edgeRegistry.forEach((edge, id) => {
+                const element = edge.element;
+                if (element.classList.contains('hidden')) {
+                    element.style.opacity = 0;
+                    element.classList.remove('is-highlighted');
+                    return;
                 }
-            });
-
-            addonGroups.forEach(group => {
-                const isVisible = visibleUsecases.has(group.dataset.parent);
-                group.classList.toggle('visible', isVisible);
-            });
-
-            usecaseConnectors.forEach(connector => {
-                const targetName = connector.dataset.target;
-                const shouldShow = connector.dataset.source === actorName && visibleUsecases.has(targetName);
-                connector.classList.toggle('visible', shouldShow);
-                if (shouldShow) {
-                    const targetGroup = usecaseMap.get(targetName);
-                    if (targetGroup) {
-                        connector.setAttribute('d', computeActorPath(activeActor, targetGroup));
+                let opacity = edge.baseOpacity;
+                if (highlightState) {
+                    if (highlightState.edges.has(id)) {
+                        opacity = 1;
+                        element.classList.add('is-highlighted');
+                    } else {
+                        opacity = 0.4;
+                        element.classList.remove('is-highlighted');
                     }
+                } else {
+                    element.classList.remove('is-highlighted');
                 }
-            });
-
-            addonConnectors.forEach(connector => {
-                const parentName = connector.dataset.source;
-                const childName = connector.dataset.target;
-                const shouldShow = visibleUsecases.has(parentName);
-                connector.classList.toggle('visible', shouldShow);
-                const label = connectorLabelMap.get(`${parentName}->${childName}`);
-                if (label) {
-                    label.classList.toggle('visible', shouldShow);
-                }
-                if (shouldShow) {
-                    const parentGroup = usecaseMap.get(parentName);
-                    const addonGroup = addonMap.get(childName);
-                    if (parentGroup && addonGroup) {
-                        const layout = computeAddonPath(parentGroup, addonGroup);
-                        connector.setAttribute('d', layout.d);
-                        if (label) {
-                            label.setAttribute('x', layout.labelX);
-                            label.setAttribute('y', layout.labelY);
-                        }
-                    }
-                }
+                element.style.opacity = opacity;
             });
         }
 
-        resetUsecaseDiagram();
+        function updateConditionalEdges() {
+            const selectedEntry = selectedNodeId ? nodeRegistry.get(selectedNodeId) : null;
+            const isCaseSelected = !!selectedEntry && selectedEntry.data.type === 'usecase';
 
-        usecaseActors.forEach(actor => {
-            actor.addEventListener('click', (event) => {
+            includeEdges.forEach(edge => {
+                const shouldShow = isCaseSelected && (edge.from === selectedNodeId || edge.to === selectedNodeId);
+                edge.element.classList.toggle('hidden', !shouldShow);
+                if (!shouldShow) edge.element.style.opacity = 0;
+            });
+
+            permissionEdges.forEach(edge => {
+                const shouldShow = isCaseSelected && edge.from === selectedNodeId;
+                edge.element.classList.toggle('hidden', !shouldShow);
+                if (!shouldShow) edge.element.style.opacity = 0;
+            });
+
+            excludeEdges.forEach(edge => {
+                const shouldShow = selectedNodeId === edge.from;
+                edge.element.classList.toggle('hidden', !shouldShow);
+                if (!shouldShow) edge.element.style.opacity = 0;
+            });
+        }
+
+        function updateBaseOpacities() {
+            nodeRegistry.forEach((entry, id) => {
+                let base = 1;
+                if (currentActorFilter !== 'Todos') {
+                    if (entry.data.type === 'actor') {
+                        base = id === currentActorFilter ? 1 : 0.3;
+                    } else if (entry.data.type === 'usecase') {
+                        const actorSet = caseActors.get(id);
+                        base = actorSet && actorSet.has(currentActorFilter) ? 1 : 0.3;
+                    }
+                }
+                entry.baseOpacity = base;
+            });
+
+            edgeRegistry.forEach(edge => {
+                let base = 1;
+                if (edge.type === 'actor' && currentActorFilter !== 'Todos') {
+                    base = edge.from === currentActorFilter ? 1 : 0.3;
+                }
+                edge.baseOpacity = base;
+            });
+
+            applyVisualState();
+        }
+
+        function renderInfoPanel() {
+            const hasSelection = Boolean(selectedNodeId);
+            if (!hasSelection) {
+                infoTitle.textContent = 'Selecciona un nodo';
+                infoSubtitle.textContent = 'Explora actores y casos para ver detalles.';
+                infoExplanation.textContent = 'Selecciona un actor o caso para ver su propósito dentro del sistema.';
+                relationsBody.innerHTML = '<tr><td colspan="3" class="py-3 text-sm text-slate-500">Selecciona un nodo para ver relaciones.</td></tr>';
+            } else {
+                const entry = nodeRegistry.get(selectedNodeId);
+                infoTitle.textContent = entry.data.label;
+                infoSubtitle.textContent = entry.data.type === 'actor' ? 'Actor del sistema' : 'Caso de uso';
+                infoExplanation.textContent = entry.data.description;
+                const rels = relations.get(selectedNodeId) || [];
+                if (rels.length === 0) {
+                    relationsBody.innerHTML = '<tr><td colspan="3" class="py-3 text-sm text-slate-500">Sin relaciones registradas.</td></tr>';
+                } else {
+                    relationsBody.innerHTML = rels.map(rel => `<tr><td class="py-2">${rel.target}</td><td class="py-2 capitalize">${rel.type}</td><td class="py-2">${rel.direction}</td></tr>`).join('');
+                }
+            }
+
+            if (infoMode === 'explanation') {
+                infoExplanation.classList.remove('hidden');
+                relationsWrapper.classList.add('hidden');
+            } else {
+                infoExplanation.classList.add('hidden');
+                relationsWrapper.classList.remove('hidden');
+            }
+        }
+
+        function setInfoMode(mode) {
+            infoMode = mode;
+            infoToggleButtons.forEach(button => {
+                const isActive = button.dataset.infoMode === mode;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+            renderInfoPanel();
+        }
+
+        function setSelectedNode(nodeId) {
+            selectedNodeId = nodeId;
+            updateConditionalEdges();
+            highlightState = selectedNodeId ? computeHighlightState(selectedNodeId) : null;
+            renderInfoPanel();
+            applyVisualState();
+        }
+
+        function toggleSelection(nodeId) {
+            if (selectedNodeId === nodeId) {
+                setSelectedNode(null);
+            } else {
+                setSelectedNode(nodeId);
+            }
+        }
+
+        nodeRegistry.forEach((entry, id) => {
+            const element = entry.element;
+            element.addEventListener('mouseenter', () => {
+                if (selectedNodeId) return;
+                highlightState = computeHighlightState(id);
+                applyVisualState();
+            });
+
+            element.addEventListener('mouseleave', () => {
+                if (selectedNodeId) {
+                    highlightState = computeHighlightState(selectedNodeId);
+                } else {
+                    highlightState = null;
+                }
+                applyVisualState();
+            });
+
+            element.addEventListener('focus', () => {
+                element.classList.add('is-focused');
+                if (!selectedNodeId || selectedNodeId === id) {
+                    highlightState = computeHighlightState(id);
+                    applyVisualState();
+                }
+            });
+
+            element.addEventListener('blur', () => {
+                element.classList.remove('is-focused');
+                if (selectedNodeId) {
+                    highlightState = computeHighlightState(selectedNodeId);
+                } else {
+                    highlightState = null;
+                }
+                applyVisualState();
+            });
+
+            element.addEventListener('click', (event) => {
                 event.stopPropagation();
-                const actorName = actor.dataset.node;
-                const current = usecaseSvg.dataset.activeActor;
-                if (usecaseSvg.dataset.state === 'active' && current === actorName) {
-                    resetUsecaseDiagram();
-                } else {
-                    activateUsecaseActor(actorName);
+                toggleSelection(id);
+            });
+
+            element.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleSelection(id);
                 }
             });
         });
 
-        usecaseBackButton.addEventListener('click', () => {
-            resetUsecaseDiagram();
+        actorFilterButtons.forEach(button => {
+            const isActive = button.classList.contains('is-active');
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            button.addEventListener('click', () => {
+                const filterValue = button.dataset.actorFilter;
+                currentActorFilter = filterValue;
+                actorFilterButtons.forEach(other => {
+                    const active = other === button;
+                    other.classList.toggle('is-active', active);
+                    other.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+                updateBaseOpacities();
+            });
         });
 
-        usecaseSvg.addEventListener('click', (event) => {
-            if (usecaseSvg.dataset.state !== 'active') return;
-            if (event.target.closest('.actor') || event.target.closest('.usecase-group') || event.target.closest('.addon-group')) {
+        infoToggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                setInfoMode(button.dataset.infoMode);
+            });
+        });
+
+        usecaseCanvas.addEventListener('click', (event) => {
+            if (event.target.closest('.uc-node')) {
                 return;
             }
-            resetUsecaseDiagram();
+            setSelectedNode(null);
         });
+
+        usecaseCanvas.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                setSelectedNode(null);
+                usecaseCanvas.blur();
+            }
+        });
+
+        setInfoMode('explanation');
+        updateBaseOpacities();
+        updateConditionalEdges();
+        renderInfoPanel();
+        applyVisualState();
+
     </script>
 </body>
 </html>
