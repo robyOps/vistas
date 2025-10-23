@@ -314,12 +314,14 @@ async function refreshGraph() {
   if (!subset.entities.length) {
     graphBox.innerHTML = "";
     placeholder.hidden = false;
+    placeholder.setAttribute("aria-hidden", "false");
     summaryBox.textContent = "No hay entidades ni relaciones";
     currentMermaid = "";
     return;
   }
 
   placeholder.hidden = true;
+  placeholder.setAttribute("aria-hidden", "true");
   const code = buildMermaid(subset, { attrsMode: "pkfk" });
   currentMermaid = code;
   await render(code, subset);
