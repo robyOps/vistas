@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visor DER</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="top-bar">
+        <h1>Diagrama ER del Helpdesk</h1>
+        <div class="actions">
+          <button id="btn-copy" type="button" class="btn" aria-label="Copiar código Mermaid" tabindex="0">
+            Copiar Mermaid
+          </button>
+          <button id="btn-export-svg" type="button" class="btn" aria-label="Descargar SVG" tabindex="0">
+            Descargar SVG
+          </button>
+          <button id="btn-export-png" type="button" class="btn" aria-label="Descargar PNG" tabindex="0">
+            Descargar PNG
+          </button>
+        </div>
+      </header>
+      <main class="layout">
+        <aside class="sidebar" aria-label="Controles del diagrama">
+          <label class="search" for="entity-search">Buscar entidad</label>
+          <input
+            id="entity-search"
+            class="input"
+            type="search"
+            placeholder="Buscar..."
+            aria-label="Buscar entidad"
+          />
+
+          <div class="control-group">
+            <div class="control-header">
+              <h2>Entidades</h2>
+              <button id="btn-show-all" type="button" class="link-button" aria-label="Mostrar todas las entidades">
+                Mostrar todo
+              </button>
+            </div>
+            <ul id="entity-list" class="entity-list" role="listbox" aria-label="Lista de entidades"></ul>
+          </div>
+
+          <div class="control-group">
+            <h2>Profundidad</h2>
+            <div class="radio-group" role="radiogroup" aria-label="Profundidad de relaciones">
+              <label>
+                <input type="radio" name="depth" value="1" checked tabindex="0" />
+                1 salto
+              </label>
+              <label>
+                <input type="radio" name="depth" value="2" tabindex="0" />
+                2 saltos
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="toggle">
+              <input id="toggle-rbac" type="checkbox" checked tabindex="0" />
+              <span>Incluir RBAC</span>
+            </label>
+          </div>
+
+          <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        </aside>
+
+        <section class="graph-area" aria-label="Diagrama ER">
+          <div id="summary" class="summary" aria-live="polite"></div>
+          <div id="graph" class="graph" role="img" aria-label="Diagrama entidad-relación"></div>
+          <div id="placeholder" class="placeholder" hidden>No hay elementos para renderizar</div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
